@@ -3,7 +3,7 @@
 These apply when working in tokens/ or src/styles/.
 
 - The source of truth is tokens/*.json in W3C DTCG format (Tokens Studio export).
-- Build with `pnpm tokens` (Style Dictionary v4 + @tokens-studio/sd-transforms).
+- Build with `pnpm tokens` (Style Dictionary v5 + @tokens-studio/sd-transforms).
 - Three tiers: primitive → semantic → component. Components consume semantic or
   component tokens; they never reference primitives directly.
 - Set Figma variable code syntax to match our token names (e.g. var(--color-bg-primary))

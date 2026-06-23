@@ -22,7 +22,7 @@ for" for the full priorities.
 - **Interactive islands:** React 19.2
 - **Styling:** Tailwind CSS v4 (CSS-first config, OKLCH)
 - **Accessible primitives:** React Aria Components (Adobe)
-- **Design tokens:** W3C DTCG → Style Dictionary v4 → CSS vars + Tailwind theme
+- **Design tokens:** W3C DTCG → Style Dictionary v5 → CSS vars + Tailwind theme
 - **Component docs:** Storybook 9 (addon-a11y, addon-vitest)
 - **Package manager:** pnpm
 - **Hosting:** Cloudflare Pages, static path (`output: 'static'`, no adapter). Deploys via

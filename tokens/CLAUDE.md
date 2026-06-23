@@ -1,7 +1,7 @@
 # tokens — conventions (loaded when working here)
 
 - Source of truth: `*.json` in **W3C DTCG** format (Tokens Studio export).
-- Build with `pnpm tokens` (Style Dictionary v4 + @tokens-studio/sd-transforms).
+- Build with `pnpm tokens` (Style Dictionary v5 + @tokens-studio/sd-transforms).
 - Three tiers: **primitive → semantic → component**. Components consume semantic or
   component tokens, never primitives directly.
 - Generated files (`src/styles/tokens.css`) are never hand-edited — change the source and
