@@ -1,0 +1,16 @@
+{
+  "font": {
+    "sans": { "$type": "fontFamily", "$value": "{font.family.sans}" },
+    "mono": { "$type": "fontFamily", "$value": "{font.family.mono}" }
+  },
+  "text": {
+    "caption": { "$type": "dimension", "$value": "{size.sm}" },
+    "body":    { "$type": "dimension", "$value": "{size.base}" },
+    "title":   { "$type": "dimension", "$value": "{size.2xl}" },
+    "display": { "$type": "dimension", "$value": "{size.4xl}" }
+  },
+  "leading": {
+    "prose":   { "$type": "number", "$value": "{leading.normal}" },
+    "heading": { "$type": "number", "$value": "{leading.tight}" }
+  }
+}
