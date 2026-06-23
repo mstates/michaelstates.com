@@ -1,0 +1,31 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+dist/
+.astro/
+storybook-static/
+
+# env & secrets — never commit
+.env
+.env.*
+!.env.example
+secrets/
+
+# test & tooling output
+playwright-report/
+test-results/
+.lighthouseci/
+coverage/
+
+# editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Claude Code local overrides (personal, not shared)
+CLAUDE.local.md
+.claude/settings.local.json
+.DS_Store

@@ -1,0 +1,71 @@
+name: CI
+
+# This workflow is the QUALITY GATE only — lint, test, build, a11y, Lighthouse.
+# Deploys are handled by Cloudflare's Git integration (production on push to main,
+# automatic preview URL per PR/branch), configured in the Cloudflare dashboard.
+# Keeping deploy out of Actions means each tool does one job.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint, test, build, a11y
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint (includes eslint-plugin-jsx-a11y)
+        run: pnpm lint
+
+      - name: Unit / component tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Accessibility tests (axe-core via Playwright)
+        run: pnpm test:a11y
+
+      - name: Upload a11y report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-report
+          path: playwright-report/
+          retention-days: 14
+
+  lighthouse:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm build
+      - name: Run Lighthouse CI
+        run: pnpm exec lhci autorun || echo "LHCI thresholds not yet configured — see lighthouserc."

@@ -1,0 +1,1 @@
+Stage 5 news/projects layout ref: https://news.airbnb.com/women-hosts-set-to-be-the-real-winners-of-fifa-world-cup-2026/ — capture structural pattern via design agent + Playwright, adapt to own tokens, do NOT clone
