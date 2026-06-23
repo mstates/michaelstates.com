@@ -22,7 +22,7 @@ approach, the tradeoffs) and get it approved before editing.
   deliberately (`client:visible`/`client:idle` over `client:load` unless needed).
 - **Rendering boundaries** — decide what is static, what is an island, what (if
   anything) needs SSR. Document non-obvious choices as ADRs in `docs/adr/`.
-- **Token pipeline** — own the Style Dictionary v4 config and the flow from
+- **Token pipeline** — own the Style Dictionary v5 config and the flow from
   `tokens/*.json` (DTCG) → CSS variables → Tailwind v4 theme. Keep the three tiers
   (primitive → semantic → component) clean; components never reference primitives.
 - **Performance budgets** — keep an eye on shipped JS, Core Web Vitals, and image

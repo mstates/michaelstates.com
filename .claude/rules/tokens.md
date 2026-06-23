@@ -2,7 +2,7 @@
 
 These apply when working in tokens/ or src/styles/.
 
-- The source of truth is tokens/*.json in W3C DTCG format (Tokens Studio export).
+- The source of truth is tokens/*.json, hand-authored in W3C DTCG format (Tokens Studio is the planned Stage 4 authoring layer).
 - Build with `pnpm tokens` (Style Dictionary v5 + @tokens-studio/sd-transforms).
 - Three tiers: primitive → semantic → component. Components consume semantic or
   component tokens; they never reference primitives directly.

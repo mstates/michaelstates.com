@@ -7,12 +7,12 @@ description: >-
 
 # Sync Tokens
 
-Run the token build pipeline: DTCG JSON → Style Dictionary v4 → CSS custom properties
+Run the token build pipeline: DTCG JSON → Style Dictionary v5 → CSS custom properties
 + Tailwind v4 theme.
 
 ## Steps
 
-1. Confirm tokens/*.json is in W3C DTCG format (this is what Tokens Studio exports).
+1. Confirm tokens/*.json is in W3C DTCG format — the same format Tokens Studio will export in Stage 4.
 2. Run pnpm tokens (Style Dictionary with @tokens-studio/sd-transforms).
 3. Verify the generated src/styles/tokens.css and Tailwind theme updated.
 4. If anything references a primitive token directly from a component, flag it — the

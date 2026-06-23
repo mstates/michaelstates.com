@@ -1,6 +1,6 @@
 # tokens — conventions (loaded when working here)
 
-- Source of truth: `*.json` in **W3C DTCG** format (Tokens Studio export).
+- Source of truth: hand-authored `*.json` in **W3C DTCG** format (Tokens Studio is the planned Stage 4 authoring layer).
 - Build with `pnpm tokens` (Style Dictionary v5 + @tokens-studio/sd-transforms).
 - Three tiers: **primitive → semantic → component**. Components consume semantic or
   component tokens, never primitives directly.
