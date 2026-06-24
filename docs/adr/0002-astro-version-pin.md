@@ -88,4 +88,7 @@ decision above stands unchanged.
 **Re-attempt trigger:** Storybook ships stable Vite 8 / Rolldown support (i.e.
 `@storybook/builder-vite` can transform JSX under Rolldown). Re-attempt pins remain
 `astro@7.0.2` + `@astrojs/react@6.0.0` — re-confirm both are still current at that time and
-re-run the full build + `build-storybook` + a11y gate. Kept open in `docs/follow-ups.md`.
+re-run the full build + `build-storybook` + a11y gate. **Vite 8 / Rolldown is a different
+compile path, so the re-attempt must also re-run the `accessibility-reviewer` agent on at least
+one primitive — the rendered output cannot be assumed identical to the Vite 7 build and must be
+re-audited, not waved through.** Kept open in `docs/follow-ups.md`.

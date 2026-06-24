@@ -55,6 +55,15 @@ lives in `docs/a11y/<component>.md`; manual screen-reader checks live in
   stable Vite 8 / Rolldown support. Full record + re-attempt pins (`astro@7.0.2` +
   `@astrojs/react@6.0.0`) in `docs/adr/0002-astro-version-pin.md` ("Fast-follow attempt").
 
+## Content / narrative
+
+- **`docs/case-study-notes.md` — decide whether build-incident notes live in the repo.** The
+  build surfaced teachable incidents worth a portfolio case study — the `tailwind-merge`
+  custom-token drop (see Design tokens above), the Astro 7 / Vite 8–Rolldown Storybook block
+  (ADR-0002), and the sub-AA contrast catches (`docs/a11y/*`). The technical record already lives
+  in ADRs / `docs/a11y` / build journal; this is the separate **Stage 5 narrative-layer decision**
+  of whether to also capture an incident → fix → lesson narrative in-repo.
+
 ## CI / build gate
 
 - **CI is red until Stage 6.** `ci.yml` runs on push to `main` + PRs but fails at the lint step —
