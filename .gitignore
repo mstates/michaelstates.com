@@ -29,3 +29,6 @@ coverage/
 CLAUDE.local.md
 .claude/settings.local.json
 .DS_Store
+
+# session handoff docs (private working notes — never published to the public repo)
+docs/handoff/
