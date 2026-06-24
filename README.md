@@ -10,7 +10,7 @@ agent review, Storybook, and CI.
 ## Stack
 
 - Astro 6 (static-first, zero-JS islands) + React 19.2 islands
-- Tailwind CSS v4 + a W3C DTCG design-token pipeline (Tokens Studio → Style Dictionary 4)
+- Tailwind CSS v4 + a W3C DTCG design-token pipeline (Tokens Studio → Style Dictionary v5)
 - React Aria Components (Adobe) for accessible primitives
 - Storybook 10 with axe-powered a11y testing
 - GitHub Actions CI: lint (jsx-a11y), Vitest, Playwright + axe-core, Lighthouse CI
