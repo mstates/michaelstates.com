@@ -65,10 +65,12 @@
   --color-surface: var(--color-neutral-50);
   --color-surface-muted: var(--color-neutral-100);
   --color-border: var(--color-neutral-200);
+  --color-input: var(--color-neutral-500);
   --color-ring: var(--color-brand-600);
   --color-muted: var(--color-neutral-100);
   --color-muted-foreground: var(--color-neutral-600);
   --color-primary: var(--color-brand-600);
+  --color-primary-hover: var(--color-brand-700);
   --color-primary-foreground: var(--color-neutral-0);
   --color-accent: var(--color-brand-500);
   --color-accent-foreground: var(--color-neutral-900);

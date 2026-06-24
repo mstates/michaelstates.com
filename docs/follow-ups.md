@@ -1,0 +1,45 @@
+# Deferred follow-ups
+
+Single consolidated tracker for known, intentionally-deferred work surfaced during the
+build — each item is scoped enough to become its own step/ticket. Per-component audit detail
+lives in `docs/a11y/<component>.md`; manual screen-reader checks live in
+`docs/a11y/manual-testing.md`. This file is the index of what's deferred and why.
+
+## Design tokens / styling
+
+- **Configured `extendTailwindMerge` for guaranteed cross-component `className` overrides.**
+  `cx` is a plain joiner, so a consumer `className` that conflicts with a component default
+  on the _same_ property (e.g. another `text-*` color) resolves by stylesheet order, not
+  last-wins. A token-aware `tailwind-merge` config (classGroups generated from the token
+  source) would make overrides deterministic. Deferred to its own step — first investigate
+  blast radius across the text / bg / border / ring color groups + font-size. (Stock twMerge
+  conflates our custom `text-<size>` and `text-<color>` tokens, which is why it was decoupled
+  from the Stage 3 commit rather than shipped half-configured.)
+- **Font-weight namespace collision.** Our primitive `--font-weight-*` (in `:root`) share
+  Tailwind's weight variable names; values match today so `font-bold`/`font-semibold` work,
+  but changing a primitive weight would silently retarget Tailwind's `font-*` utilities
+  site-wide. Later: rename the primitives (e.g. `--weight-*`) or promote them to `@theme`.
+
+## Components
+
+- **Button — distinct `pressed` token.** Pressed currently reuses the hover token; a
+  dedicated pressed treatment would better reflect the interaction model. Ref `docs/a11y/button.md` (#2).
+- **Icon-only stories + accessible-name guard (Button, Link).** JSDoc already requires
+  `aria-label` for icon-only usage; add demonstrating stories (and consider a dev-time guard)
+  when icon-only usage actually ships. Ref `docs/a11y/button.md`, `docs/a11y/link.md`.
+- **Heading — empty-heading & ref.** `children` permits empty content (empty `<hN>`) and no
+  `ref` is forwarded. Ref `docs/a11y/heading.md` (Notes / known limitations).
+
+## Surfaces / theming
+
+- **Surface contracts for dark/inverted sections.** Components inherit text color by design;
+  before any non-white surface ships, add a rule to `src/components/CLAUDE.md` requiring any
+  section that overrides text color to prove its foreground/background pair meets WCAG 1.4.3
+  (4.5:1 normal / 3:1 large). Ref `docs/a11y/heading.md` (#2).
+
+## Docs sync
+
+- **"Storybook 9" → "Storybook 10"** in `CLAUDE.md` and `SETUP.md` (operational docs; same
+  pattern as the Style Dictionary v4→v5 sync). Historical records (`docs/research/*`, build
+  journal) stay as point-in-time.
+- **Astro 7 upgrade** — tracked separately in `docs/adr/0002-astro-version-pin.md` (Follow-up).
