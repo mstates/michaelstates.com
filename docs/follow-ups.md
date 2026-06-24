@@ -15,10 +15,19 @@ lives in `docs/a11y/<component>.md`; manual screen-reader checks live in
   blast radius across the text / bg / border / ring color groups + font-size. (Stock twMerge
   conflates our custom `text-<size>` and `text-<color>` tokens, which is why it was decoupled
   from the Stage 3 commit rather than shipped half-configured.)
-- **Font-weight namespace collision.** Our primitive `--font-weight-*` (in `:root`) share
-  Tailwind's weight variable names; values match today so `font-bold`/`font-semibold` work,
-  but changing a primitive weight would silently retarget Tailwind's `font-*` utilities
-  site-wide. Later: rename the primitives (e.g. `--weight-*`) or promote them to `@theme`.
+- **Primitive scales collide with Tailwind's default theme-variable namespaces.** Our
+  primitives in `:root` share Tailwind's `--font-weight-*`, `--radius-*`, `--leading-*`, and
+  `--color-neutral-*` names; `tokens.css` is imported after `tailwindcss`, so ours win.
+  Values **coincide** for some (`--font-weight-bold` 700, `--radius-sm` .25rem,
+  `--leading-normal` 1.5) but **differ** for `--radius-md` (ours .5rem vs Tailwind .375rem),
+  `--leading-tight` (1.15 vs 1.25), and the whole `--color-neutral-*` ramp — so our primitives
+  silently re-value Tailwind's built-in `rounded-md` / `leading-*` / `neutral-*` utilities.
+  **Load-bearing — NOT a no-op cleanup:** components use `rounded-md`/`rounded-sm`, and
+  `--leading-heading` resolves through `--leading-tight`, so renaming primitives would shift
+  component radius/leading appearance.
+  **Decide the intended model in its own step — AFTER the Astro 7 upgrade, with component
+  re-verification:** move primitives to a private namespace (e.g. `--mc-*`) vs. deliberately
+  adopt them as the Tailwind theme via `@theme`. **Candidate ADR.**
 
 ## Components
 
