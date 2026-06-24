@@ -48,7 +48,12 @@ lives in `docs/a11y/<component>.md`; manual screen-reader checks live in
 
 ## Docs sync
 
-- **"Storybook 9" → "Storybook 10"** in `CLAUDE.md` and `SETUP.md` (operational docs; same
-  pattern as the Style Dictionary v4→v5 sync). Historical records (`docs/research/*`, build
-  journal) stay as point-in-time.
+- ✅ **Storybook doc-sync to v10 — DONE** (CLAUDE.md, README.md, SETUP.md, seed/linear-import.csv).
+  `docs/research/*` left as point-in-time historical records.
 - **Astro 7 upgrade** — tracked separately in `docs/adr/0002-astro-version-pin.md` (Follow-up).
+
+## CI / build gate
+
+- **CI is red until Stage 6.** `ci.yml` runs on push to `main` + PRs but fails at the lint step —
+  eslint / vitest / Playwright + axe / lhci and their configs aren't installed until Stage 6.
+  Expected, not a defect (no branch protection, no deploy gating; goes green at Stage 6).

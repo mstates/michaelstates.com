@@ -9,25 +9,25 @@ importers:
   .:
     dependencies:
       '@astrojs/react':
-        specifier: ^5.0.7
+        specifier: 5.0.7
         version: 5.0.7(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(jiti@2.7.0)(lightningcss@1.32.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@tailwindcss/vite':
-        specifier: ^4.3.1
+        specifier: 4.3.1
         version: 4.3.1(vite@7.3.5(jiti@2.7.0)(lightningcss@1.32.0))
       astro:
-        specifier: ^6.4.8
+        specifier: 6.4.8
         version: 6.4.8(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.62.2)
       react:
-        specifier: ^19.2.7
+        specifier: 19.2.7
         version: 19.2.7
       react-aria-components:
-        specifier: ^1.19.0
+        specifier: 1.19.0
         version: 1.19.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react-dom:
-        specifier: ^19.2.7
+        specifier: 19.2.7
         version: 19.2.7(react@19.2.7)
       tailwindcss:
-        specifier: ^4.3.1
+        specifier: 4.3.1
         version: 4.3.1
     devDependencies:
       '@storybook/addon-a11y':
@@ -40,10 +40,10 @@ importers:
         specifier: 2.0.3
         version: 2.0.3(style-dictionary@5.5.0(tslib@2.8.1))
       '@types/react':
-        specifier: ^19.2.17
+        specifier: 19.2.17
         version: 19.2.17
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.17)
       storybook:
         specifier: 10.4.6

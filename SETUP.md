@@ -5,6 +5,7 @@ always executing and verifying, never authoring from scratch. The files referenc
 already exist in this scaffold.
 
 Conventions in this doc:
+
 - `▢` = a checkbox to tick as you go.
 - **Confirm:** = how you know the step worked before moving on.
 - Commands assume macOS/Linux and `pnpm`.
@@ -24,7 +25,7 @@ web priorities:
 - **Skip broad SEO.** Just keep the site indexable so a search of your name finds it. No
   keyword work.
 - **Link-preview (Open Graph) cards matter a lot.** The URL gets pasted into emails and
-  forwarded between people; the card that unfurls is the first impression *before* any
+  forwarded between people; the card that unfurls is the first impression _before_ any
   click. Get title/description/image right everywhere the link is shared.
 - **Complement the resume; don't repeat it.** They already have your CV — show what it
   can't: the work, the craft, the reasoning. The case studies and the demonstrated quality
@@ -89,7 +90,7 @@ temp dir and copy `src/`, `astro.config.*`, `package.json` over — keeping the 
 ▢ Add Tailwind v4: `pnpm astro add tailwind`.
 ▢ Add React Aria Components: `pnpm add react-aria-components`.
 ▢ Replace the generated `package.json` scripts with the ones in this scaffold's
-   `package.json` (so `pnpm test:a11y`, `pnpm tokens`, etc. exist).
+`package.json` (so `pnpm test:a11y`, `pnpm tokens`, etc. exist).
 
 **Confirm:** `pnpm dev` serves a page; `pnpm build` succeeds. Open `CLAUDE.md` and verify
 the stack section matches what you installed.
@@ -100,10 +101,10 @@ the stack section matches what you installed.
 
 ▢ In Figma, install **Tokens Studio**; set its export format to **W3C DTCG**.
 ▢ Export your tokens to `tokens/*.json` in this repo (start with a primitive palette +
-   semantic layer; the three-tier rule is in `.claude/rules/tokens.md`).
+semantic layer; the three-tier rule is in `.claude/rules/tokens.md`).
 ▢ `pnpm add -D style-dictionary @tokens-studio/sd-transforms`.
 ▢ Add a `style-dictionary.config.*` that reads `tokens/` and outputs
-   `src/styles/tokens.css` (CSS variables) + a Tailwind theme. Wire it to `pnpm tokens`.
+`src/styles/tokens.css` (CSS variables) + a Tailwind theme. Wire it to `pnpm tokens`.
 ▢ Run `pnpm tokens`.
 
 **Confirm:** `src/styles/tokens.css` exists with `--color-*` / `--space-*` variables, and
@@ -115,8 +116,8 @@ the Style Dictionary config — it knows the conventions.)
 ## Stage 3 — Component system + Storybook
 
 ▢ Build leaf primitives on React Aria Components in `src/components/` (Button, Input, Text,
-   Badge, Icon), consuming tokens. **Do these first** — Code Connect coverage cascades from them.
-▢ `pnpm add -D storybook@latest @storybook/addon-a11y @storybook/addon-vitest` and init Storybook 9.
+Badge, Icon), consuming tokens. **Do these first** — Code Connect coverage cascades from them.
+▢ `pnpm add -D storybook@latest @storybook/addon-a11y @storybook/addon-vitest` and init Storybook 10.
 ▢ Add a story per primitive; enable the a11y addon.
 
 **Confirm:** `pnpm storybook` runs; each primitive has a story; the a11y addon shows no
@@ -134,7 +135,7 @@ write its report to `docs/a11y/` — this verifies the signature agent works.
 ▢ Figma: it's in `.mcp.json` as a remote server. In Claude Code run `/mcp` → authenticate **Figma** (OAuth).
 ▢ Linear: `/mcp` → authenticate **Linear** (OAuth).
 ▢ Notion: `/mcp` → authenticate **Notion** (OAuth), then in Notion **share** your target
-   page/space with the integration (it only sees what it's shared).
+page/space with the integration (it only sees what it's shared).
 ▢ GitHub: `/mcp` → authenticate **GitHub** (or rely on `gh` CLI, which Claude Code uses).
 
 **Confirm:** `/mcp` lists figma, linear, notion, github, playwright as **connected**. If
@@ -147,11 +148,11 @@ any show disconnected, re-run auth before proceeding — the seed skills depend 
 Now the payoff. With the connectors live:
 
 ▢ In Claude Code: **`/seed-linear`**. Confirm the target team, let it create the
-   **"Portfolio — Build"** project and the full backlog from `seed/linear-import.csv`.
-   The **"Set up Claude Code studio"** epic and every Stage 0–5 task land here, each
-   linking back to the research report that informed it.
+**"Portfolio — Build"** project and the full backlog from `seed/linear-import.csv`.
+The **"Set up Claude Code studio"** epic and every Stage 0–5 task land here, each
+linking back to the research report that informed it.
 ▢ In Claude Code: **`/seed-notion`**. Confirm the parent page, let it publish the two
-   research reports and the build journal as your founding Notion pages.
+research reports and the build journal as your founding Notion pages.
 
 **Confirm:** Linear shows ~30 issues under epics; Notion shows the Build Journal with the
 Research sub-pages. Tick off the setup tasks you've already completed (Stages 0–4).
@@ -168,25 +169,25 @@ Two tools, one job each: **GitHub Actions is the quality gate; Cloudflare deploy
 
 **The quality gate (GitHub Actions):**
 ▢ `.github/workflows/ci.yml` is scaffolded: lint (jsx-a11y) → Vitest → build →
-   `@axe-core/playwright` → Lighthouse CI. Install the deps it expects
-   (`pnpm add -D @axe-core/playwright @playwright/test vitest @lhci/cli`).
+`@axe-core/playwright` → Lighthouse CI. Install the deps it expects
+(`pnpm add -D @axe-core/playwright @playwright/test vitest @lhci/cli`).
 ▢ Confirm it runs on a throwaway PR and uploads the a11y report artifact.
 
 **Deploy + staging (Cloudflare Git integration — configured in the dashboard, no repo workflow):**
 ▢ In the Cloudflare dashboard: Workers & Pages → Create → **Pages** → Connect to Git → pick
-   this repo. **Choose Pages, not Workers** — the dashboard may try to route a static site
-   to Workers; if you land on a `*.workers.dev` URL, use the "shift to Pages" toggle at the
-   bottom of project settings.
+this repo. **Choose Pages, not Workers** — the dashboard may try to route a static site
+to Workers; if you land on a `*.workers.dev` URL, use the "shift to Pages" toggle at the
+bottom of project settings.
 ▢ Build settings: framework preset **Astro**, build command `pnpm build`, output dir `dist`.
 ▢ Keep the project on the **static path**: `output: 'static'` in `astro.config`, and **do
-   not** add the `@astrojs/cloudflare` adapter. (The adapter is only for SSR/bindings you
-   don't need; it adds a local-emulator step that can hang on a static site.)
+not** add the `@astrojs/cloudflare` adapter. (The adapter is only for SSR/bindings you
+don't need; it adds a local-emulator step that can hang on a static site.)
 ▢ **Do NOT attach `michaelstates.com` yet.** The project deploys to `*.pages.dev` — that's
-   your staging URL. Every push to `main` updates it; every PR/branch gets its own preview
-   URL automatically. The existing live site stays untouched.
+your staging URL. Every push to `main` updates it; every PR/branch gets its own preview
+URL automatically. The existing live site stays untouched.
 
 ▢ Enable the Linear ↔ GitHub integration in Linear settings; keep "Done" firing only on
-   merge to `main`.
+merge to `main`.
 
 **Confirm:** a push to `main` deploys to `<project>.pages.dev`; opening a PR produces a
 separate preview URL; CI runs the gate on that PR; a PR titled with `Fixes ENG-123` moves
@@ -216,10 +217,10 @@ from here, one ticket at a time.
 Only when the staged site at `*.pages.dev` looks right and the gate is green:
 
 ▢ In the Cloudflare Pages project → **Custom domains** → add `michaelstates.com`
-   (and `www`). If the domain's DNS is already on Cloudflare, it wires the records and
-   provisions HTTPS automatically (2–3 min). If the domain currently lives elsewhere
-   (your own server / another registrar), point the registrar's nameservers at Cloudflare
-   first, then add the domain.
+(and `www`). If the domain's DNS is already on Cloudflare, it wires the records and
+provisions HTTPS automatically (2–3 min). If the domain currently lives elsewhere
+(your own server / another registrar), point the registrar's nameservers at Cloudflare
+first, then add the domain.
 ▢ Decide canonicalization (redirect apex → `www` or vice versa) and add a redirect rule.
 ▢ Once `; preload` on HSTS is something you're sure about, add it in `public/_headers`.
 ▢ Publish the accessibility statement page.
@@ -243,6 +244,7 @@ replaced, and Lighthouse looks healthy. You're live.
 
 Your audience includes accessibility and product people who will notice overclaiming.
 Two things to keep straight in your write-ups:
+
 - Automated a11y testing catches a **minority** of real issues. The agent reviews and your
   manual screen-reader passes are the substance.
 - The Claude surfaces coordinate through **shared files**, not by autonomously operating

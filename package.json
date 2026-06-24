@@ -23,20 +23,20 @@
   },
   "_comment": "Versions are filled in by `astro add` / `pnpm add` during SETUP.md Stage 1. This file defines the script contract the studio expects; do not remove scripts.",
   "dependencies": {
-    "@astrojs/react": "^5.0.7",
-    "@tailwindcss/vite": "^4.3.1",
-    "astro": "^6.4.8",
-    "react": "^19.2.7",
-    "react-aria-components": "^1.19.0",
-    "react-dom": "^19.2.7",
-    "tailwindcss": "^4.3.1"
+    "@astrojs/react": "5.0.7",
+    "@tailwindcss/vite": "4.3.1",
+    "astro": "6.4.8",
+    "react": "19.2.7",
+    "react-aria-components": "1.19.0",
+    "react-dom": "19.2.7",
+    "tailwindcss": "4.3.1"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "10.4.6",
     "@storybook/react-vite": "10.4.6",
     "@tokens-studio/sd-transforms": "2.0.3",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
     "storybook": "10.4.6",
     "style-dictionary": "5.5.0",
     "tailwindcss-react-aria-components": "2.2.0"
