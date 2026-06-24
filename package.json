@@ -21,7 +21,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "_comment": "Versions are filled in by `astro add` / `pnpm add` during SETUP.md Stage 1. This file defines the script contract the studio expects; do not remove scripts.",
+  "_comment": "Dependencies are pinned all-exact (no caret ranges) by deliberate decision — edit versions explicitly and treat the pnpm lockfile as authoritative; this project does not use `astro add` / range resolution. The scripts below are the command contract the studio expects — do not remove them; some tools (eslint, vitest, Playwright + axe, lhci) are installed at SETUP.md Stage 6.",
   "dependencies": {
     "@astrojs/react": "5.0.7",
     "@tailwindcss/vite": "4.3.1",
