@@ -1,8 +1,8 @@
 # ADR 0002: Pin Astro 6.4.8 now; fast-follow to Astro 7
 
-- Status: Accepted
+- Status: Accepted (amended 2026-06-24 — fast-follow to Astro 7 attempted and blocked; see "Fast-follow attempt" below)
 - Date: 2026-06-22
-- Relates to: ADR-0001 (framework choice — unchanged; this records the *version*)
+- Relates to: ADR-0001 (framework choice — unchanged; this records the _version_)
 
 ## Context
 
@@ -27,8 +27,8 @@ Findings that informed the call (npm registry + the official v7 upgrade guide):
   Cloudflare static path, and tsconfig are all unaffected. Removed APIs
   (`@astrojs/db`, `astro:transitions` internals, `getContainerRenderer` move) are
   ones we don't use.
-- **Project priority.** SETUP.md is explicit — *"reliability over novelty… where
-  bleeding-edge and rock-solid pull against each other, choose solid."* This is the
+- **Project priority.** SETUP.md is explicit — _"reliability over novelty… where
+  bleeding-edge and rock-solid pull against each other, choose solid."_ This is the
   week we build and show the site, and a major released hours ago with a new
   default compiler is exactly that tension; the priority resolves it toward 6.x.
 
@@ -64,4 +64,28 @@ low-friction, low-risk move once 7 has settled.
 ## Follow-up
 
 - [ ] Track the Astro 7 upgrade as a Linear issue once the MCP connectors are live
-  (SETUP.md Stage 4–5). Deferred here because Linear is not yet connected.
+      (SETUP.md Stage 4–5). Deferred here because Linear is not yet connected.
+
+## Fast-follow attempt — 2026-06-24 (blocked, reverted)
+
+The fast-follow above was attempted as its own isolated step: `astro@7.0.2` +
+`@astrojs/react@6.0.0`, both pinned exact (not via `pnpm dlx @astrojs/upgrade`, which writes
+caret ranges — we wanted deliberate exact pins). `@astrojs/react@6.0.0` is the coordinated
+React-integration major that Astro 7 requires because 7 moves Vite 7 → 8.
+
+**Result: blocked by the toolchain, not by Astro.** Astro 7 pulls Vite 8, and Vite 8 makes
+Rolldown the default bundler. `@storybook/builder-vite@10.4.6` cannot transform `.tsx` JSX
+under Rolldown — `pnpm build-storybook` failed with
+`[PARSE_ERROR] Unexpected JSX expression ... JSX syntax is disabled`. The Astro static build
+(`pnpm build`) passed, because our pages import no React components; the break is confined to
+the Storybook component workbench. That workbench is where the accessibility work is
+demonstrated and audited, so shipping Astro 7 without it is not acceptable.
+
+**Reverted clean** to `astro@6.4.8` / `@astrojs/react@5.0.7` (Vite 7). `pnpm build` and
+`pnpm build-storybook` were both green afterward and the tree was clean — the original
+decision above stands unchanged.
+
+**Re-attempt trigger:** Storybook ships stable Vite 8 / Rolldown support (i.e.
+`@storybook/builder-vite` can transform JSX under Rolldown). Re-attempt pins remain
+`astro@7.0.2` + `@astrojs/react@6.0.0` — re-confirm both are still current at that time and
+re-run the full build + `build-storybook` + a11y gate. Kept open in `docs/follow-ups.md`.

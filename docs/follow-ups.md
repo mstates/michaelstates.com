@@ -50,7 +50,10 @@ lives in `docs/a11y/<component>.md`; manual screen-reader checks live in
 
 - ✅ **Storybook doc-sync to v10 — DONE** (CLAUDE.md, README.md, SETUP.md, seed/linear-import.csv).
   `docs/research/*` left as point-in-time historical records.
-- **Astro 7 upgrade** — tracked separately in `docs/adr/0002-astro-version-pin.md` (Follow-up).
+- **Astro 7 upgrade — OPEN.** Attempted 2026-06-24, blocked by Vite 8 / Rolldown ↔
+  `@storybook/builder-vite` JSX incompatibility; reverted clean. Re-attempt when Storybook ships
+  stable Vite 8 / Rolldown support. Full record + re-attempt pins (`astro@7.0.2` +
+  `@astrojs/react@6.0.0`) in `docs/adr/0002-astro-version-pin.md` ("Fast-follow attempt").
 
 ## CI / build gate
 
