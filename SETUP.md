@@ -128,7 +128,7 @@ write its report to `docs/a11y/` — this verifies the signature agent works.
 
 ## Stage 4 — Connect MCP servers (this is the "hook up Linear & Notion" step)
 
-`.mcp.json` already declares all five servers. You authenticate them on your machine.
+`.mcp.json` already declares all four servers. You authenticate them on your machine.
 **Nothing in earlier chat actually connected these — this is where it really happens.**
 
 ▢ Playwright: `claude mcp add playwright npx @playwright/mcp@latest`
@@ -136,9 +136,9 @@ write its report to `docs/a11y/` — this verifies the signature agent works.
 ▢ Linear: `/mcp` → authenticate **Linear** (OAuth).
 ▢ Notion: `/mcp` → authenticate **Notion** (OAuth), then in Notion **share** your target
 page/space with the integration (it only sees what it's shared).
-▢ GitHub: `/mcp` → authenticate **GitHub** (or rely on `gh` CLI, which Claude Code uses).
+▢ GitHub: via the `gh` CLI (which Claude Code already uses) — not wired as an MCP server (its OAuth advertises no registration endpoint, so `/mcp` can't connect).
 
-**Confirm:** `/mcp` lists figma, linear, notion, github, playwright as **connected**. If
+**Confirm:** `/mcp` lists figma, linear, notion, playwright as **connected**. If
 any show disconnected, re-run auth before proceeding — the seed skills depend on this.
 
 ---
