@@ -52,7 +52,9 @@ Computed contrast vs. white: **4.77:1** — also confirmed PASS for the invalid-
 
 ## Issues Found
 
-### Issue #1 — [High] FieldError is always rendered; empty error renders a zero-height element with live-region implications
+### Issue #1 — [High] FieldError is always rendered; empty error renders a zero-height element with live-region implications — ⚠️ STILL OPEN (2026-06-26)
+
+> **Still open (2026-06-26):** the live axe re-audit returned 0 violations, but that does **not** clear this — the first-announcement live-region risk is a dynamic screen-reader behavior axe cannot detect. Remains open pending manual NVDA + Firefox verification.
 
 **File:** `src/components/TextField.tsx` line 63
 **Criterion:** SC 3.3.1 Error Identification; SC 4.1.3 Status Messages (informational)
@@ -110,7 +112,9 @@ This is the same exposure noted in the Button review (Issue #4 analogue). It is 
 
 ---
 
-### Issue #3 — [Nit] `WithError` story does not supply `autoComplete` — missing demonstrative coverage for 3.3.8
+### Issue #3 — [Nit] `WithError` story does not supply `autoComplete` — missing demonstrative coverage for 3.3.8 — ✅ RESOLVED (2026-06-26)
+
+> **Resolved 2026-06-26:** an `InvalidEmail` story now combines `type="email"`, `autoComplete="email"`, `isInvalid`, and `errorMessage` — the canonical validated-email pattern. Original finding retained below for the record.
 
 **File:** `src/components/TextField.stories.tsx` lines 22–29
 **Criterion:** SC 3.3.8 Accessible Authentication (documentation gap, not a functional failure)
@@ -123,7 +127,9 @@ The `WithError` story hard-codes `value="not-an-email"` and sets `isInvalid: tru
 
 ---
 
-### Issue #4 — [Nit] `ring-offset-background` inherits the white-surface assumption from Button
+### Issue #4 — [Nit] `ring-offset-background` inherits the white-surface assumption from Button — ✅ RESOLVED (2026-06-26)
+
+> **Resolved 2026-06-26:** `focusRing` now uses `ring-offset-transparent`; the white-halo artifact on non-white surfaces no longer applies. Original finding retained below for the record.
 
 **File:** `src/components/TextField.tsx` line 53
 **Criterion:** SC 1.4.11 — design-time note, current PASS
@@ -159,7 +165,7 @@ This is the same pattern flagged in the Button review (Issue #4 in `docs/a11y/bu
 
 Issue #1 (FieldError always rendered) is rated **[High]** because it has the potential to degrade screen reader error announcements in NVDA + Firefox — the most common AT combination on Windows. It does not constitute a hard WCAG failure in its current form (the error text and `aria-invalid` are still present), but the live-region injection pattern is unreliable. This should be resolved before the first form that uses validation ships.
 
-The Stage 2 `border-input` fix is confirmed: neutral.500 vs. white at 4.76:1 clears SC 1.4.11 with margin. Issues #2–#4 are documentation and design hardening items.
+The Stage 2 `border-input` fix is confirmed: neutral.500 vs. white at 4.76:1 clears SC 1.4.11 with margin. Issues #2–#4 have since been **resolved** (see the 2026-06-26 re-audit); Issue #1 remains open.
 
 ---
 
@@ -169,8 +175,31 @@ Automation (axe) catches ~40% of real-world issues. Verify the following with Vo
 
 1. **Label announcement:** Tab to the input — confirm VoiceOver/NVDA announces the label, role ("text field"), and any description. The description appears before or after the label depending on SR; confirm it is not skipped.
 2. **Error announcement on invalid:** Set `isInvalid` and provide `errorMessage` — confirm SR announces the error string when focus enters the field (via `aria-describedby`) and that `aria-invalid` causes the field to be flagged as "invalid." Specifically test NVDA + Firefox for Issue #1: confirm the error is announced on the _first_ validation trigger, not only on subsequent ones.
-3. **Required field:** Use the `Required` story — confirm SR announces "required" when entering the field (RAC sets `aria-required` from `isRequired`).
+3. **Required field:** Use the `Required` story — confirm SR announces "required" when entering the field. **Correction (2026-06-26):** RAC uses `validationBehavior="native"`, so it renders the **native `required` attribute** (`<input required>`), not `aria-required`; the input's `valueMissing` validity fires and AT still announces "required" — a11y-equivalent, mechanism corrected.
 4. **Autocomplete + password manager:** Activate the `Email` story in a real browser — confirm browser autofill suggestions appear and that a password manager (e.g., 1Password) can populate the field. Verify no JavaScript event handler swallows the fill.
 5. **Disabled state:** Tab through a form containing a disabled TextField — confirm the field is skipped (RAC sets native `disabled`, removing it from the tab sequence) and that it is not announced as a focusable element.
 6. **Focus ring in High Contrast Mode (Windows):** Verify the input's focus indicator remains visible under `forced-colors: active` — the `outline: transparent` fallback from `outline-hidden` should be overridden by the system Highlight color.
 7. **Placeholder not announced as value:** Enter the Default story with no value — confirm SR does not read the placeholder as though it were user-entered content (native `placeholder` attribute behavior is well-supported, but verify with VoiceOver).
+
+---
+
+## Re-audit — 2026-06-26
+
+Re-verified after the `--mc-*` token refactor and the Storybook render-blocker fix, via a live
+axe-core 4.12.1 pass (WCAG 2.0/2.1/2.2 A + AA) through the rendered stories. Non-text contrast
+(1.4.11) computed via canvas + `getComputedStyle` (rendered sRGB), since axe does not automate
+non-text contrast.
+
+- **0 axe violations** across all 6 variants (Default, Required, WithError, Email, InvalidEmail,
+  Disabled).
+- Measured contrast: error text **4.74:1** (axe and canvas agree) — only **~0.24 above the 4.5
+  floor**, a **tight tolerance**: re-check if the danger hue is ever retuned. `border-input`
+  (neutral.500) **4.749:1** and invalid danger border **4.746:1** (both vs the 3.0 floor).
+  Label/value 17.83:1; description (muted-foreground) 7.55:1.
+- `isRequired` is exposed via the **native `required` attribute** (`validationBehavior="native"`);
+  `valueMissing` validity fires; AT announces it.
+- Issues #3 (InvalidEmail story) and #4 (ring-offset) confirmed **resolved**. **Issue #1
+  (FieldError unconditional render) remains OPEN** — the clean axe run does **not** clear it (the
+  live-region first-announcement risk is dynamic and undetectable by axe); pending manual NVDA +
+  Firefox verification.
+- Forced-colors / Windows HCM focus-ring remains **manual-only**.

@@ -28,7 +28,7 @@
 | 2.4.11 | Focus Not Obscured (Min)  | PASS                        | Standalone primitive; ring renders outside element bounds. Verify on live pages with sticky navigation.                                                                                                                                  |
 | 2.4.13 | Focus Appearance          | PASS                        | 2px solid ring enclosing the full link boundary. Ring (brand.600) vs. adjacent white: 4.96:1 — exceeds 3:1 minimum. `rounded-sm` provides a coherent ring shape around inline text flow.                                                 |
 | 2.5.7  | Dragging Movements        | N/A                         | No dragging interaction.                                                                                                                                                                                                                 |
-| 2.5.8  | Target Size (Minimum)     | PASS (inline exempt) / PASS | `inline` variant: WCAG 2.5.8 explicitly exempts links that are inline in a sentence. `standalone` variant: no explicit `min-h`/`min-w`; see Issue #1 for analysis.                                                                       |
+| 2.5.8  | Target Size (Minimum)     | PASS (inline exempt) / PASS | `inline` variant: WCAG 2.5.8 explicitly exempts links that are inline in a sentence. `standalone` variant: `min-h-6` floors height to 24px (Issue #1 resolved 2026-06-26); see Issue #1.                                                 |
 | 3.2.6  | Consistent Help           | N/A                         | No help mechanism on this component.                                                                                                                                                                                                     |
 | 3.3.7  | Redundant Entry           | N/A                         | Not an input.                                                                                                                                                                                                                            |
 | 3.3.8  | Accessible Authentication | N/A                         | No authentication interaction.                                                                                                                                                                                                           |
@@ -86,17 +86,25 @@ Two observations to note (not new defects — same as Button/TextField):
 
 SC 2.5.8 has an explicit exception for **"Inline Exception"**: links whose target offset is constrained by the line-height of non-interactive surrounding text are exempt. This covers the `inline` variant in the `InProse` story.
 
-The `standalone` variant ("Back to projects") is a block-level link — not inline in a sentence — and is **not exempt**. It has no `min-h` or `min-w` class. Its rendered height and width depend entirely on font metrics (`text-body` = 16px with default line-height ≈ 24px) plus any surrounding padding supplied by the parent. At 16px font size with Tailwind's default `line-height: 1.5` (24px), the link's rendered height is exactly **24px** — the WCAG 2.5.8 minimum floor, not safely above it. See Issue #1.
+The `standalone` variant ("Back to projects") is a block-level link — not inline in a sentence — and is **not exempt**. It now carries `inline-flex items-center min-h-6` (Issue #1 resolved 2026-06-26), an explicit 24px height floor independent of font metrics; the live re-audit measured its rendered height at **24px**, meeting WCAG 2.5.8. Width is content-driven and, for a visible text label at 16px, comfortably exceeds 24px. See Issue #1.
 
 ### 6. Disabled State (SC 4.1.2)
 
-The `Disabled` story passes `isDisabled: true`. RAC `Link` (v1.19.x) behavior for `isDisabled`:
+The `Disabled` story passes `isDisabled: true`.
 
-- **With `href`:** RAC adds `data-disabled` and sets `aria-disabled="true"` on the rendered `<a>`. It does **not** remove the `href` and does **not** suppress the native `<a>`'s tab participation. The element remains focusable. This is intentional in RAC v1.x: `aria-disabled` is used instead of removing `href` because the latter would change the element's semantics.
-- **Keyboard:** With `aria-disabled="true"`, the link is technically still in the tab order. RAC intercepts `onPress` / `onClick` to suppress navigation, but the native `href` means a user who activates the link by means other than RAC's event handler (e.g. middle-click, browser link menu) could still navigate. This is a known RAC trade-off.
-- **Visual:** `disabled:opacity-50 disabled:cursor-not-allowed` via the `data-disabled` attribute. The opacity reduction conveys disabled visually. SC 1.4.3 exempts inactive UI components from contrast requirements — the dimmed state is not a violation.
+> **Corrected 2026-06-26 (verified against the live DOM):** an earlier version of this section
+> claimed RAC renders a focusable `<a href>` that "remains in the tab order," with a native `href`
+> that middle-click / the browser link menu could still navigate. That is **wrong.**
 
-The behavioral trade-off (focusable + `aria-disabled` rather than removed from tab order) is **not a WCAG failure** — WCAG does not require disabled links to be unfocusable. Screen readers will announce the link as "dimmed" (VoiceOver) or "unavailable" (NVDA). The cursor change (`not-allowed`) is an additional affordance for pointer users. See Issue #4 for a documentation note about the RAC behavior vs. potential caller expectation.
+RAC `Link` (v1.19.x) with `isDisabled` actually renders a **`<span role="link" aria-disabled="true" data-disabled="true">`** — **not** an `<a>`:
+
+- **Not focusable:** the span's computed `tabIndex` is **-1** — it is **removed from the tab order**. (A `<span role="link">` with no `tabindex` attribute defaults to -1.)
+- **`href` is inert:** `href="#"` is present on the span but **non-functional** — a `<span>` is not a link target, so there is no middle-click navigation and it does not appear in the browser's link menu.
+- **Visual:** `disabled:opacity-50 disabled:cursor-not-allowed` via the `data-disabled` attribute conveys disabled visually. SC 1.4.3 exempts inactive UI components from contrast requirements — the dimmed state is not a violation.
+
+This is **acceptable** — `role="link"` + `aria-disabled="true"` keep the element announced as a disabled link while removing it from operation. It is the same net effect as RAC `Button`'s disabled state (also removed from the tab order), reached by a different mechanism (a `<span>` with no tabindex vs. the native `disabled` attribute).
+
+Removing the disabled link from the tab order (a `<span>` with no tabindex) while preserving `role="link"` + `aria-disabled="true"` is **not a WCAG failure**, and it matches RAC `Button`'s disabled behavior. Screen readers announce the element as "dimmed" (VoiceOver) or "unavailable" (NVDA). The cursor change (`not-allowed`) is an additional affordance for pointer users. See Issue #4.
 
 ### 7. Reduced Motion (SC 2.3.3 / project rules)
 
@@ -106,7 +114,9 @@ The behavioral trade-off (focusable + `aria-disabled` rather than removed from t
 
 ## Issues Found
 
-### Issue #1 — [Medium] Standalone variant has no minimum height/width guard; rendered height equals the SC 2.5.8 floor exactly (SC 2.5.8)
+### Issue #1 — [Medium] Standalone variant has no minimum height/width guard; rendered height equals the SC 2.5.8 floor exactly (SC 2.5.8) — ✅ RESOLVED (2026-06-26)
+
+> **Resolved 2026-06-26:** the `standalone` variant now includes `inline-flex items-center min-h-6` (24px floor); the live re-audit measured standalone height at 24px. Original finding retained below for the record.
 
 **File:** `src/components/Link.tsx` line 33
 **Criterion:** WCAG 2.2 SC 2.5.8 Target Size (Minimum)
@@ -146,7 +156,9 @@ This mirrors the icon-only gap previously flagged for Button. The same pattern r
 
 ---
 
-### Issue #3 — [Nit] `ring-offset-background` white-surface assumption (SC 1.4.11 — design-time note, current PASS)
+### Issue #3 — [Nit] `ring-offset-background` white-surface assumption (SC 1.4.11 — design-time note, current PASS) — ✅ RESOLVED (2026-06-26)
+
+> **Resolved 2026-06-26:** `focusRing` now uses `ring-offset-transparent`; the white-halo artifact on non-white surfaces no longer applies (shared fix across Button, TextField, and Link). Original finding retained below for the record.
 
 **File:** `src/components/Link.tsx` line 25
 **Criterion:** SC 1.4.11 — not a current failure
@@ -159,46 +171,53 @@ This mirrors the icon-only gap previously flagged for Button. The same pattern r
 
 ---
 
-### Issue #4 — [Nit] RAC disabled behavior for links is subtly different from button disabled; worth documenting (SC 4.1.2 — behavioral note)
+### Issue #4 — [Nit] RAC disabled-link behavior, documented accurately (SC 4.1.2 — behavioral note) — ✏️ CORRECTED (2026-06-26)
 
 **File:** `src/components/Link.tsx` line 26; `src/components/Link.stories.tsx` line 31
-**Criterion:** SC 4.1.2 — not a WCAG failure; documentation gap
+**Criterion:** SC 4.1.2 — not a WCAG failure; documentation note
 
-**What is wrong:**
+> **Corrected 2026-06-26 (verified against the live DOM):** the original finding below claimed the
+> disabled link "remains in the tab sequence" as a focusable `<a href>`. That is **wrong** — see §6.
 
-RAC `Link` with `isDisabled` sets `aria-disabled="true"` on the rendered `<a>` but preserves the `href`. The element remains in the tab sequence. This contrasts with RAC `Button` with `isDisabled`, which removes the element from the tab sequence by setting the native `disabled` attribute. A developer who learned the pattern from Button may expect a disabled link to be unfocusable, and could be confused when it remains traversable.
+**Accurate behavior:**
 
-The behavior is intentional (and not a WCAG violation — the `aria-disabled` communicates the state), but there is no comment or story note explaining it.
+RAC `Link` with `isDisabled` renders a **`<span role="link" aria-disabled="true">`** (not an `<a>`) with computed `tabIndex -1` — **removed from the tab order, not focusable**. The `href` attribute is present but inert on a span. This is the same net effect as RAC `Button`'s disabled state (also removed from the tab order), reached by a different mechanism. `role="link"` + `aria-disabled="true"` keep it announced as a disabled link. Not a WCAG violation; no code change needed.
 
-**Fix:** Add a JSDoc note to `LinkProps` or `isDisabled` explaining the RAC behavior: that the link stays in the tab sequence with `aria-disabled="true"` and that RAC suppresses activation, but the native `href` still exists. No code change needed.
+**Original (incorrect) finding, retained for the record:** "RAC `Link` with `isDisabled` sets `aria-disabled="true"` on the rendered `<a>` but preserves the `href`. The element remains in the tab sequence … A developer who learned the pattern from Button may expect a disabled link to be unfocusable." — This described behavior the component does not exhibit.
 
 ---
 
 ## WCAG 2.2 Additions Checklist
 
-| Addition                      | SC           | Verdict                                                                                                                                                                            |
-| ----------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Focus Not Obscured (Min)      | 2.4.11       | PASS — ring renders outside element bounds at the component level. Verify on live pages with sticky navigation.                                                                    |
-| Focus Not Obscured (Enhanced) | 2.4.12 (AAA) | Not in scope (AAA).                                                                                                                                                                |
-| Focus Appearance              | 2.4.13       | PASS — 2px ring, full perimeter, 4.96:1 ring-vs-background. `rounded-sm` keeps the ring coherent around inline text.                                                               |
-| Dragging Movements            | 2.5.7        | N/A — no dragging interaction.                                                                                                                                                     |
-| Target Size (Minimum)         | 2.5.8        | CONDITIONAL — `inline` variant: explicitly exempt (inline exception). `standalone` variant: 24px rendered height meets floor exactly. Add `min-h-6` as a hardening fix (Issue #1). |
-| Consistent Help               | 3.2.6        | N/A — no help mechanism.                                                                                                                                                           |
-| Redundant Entry               | 3.3.7        | N/A — not an input.                                                                                                                                                                |
-| Accessible Authentication     | 3.3.8        | N/A — no authentication.                                                                                                                                                           |
+| Addition                      | SC           | Verdict                                                                                                                    |
+| ----------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| Focus Not Obscured (Min)      | 2.4.11       | PASS — ring renders outside element bounds at the component level. Verify on live pages with sticky navigation.            |
+| Focus Not Obscured (Enhanced) | 2.4.12 (AAA) | Not in scope (AAA).                                                                                                        |
+| Focus Appearance              | 2.4.13       | PASS — 2px ring, full perimeter, 4.96:1 ring-vs-background. `rounded-sm` keeps the ring coherent around inline text.       |
+| Dragging Movements            | 2.5.7        | N/A — no dragging interaction.                                                                                             |
+| Target Size (Minimum)         | 2.5.8        | PASS — `inline`: exempt (inline exception). `standalone`: `min-h-6` shipped (Issue #1 resolved 2026-06-26), measured 24px. |
+| Consistent Help               | 3.2.6        | N/A — no help mechanism.                                                                                                   |
+| Redundant Entry               | 3.3.7        | N/A — not an input.                                                                                                        |
+| Accessible Authentication     | 3.3.8        | N/A — no authentication.                                                                                                   |
 
 ---
 
 ## Disabled State Analysis
 
+> **Corrected 2026-06-26 (verified against the live DOM).** The original bullets claimed an `<a>`
+> that "remains in tab order"; the verified behavior is below.
+
 RAC `Link` v1.19.x with `isDisabled`:
 
-- Renders `<a href="…" aria-disabled="true" data-disabled>` — element remains in tab order.
-- RAC suppresses `onPress` / click activation; native `href` is not removed.
+- Renders **`<span role="link" aria-disabled="true" data-disabled="true">`** (not an `<a>`) with
+  computed `tabIndex -1` — **removed from the tab order, not focusable**.
+- The `href="#"` attribute is present but **inert** on a span (no navigation, no browser link menu).
 - `disabled:opacity-50 disabled:cursor-not-allowed` provides visual affordance via `data-disabled`.
 - SC 1.4.3 exempts inactive UI components from contrast; the dimmed state is not a violation.
-- Screen reader announcement: VoiceOver → "dimmed link"; NVDA → "unavailable link". Verify manually (see manual testing checklist).
-- Contrast with `aria-disabled` is correct; the behavioral trade-off (focusable but not activatable) is not a WCAG failure.
+- Screen reader announcement: VoiceOver → "dimmed link"; NVDA → "unavailable link". Verify manually
+  (see manual testing checklist).
+- Not a WCAG failure: `role="link"` + `aria-disabled="true"` are preserved, and removing a disabled
+  control from the tab order is acceptable.
 
 ---
 
@@ -206,9 +225,9 @@ RAC `Link` v1.19.x with `isDisabled`:
 
 **PASS (AA)** — The Link primitive is WCAG 2.2 AA conformant in its current form. No blocker-level violations were identified.
 
-One Medium finding (Issue #1, standalone target height exactly at floor) should be resolved before standalone links ship in production contexts where line-height or font-stack overrides may reduce the rendered size below 24px. The fix is a two-class addition.
+One Medium finding (Issue #1, standalone target height at floor) has since been **resolved** — `min-h-6` shipped, measured 24px (see the 2026-06-26 re-audit).
 
-Two Nit findings are documentation and pattern hardening items consistent with the recurring icon-only and ring-offset patterns already tracked for Button and TextField.
+Of the Nit findings, #3 (ring-offset) is now resolved; #2 (icon-only) remains, consistent with the recurring icon-only pattern tracked for Button and TextField.
 
 ---
 
@@ -217,10 +236,29 @@ Two Nit findings are documentation and pattern hardening items consistent with t
 Automation (axe) catches ~40% of real-world issues. Verify the following with VoiceOver (macOS/Safari) and NVDA (Windows/Firefox):
 
 1. **Link announcement:** Tab to an `inline` link — confirm SR announces the link text, role ("link"), and optionally the destination URL. Confirm it does not announce the underline decoration as content.
-2. **Disabled link in tab order:** Tab to the `Disabled` story — confirm SR announces "dimmed link" (VoiceOver) or "unavailable link" (NVDA). Confirm the link is **reachable** by Tab but activation is suppressed. Contrast with a disabled Button (which is skipped) to ensure consumers understand the difference.
+2. **Disabled link NOT in tab order:** Tab through the `Disabled` story — confirm the disabled link is **skipped** (it renders as `<span role="link" aria-disabled="true">` with `tabIndex -1`). When reached via VoiceOver's link rotor / NVDA's elements list, confirm it announces "dimmed link" (VoiceOver) / "unavailable link" (NVDA). Same net behavior as a disabled Button.
 3. **No-href link (role="link" span):** If any link is rendered without `href`, confirm VoiceOver and NVDA both announce it as a link (not a button or generic element), that it is reachable by Tab, and that it responds to Enter. Also confirm it does **not** appear in the VoiceOver "Links" virtual menu (expected behavior for `role="link"` on a non-anchor).
 4. **Icon-only link:** Before any icon-only usage ships, test `<Link href="…" aria-label="View case study"><Icon /></Link>` — confirm SR announces only the `aria-label`, not the SVG's inner content.
 5. **Forced-colors / Windows HCM focus ring:** Keyboard-focus the link under `forced-colors: active` — confirm a visible focus indicator survives. The `outline: 2px solid transparent` from `outline-hidden` should be overridden by the system `Highlight` color. The CSS variable ring may not survive; confirm at minimum the outline fallback is visible. This item is already open in `docs/a11y/manual-testing.md`.
 6. **Link purpose (SC 2.4.6 / 2.4.9):** In a full-page context, confirm link labels are meaningful out of context (e.g., VoiceOver "Links" rotor, NVDA Elements List). Standalone links like "Back to projects" are acceptable. Inline links must carry their surrounding prose context or an `aria-label`. This is a page-level responsibility, not a component defect.
 
 > **Recommend appending items 1–5 above to `docs/a11y/manual-testing.md`** under a new "Link" section, with item 5 cross-referenced to the existing Forced-colors entry.
+
+---
+
+## Re-audit — 2026-06-26
+
+Re-verified after the `--mc-*` token refactor and the Storybook render-blocker fix, via a live
+axe-core 4.12.1 pass (WCAG 2.0/2.1/2.2 A + AA) through the rendered stories.
+
+- **0 axe violations** across all 4 variants (Inline, Standalone, InProse, Disabled).
+- `text-decoration: underline` is permanently present on `inline` and `in-prose` — the 1.4.1
+  non-color distinction confirmed in the rendered output. Link color **4.97:1** on white.
+- Standalone target height **24px** (2.5.8 met via `min-h-6`); inline 19px (inline exception).
+- **Disabled behavior corrected from the live DOM:** renders `<span role="link"
+aria-disabled="true" data-disabled="true">` with computed `tabIndex -1` — **removed from the tab
+  order, not focusable**; `href="#"` is present but **inert** on a span. Acceptable (role +
+  `aria-disabled` preserved); it differs from this doc's original 2026-06-23 analysis, now
+  corrected in §6 / Issue #4 / Disabled State Analysis.
+- Issues #1 (standalone `min-h-6`) and #3 (ring-offset) confirmed **resolved**. #2 (icon-only)
+  remains **open**. Forced-colors / Windows HCM focus-ring remains **manual-only**.

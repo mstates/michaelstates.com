@@ -15,31 +15,33 @@
 
 ## Per-Criterion Verdict Table
 
-| SC     | Criterion                 | Verdict                         | Notes                                                                                                                                                                                                                                        |
-| ------ | ------------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.3.1  | Info and Relationships    | PASS                            | RAC `Button` renders a native `<button>` — role and state conveyed by the element itself, not ARIA.                                                                                                                                          |
-| 1.4.1  | Use of Color              | PASS                            | Variants are explicit caller choices (primary/secondary/ghost), not status indicators. No meaning conveyed by color alone.                                                                                                                   |
-| 1.4.3  | Contrast (Minimum)        | PASS                            | All enabled states pass 4.5:1. Primary: 4.96:1. Primary-hover: 6.69:1. Secondary foreground on surface: ~17:1. Ghost foreground on background: 17.78:1. Disabled is WCAG-exempt (inactive UI component).                                     |
-| 1.4.11 | Non-text Contrast         | PASS                            | Secondary border (`input` = neutral.500 on neutral.0/50 background): 4.76:1 — exceeds the 3:1 threshold for UI boundaries. Focus ring (`ring` = brand.600 on background): 4.96:1 — exceeds 3:1.                                              |
-| 2.1.1  | Keyboard                  | PASS                            | RAC `Button` activates on Enter and Space natively (renders `<button>`). No keyboard traps. No override of RAC's keyboard handling detected.                                                                                                 |
-| 2.1.2  | No Keyboard Trap          | PASS                            | Standard button; no trap possible.                                                                                                                                                                                                           |
-| 2.4.3  | Focus Order               | PASS                            | Button participates in natural document order; no `tabindex` manipulation.                                                                                                                                                                   |
-| 2.4.7  | Focus Visible             | PASS                            | `outline-none` is paired with `focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background`. Ring is driven by `data-focus-visible` (RAC) + `:focus-visible` (native); never bare removal. |
-| 2.4.11 | Focus Not Obscured (Min)  | PASS                            | The button is a standalone primitive with no sticky headers in its own context. The ring renders outside the element bounds — no evidence of occlusion at the component level. **Note:** confirm on live pages where sticky nav exists.      |
-| 2.4.13 | Focus Appearance          | PASS                            | `ring-2` = 2px solid enclosing ring. Perimeter coverage is the full element boundary. Contrast of ring (brand.600) vs. adjacent background: 4.96:1 — exceeds 3:1 minimum. Both sub-criteria of 2.4.13 satisfied.                             |
-| 2.5.7  | Dragging Movements        | PASS                            | No dragging interaction; N/A.                                                                                                                                                                                                                |
-| 2.5.8  | Target Size (Minimum)     | CONDITIONAL PASS — see Issue #1 | `md`: `min-h-11` (44px height), `px-4` (16px each side). `sm`: `min-h-9` (36px height), `px-3` (12px each side). Height clears 24px for both. Width is content-dependent — see below.                                                        |
-| 3.2.4  | Consistent Identification | PASS                            | Single Button primitive; variants share identical naming/interaction model.                                                                                                                                                                  |
-| 3.3.1  | Error Identification      | N/A                             | Button is not a form input.                                                                                                                                                                                                                  |
-| 3.3.6  | Error Prevention          | N/A                             | N/A                                                                                                                                                                                                                                          |
-| 3.3.7  | Redundant Entry           | N/A                             | N/A                                                                                                                                                                                                                                          |
-| 3.3.8  | Accessible Authentication | N/A                             | N/A                                                                                                                                                                                                                                          |
+| SC     | Criterion                 | Verdict | Notes                                                                                                                                                                                                                                        |
+| ------ | ------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.3.1  | Info and Relationships    | PASS    | RAC `Button` renders a native `<button>` — role and state conveyed by the element itself, not ARIA.                                                                                                                                          |
+| 1.4.1  | Use of Color              | PASS    | Variants are explicit caller choices (primary/secondary/ghost), not status indicators. No meaning conveyed by color alone.                                                                                                                   |
+| 1.4.3  | Contrast (Minimum)        | PASS    | All enabled states pass 4.5:1. Primary: 4.96:1. Primary-hover: 6.69:1. Secondary foreground on surface: ~17:1. Ghost foreground on background: 17.78:1. Disabled is WCAG-exempt (inactive UI component).                                     |
+| 1.4.11 | Non-text Contrast         | PASS    | Secondary border (`input` = neutral.500 on neutral.0/50 background): 4.76:1 — exceeds the 3:1 threshold for UI boundaries. Focus ring (`ring` = brand.600 on background): 4.96:1 — exceeds 3:1.                                              |
+| 2.1.1  | Keyboard                  | PASS    | RAC `Button` activates on Enter and Space natively (renders `<button>`). No keyboard traps. No override of RAC's keyboard handling detected.                                                                                                 |
+| 2.1.2  | No Keyboard Trap          | PASS    | Standard button; no trap possible.                                                                                                                                                                                                           |
+| 2.4.3  | Focus Order               | PASS    | Button participates in natural document order; no `tabindex` manipulation.                                                                                                                                                                   |
+| 2.4.7  | Focus Visible             | PASS    | `outline-none` is paired with `focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background`. Ring is driven by `data-focus-visible` (RAC) + `:focus-visible` (native); never bare removal. |
+| 2.4.11 | Focus Not Obscured (Min)  | PASS    | The button is a standalone primitive with no sticky headers in its own context. The ring renders outside the element bounds — no evidence of occlusion at the component level. **Note:** confirm on live pages where sticky nav exists.      |
+| 2.4.13 | Focus Appearance          | PASS    | `ring-2` = 2px solid enclosing ring. Perimeter coverage is the full element boundary. Contrast of ring (brand.600) vs. adjacent background: 4.96:1 — exceeds 3:1 minimum. Both sub-criteria of 2.4.13 satisfied.                             |
+| 2.5.7  | Dragging Movements        | PASS    | No dragging interaction; N/A.                                                                                                                                                                                                                |
+| 2.5.8  | Target Size (Minimum)     | PASS    | `md`: `min-h-11` (44px height), `px-4` (16px each side). `sm`: `min-h-9` (36px height), `px-3` (12px each side). Heights clear 24px; `min-w-6` now floors width too (Issue #1 resolved 2026-06-26). Both dimensions clear the 24×24 floor.   |
+| 3.2.4  | Consistent Identification | PASS    | Single Button primitive; variants share identical naming/interaction model.                                                                                                                                                                  |
+| 3.3.1  | Error Identification      | N/A     | Button is not a form input.                                                                                                                                                                                                                  |
+| 3.3.6  | Error Prevention          | N/A     | N/A                                                                                                                                                                                                                                          |
+| 3.3.7  | Redundant Entry           | N/A     | N/A                                                                                                                                                                                                                                          |
+| 3.3.8  | Accessible Authentication | N/A     | N/A                                                                                                                                                                                                                                          |
 
 ---
 
 ## Issues Found
 
-### Issue #1 — [Medium] Minimum width not enforced; narrow sm buttons with short labels could fall below 24px (SC 2.5.8)
+### Issue #1 — [Medium] Minimum width not enforced; narrow sm buttons with short labels could fall below 24px (SC 2.5.8) — ✅ RESOLVED (2026-06-26)
+
+> **Resolved 2026-06-26:** `min-w-6` (24px) is now present on both `sm` and `md` size classes; the live re-audit confirms the rendered target clears 24×24 px. Original finding retained below for the record.
 
 **File:** `src/components/Button.tsx` line 37
 **Criterion:** WCAG 2.2 SC 2.5.8 Target Size (Minimum)
@@ -93,7 +95,9 @@ This is not a defect in the current component code, since no icon-only usage exi
 
 ---
 
-### Issue #4 — [Nit] `ring-offset-background` assumes white background stacking context
+### Issue #4 — [Nit] `ring-offset-background` assumes white background stacking context — ✅ RESOLVED (2026-06-26)
+
+> **Resolved 2026-06-26:** `focusRing` now uses `ring-offset-transparent` (not `ring-offset-background`), so the offset gap reflects the actual surface instead of hardcoding white. Original finding retained below for the record.
 
 **File:** `src/components/Button.tsx` line 23
 **Criterion:** SC 1.4.11 — design-time note, not a current failure.
@@ -119,22 +123,22 @@ One note for screen reader testing: confirm that RAC sets both the `disabled` HT
 
 ## WCAG 2.2 Additions Checklist
 
-| Addition                      | SC           | Verdict                                                                            |
-| ----------------------------- | ------------ | ---------------------------------------------------------------------------------- |
-| Focus Not Obscured (Min)      | 2.4.11       | PASS — no sticky header/footer occlusion at component level. Verify on live pages. |
-| Focus Not Obscured (Enhanced) | 2.4.12 (AAA) | Not in scope (AAA).                                                                |
-| Focus Appearance              | 2.4.13       | PASS — 2px ring, full perimeter, 4.96:1 contrast.                                  |
-| Dragging Movements            | 2.5.7        | PASS — N/A.                                                                        |
-| Target Size (Minimum)         | 2.5.8        | CONDITIONAL — height safe; add `min-w-6` for belt-and-suspenders.                  |
-| Consistent Help               | 3.2.6        | N/A — no help mechanism on this component.                                         |
-| Redundant Entry               | 3.3.7        | N/A.                                                                               |
-| Accessible Authentication     | 3.3.8        | N/A.                                                                               |
+| Addition                      | SC           | Verdict                                                                              |
+| ----------------------------- | ------------ | ------------------------------------------------------------------------------------ |
+| Focus Not Obscured (Min)      | 2.4.11       | PASS — no sticky header/footer occlusion at component level. Verify on live pages.   |
+| Focus Not Obscured (Enhanced) | 2.4.12 (AAA) | Not in scope (AAA).                                                                  |
+| Focus Appearance              | 2.4.13       | PASS — 2px ring, full perimeter, 4.96:1 contrast.                                    |
+| Dragging Movements            | 2.5.7        | PASS — N/A.                                                                          |
+| Target Size (Minimum)         | 2.5.8        | PASS — `min-w-6` shipped (Issue #1 resolved 2026-06-26); width + height clear 24×24. |
+| Consistent Help               | 3.2.6        | N/A — no help mechanism on this component.                                           |
+| Redundant Entry               | 3.3.7        | N/A.                                                                                 |
+| Accessible Authentication     | 3.3.8        | N/A.                                                                                 |
 
 ---
 
 ## Verdict
 
-**PASS (AA)** — The Button primitive is WCAG 2.2 AA conformant in its current form. No blocker-level violations were identified. One Medium finding (Issue #1, target width floor) is a hardening recommendation rather than a current failure given the limited usage patterns in the stories, but should be resolved before any icon-only or minimally-labeled usage ships. Two Nit findings are logged for design polish.
+**PASS (AA)** — The Button primitive is WCAG 2.2 AA conformant in its current form. No blocker-level violations were identified. One Medium finding (Issue #1, target width floor) has since been **resolved** (`min-w-6` shipped — see the 2026-06-26 re-audit). Two Nit findings (#2 pressed token, #3 icon-only) remain logged for design polish.
 
 ---
 
@@ -147,3 +151,19 @@ Automation (axe) catches ~40% of real-world issues. The following must be verifi
 3. **Focus ring visibility in High Contrast Mode (Windows):** The Tailwind ring may be overridden by forced colors. Confirm the ring remains visible under `forced-colors: active` (add `forced-colors:outline-2 forced-colors:outline-ButtonText` if not).
 4. **Focus ring on colored surfaces:** Place a Button on a `surface-muted` card and confirm the white ring-offset does not create a visually confusing gap in the focus indicator.
 5. **icon-only pattern:** Before any icon-only usage ships, test `<Button aria-label="…"><Icon /></Button>` — confirm VoiceOver reads the `aria-label` only (not the SVG title/desc) and NVDA does the same.
+
+---
+
+## Re-audit — 2026-06-26
+
+Re-verified after the `--mc-*` token refactor and the Storybook render-blocker fix, via a live
+axe-core 4.12.1 pass (WCAG 2.0/2.1/2.2 A + AA) through the rendered stories.
+
+- **0 axe violations** across all 5 variants (Primary, Secondary, Ghost, Small, Disabled).
+- Measured text contrast (rendered sRGB): Primary / Small white-on-brand **4.97:1**, Secondary
+  **17.07:1**, Ghost **17.83:1**; Disabled is WCAG-exempt (inactive control).
+- Issues #1 (target-width floor) and #4 (ring-offset) confirmed **resolved** in source
+  (`min-w-6` present; `ring-offset-transparent`). #2 (pressed = hover token) and #3 (icon-only
+  story/guard) remain **open**.
+- Forced-colors / Windows HCM focus-ring and Focus Appearance remain **manual-only** — axe does
+  not evaluate them; see the manual checklist above.

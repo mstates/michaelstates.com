@@ -21,7 +21,7 @@
 | 1.3.1  | Level/size decoupling     | PASS — correct pattern       | `size` controls visual scale only; `level` controls document outline. JSDoc is explicit. Skipped-level risk is a consumer concern — see Issue #1 (Nit).    |
 | 2.4.6  | Headings and Labels       | PASS                         | Headings describe the sections they introduce when used correctly. The component's job is to render a native heading; labeling quality is caller-owned.    |
 | 2.4.10 | Section Headings          | PASS                         | The primitive enables correct heading outlines without opinionated structure. Component correctly does not enforce outline — that is a page-level concern. |
-| 1.4.3  | Contrast (Minimum)        | PASS — with design-time note | Inherits color from context. In documented context: foreground (neutral.900) on background (neutral.0) = 17.78:1. See Issue #2 (Medium) for risk note.     |
+| 1.4.3  | Contrast (Minimum)        | PASS — with design-time note | Explicitly applies `text-foreground` (not inherited); measured 17.84:1 (neutral.900 on neutral.0 white). See Issue #2 for the consumer-override risk note. |
 | 1.4.4  | Resize Text               | PASS                         | All font-size tokens resolve to `rem` values (`--size-base: 1rem`, `--size-2xl: 1.5rem`, `--size-4xl: 2.25rem`). Zoom-safe by design.                      |
 | 1.4.10 | Reflow                    | PASS                         | `rem`-based sizes; no fixed-width or `px` font-size override. `text-balance` is a progressive enhancement — degrades gracefully if unsupported.            |
 | 1.4.12 | Text Spacing              | PASS                         | No inline `line-height`, `letter-spacing`, `word-spacing`, or `font-size` set via `style` attribute. Token-driven values override correctly.               |
@@ -76,22 +76,29 @@ not something a primitive can enforce without constraining valid patterns (e.g.,
 nested content with a legitimately sparse outline). See Issue #1 for the documentation
 recommendation.
 
-### 3. Contrast — Inherited Color (SC 1.4.3)
+### 3. Contrast — Explicit `text-foreground` (SC 1.4.3)
 
-`Heading.tsx` applies no `text-*` color class. It inherits the surrounding text color
-from the cascade. In the documented context — `<body>` carries `text-foreground`
-(neutral.900, `oklch(20.8% 0.010 247)`) on `background` (neutral.0, `oklch(100% 0 0)`) —
-the effective contrast is **17.78:1**, far exceeding the 4.5:1 requirement for normal text
-and the 3:1 requirement for large text.
+> **Corrected 2026-06-26:** an earlier version of this section claimed the component "applies
+> no `text-*` color class" and "inherits color from the cascade." That was **factually wrong** —
+> `Heading.tsx:60` applies `text-foreground` explicitly (the first argument to `cx()`). The
+> contrast conclusion is unchanged (measured **17.84:1** live); only the mechanism is corrected.
 
-This inheritance strategy is architecturally intentional: headings that live inside
-inverted or colored sections inherit the surface's foreground color rather than reverting
-to white or black, which enables consistent dark/light section design without component
-changes. **In the current context this is correct and safe.**
+`Heading.tsx` applies `text-foreground` explicitly (line 60, the leading class in the `cx()`
+call) — it does **not** rely on cascade inheritance. That resolves to `text-foreground`
+(neutral.900, `oklch(20.8% 0.010 247)`) on `background` (neutral.0, `oklch(100% 0 0)`); the
+effective contrast is **17.84:1**, far exceeding the 4.5:1 requirement for normal text and the
+3:1 requirement for large text.
 
-The risk arises if a heading is ever dropped into a container whose text color is
-insufficiently contrasted against its own background. That is a page/layout contract, not a
-component defect — but it is worth flagging explicitly. See Issue #2.
+Applying the color explicitly is **stronger** than inheritance: a heading placed inside an
+inverted or colored section keeps `text-foreground` rather than silently adopting the surface's
+color — so it cannot accidentally inherit an under-contrasted color. A consumer that needs a
+different color on such a surface must override it deliberately via `className`. **In the current
+context this is correct and safe.**
+
+The residual risk is the inverse: a consumer who passes a conflicting `text-*` color via
+`className` overrides the default, and because `cx` is a plain joiner (not last-wins) the outcome
+depends on stylesheet order. If that override is under-contrasted it fails SC 1.4.3 silently.
+That is a page/layout contract, not a component defect — see Issue #2.
 
 ### 4. Reflow and Text Spacing (SC 1.4.4, 1.4.10, 1.4.12)
 
@@ -100,7 +107,7 @@ Token resolution from `tokens/semantic/typography.json` and `src/styles/tokens.c
 - `--text-body: var(--size-base)` → `--size-base: 1rem` → **16px at default browser font size**
 - `--text-title: var(--size-2xl)` → `--size-2xl: 1.5rem` → **24px**
 - `--text-display: var(--size-4xl)` → `--size-4xl: 2.25rem` → **36px**
-- `--leading-prose: var(--leading-normal)` → `--leading-normal: 1.5` → **unitless**
+- `leading-normal` → **1.5 unitless** (body; stock Tailwind utility — the redundant `--leading-prose` / `--mc-leading-normal` primitive was dropped in the `--mc-*` refactor)
 - `--leading-heading: var(--leading-tight)` → `--leading-tight: 1.15` → **unitless**
 
 All font sizes are `rem`-relative — they scale with the browser's root font size. A user
@@ -168,7 +175,7 @@ intermediate heading.
 
 ---
 
-### Issue #2 — [Medium] Inherited color is correct in context but creates a fragile contract for future inverted/colored surfaces (SC 1.4.3)
+### Issue #2 — [Medium] Explicit `text-foreground` is safe in context, but the dark/inverted-surface contract is still unenforced (SC 1.4.3)
 
 **File:** `src/components/Heading.tsx` — no explicit file:line; this is an architectural
 observation about what the component does not do.
@@ -176,15 +183,17 @@ observation about what the component does not do.
 
 **What is wrong:**
 
-`Heading` deliberately sets no text color — it inherits from the cascade. This is the right
-strategy for a themeable primitive. The documented context (body `text-foreground` =
-neutral.900 on background = neutral.0, 17.78:1) gives substantial headroom.
+`Heading` applies `text-foreground` explicitly (it does **not** inherit from the cascade) — the
+correct, safe default for a themeable primitive. The documented context (`text-foreground` =
+neutral.900 on background = neutral.0, measured 17.84:1) gives substantial headroom.
 
 The risk: as the site grows to include inverted banners, dark cards, or brand-colored
-sections, any heading inside such a surface will inherit whatever `color` the parent
-declares. If that parent color is insufficiently contrasted against the surface background,
-the heading will fail SC 1.4.3 silently — there is no token-level guard and no type
-constraint that requires a foreground/background pair to meet 4.5:1.
+sections, a heading on such a surface keeps `text-foreground` and must be given a
+surface-appropriate color via `className` — and because `cx` is a plain joiner (not last-wins),
+a conflicting `text-*` override resolves by stylesheet order. If the chosen color is
+insufficiently contrasted against the surface background, the heading fails SC 1.4.3 silently —
+there is no token-level guard and no type constraint that requires a foreground/background pair
+to meet 4.5:1.
 
 This is not a failure of the current component — the current rendered context is safe.
 It is a design-system contract that must be enforced at the layout/section level when
@@ -198,18 +207,20 @@ section that overrides text color must prove the foreground/background pair meet
 WCAG 1.4.3 at 4.5:1 for normal text and 3:1 for text >= 18px / 14px bold."
 
 In the meantime, the axe CI gate (`pnpm test:a11y`) will catch any contrast failure on
-the actual rendered pages — which is the correct enforcement point for inherited color.
+the actual rendered pages — which is the correct enforcement point for the rendered color.
 
 ---
 
-### Issue #3 — [Nit] `body` size heading has no `text-balance`; long `h4`–`h6` headings will rag unpredictably
+### Issue #3 — [Nit] `body` size heading has no `text-balance`; long `h4`–`h6` headings will rag unpredictably — ✅ RESOLVED (2026-06-26)
+
+> **Resolved 2026-06-26:** `text-balance` is now applied to the body size. (The body line-height token also moved `leading-prose` → stock `leading-normal` in the `--mc-*` refactor.) Shipped: `body: "text-body font-semibold leading-normal text-balance"`. Original finding retained below for the record.
 
 **File:** `src/components/Heading.tsx` line 30
 **Criterion:** Not a WCAG criterion; UX/readability note.
 
 **What is wrong:**
 
-`sizeClasses.body` is `"text-body font-semibold leading-prose"` — no `text-balance`.
+`sizeClasses.body` was `"text-body font-semibold leading-prose"` — no `text-balance` (both since fixed; see the resolved note above).
 `display` and `title` both include `text-balance`. At `text-body` (16px), headings used at
 `h4`–`h6` (or any heading with `size="body"`) will wrap with the browser's default
 line-breaking algorithm. For short labels this is fine; for longer `h4` headings (e.g., a
@@ -223,11 +234,11 @@ readability improvement. At body size, `text-wrap: balance` has a browser-impose
 **Fix:** Add `text-balance` to `body` in `sizeClasses`:
 
 ```tsx
-// Current (Heading.tsx line 30)
+// 2026-06-23 (before): neither the leading change nor text-balance
 body: "text-body font-semibold leading-prose",
 
-// Proposed
-body: "text-body font-semibold leading-prose text-balance",
+// Shipped 2026-06-26: text-balance added; leading-prose → stock leading-normal
+body: "text-body font-semibold leading-normal text-balance",
 ```
 
 ---
@@ -254,12 +265,10 @@ apply to heading-level content (2.4.6, 2.4.10) are covered in the main criterion
 **PASS (AA)** — The Heading primitive is WCAG 2.2 AA conformant. No blocker or High
 severity violations were found. The `level`/`size` decoupling is the correct architectural
 pattern and the JSDoc makes the intended usage explicit. All font sizes are `rem`-based
-and token-driven; reflow and text-spacing overrides are compatible. The inherited-color
-strategy is safe in the current deployment context.
+and token-driven; reflow and text-spacing overrides are compatible. The explicit `text-foreground` default (not inheritance) is safe in the current deployment context.
 
 One Medium finding (Issue #2) is an architectural note for future surface work — it is not
-a current failure. Two Nit findings (Issue #1 JSDoc gap, Issue #3 missing `text-balance`
-on body size) are low-risk polish items.
+a current failure. Issue #1 (JSDoc skip-levels note) remains a low-risk polish item; Issue #3 (`text-balance` on body) is now resolved (see the 2026-06-26 re-audit).
 
 ---
 
@@ -300,3 +309,20 @@ duplicate `h1`. The following must still be verified manually:
   the rendered heading element. A consumer can't obtain a DOM handle (e.g. for a
   scroll-to-heading / skip-link focus pattern). React 19 allows `ref` as a normal prop; thread
   it through if that need arises.
+
+---
+
+## Re-audit — 2026-06-26
+
+Re-verified after the `--mc-*` token refactor (which repointed body line-height `leading-prose`
+→ `leading-normal`) and the Storybook render-blocker fix, via a live axe-core 4.12.1 pass
+(WCAG 2.0/2.1/2.2 A + AA) through the rendered stories.
+
+- **0 axe violations** across all 4 variants.
+- Rendered, scoped to the component (not Storybook chrome): Display **`h1` / 36px / lh 1.15**,
+  Title **`h2` / 24px / lh 1.15**, Body **`h3` / 16px / lh 1.5**, Level-decoupled **`h2` / 16px**
+  — semantic level correctly decoupled from visual size (1.3.1). `leading-normal` renders at
+  exactly **1.5**, so the body repoint is 1.4.12-safe.
+- `text-foreground` (applied explicitly by the component) measured **17.84:1** on white.
+- Issue #3 (`text-balance` on body) confirmed **resolved**. #1 (skip-levels JSDoc) and #2
+  (dark/inverted-surface contract) remain **open**.
