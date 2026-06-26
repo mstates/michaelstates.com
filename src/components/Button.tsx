@@ -26,7 +26,7 @@ export interface ButtonProps extends Omit<AriaButtonProps, "className"> {
 // tailwindcss-react-aria-components plugin. Focus ring + forced-colors handling is
 // shared via focusRing. Motion is reduced on request.
 const base =
-  "inline-flex select-none items-center justify-center rounded-md font-medium " +
+  "inline-flex select-none items-center justify-center rounded-lg font-medium " +
   "transition-colors duration-150 motion-reduce:transition-none " +
   focusRing +
   " disabled:cursor-not-allowed disabled:opacity-50";

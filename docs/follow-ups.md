@@ -14,20 +14,15 @@ lives in `docs/a11y/<component>.md`; manual screen-reader checks live in
   source) would make overrides deterministic. Deferred to its own step — first investigate
   blast radius across the text / bg / border / ring color groups + font-size. (Stock twMerge
   conflates our custom `text-<size>` and `text-<color>` tokens, which is why it was decoupled
-  from the Stage 3 commit rather than shipped half-configured.)
-- **Primitive scales collide with Tailwind's default theme-variable namespaces.** Our
-  primitives in `:root` share Tailwind's `--font-weight-*`, `--radius-*`, `--leading-*`, and
-  `--color-neutral-*` names; `tokens.css` is imported after `tailwindcss`, so ours win.
-  Values **coincide** for some (`--font-weight-bold` 700, `--radius-sm` .25rem,
-  `--leading-normal` 1.5) but **differ** for `--radius-md` (ours .5rem vs Tailwind .375rem),
-  `--leading-tight` (1.15 vs 1.25), and the whole `--color-neutral-*` ramp — so our primitives
-  silently re-value Tailwind's built-in `rounded-md` / `leading-*` / `neutral-*` utilities.
-  **Load-bearing — NOT a no-op cleanup:** components use `rounded-md`/`rounded-sm`, and
-  `--leading-heading` resolves through `--leading-tight`, so renaming primitives would shift
-  component radius/leading appearance.
-  **Decide the intended model in its own step — AFTER the Astro 7 upgrade, with component
-  re-verification:** move primitives to a private namespace (e.g. `--mc-*`) vs. deliberately
-  adopt them as the Tailwind theme via `@theme`. **Candidate ADR.**
+  from the Stage 3 commit rather than shipped half-configured.) **Now unblocked (2026-06-26,
+  ADR-0004):** the private `--mc-*` namespace is the model its classGroups were waiting on.
+- ✅ **Primitive ↔ Tailwind namespace collision — RESOLVED (2026-06-26) →
+  `docs/adr/0004-token-namespace-collision.md`.** Primitives moved to a private `--mc-*`
+  namespace (authored under an `mc` key in `tokens/primitive/*.json`); primitives whose value
+  coincides with stock Tailwind (`radius`, `font.weight`, `leading.normal`) dropped in favour of
+  stock utilities. Components repointed `rounded-md`→`rounded-lg` (Button, TextField) and
+  `leading-prose`→`leading-normal` (Heading); `Link`'s `rounded-sm` now resolves to stock .25.
+  Verified render-identical via a throwaway Astro page (Storybook being down — see below).
 
 ## Components
 
@@ -63,6 +58,18 @@ lives in `docs/a11y/<component>.md`; manual screen-reader checks live in
   (ADR-0002), and the sub-AA contrast catches (`docs/a11y/*`). The technical record already lives
   in ADRs / `docs/a11y` / build journal; this is the separate **Stage 5 narrative-layer decision**
   of whether to also capture an incident → fix → lesson narrative in-repo.
+
+## Storybook workbench — BLOCKING
+
+- **Storybook renders nothing — "React is not defined" (dev _and_ static build).**
+  `@vitejs/plugin-react` is absent from the dependency tree and is not wired into
+  `.storybook/main.ts` `viteFinal`, so the `@storybook/react-vite` framework has no JSX transform
+  and every story throws at runtime. `build-storybook` exits 0 (it bundles fine), so the failure
+  was masked — discovered 2026-06-26 when `storybook dev` was first actually run. **Blocking
+  priority:** Storybook is the component workbench where the accessibility work is demonstrated, so
+  this gates all further component work and the manual screen-reader pass. Fix: add
+  `@vitejs/plugin-react` and apply it in `viteFinal`, then re-verify a story renders and the a11y
+  addon runs. (The token work was verified via a throwaway Astro page instead — see ADR-0004.)
 
 ## CI / build gate
 

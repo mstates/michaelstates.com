@@ -24,16 +24,16 @@ export interface HeadingProps extends Omit<
 }
 
 // Consumes semantic type tokens (text-* / leading-* land in @theme). Font weight uses
-// Tailwind's built-in font-bold/font-semibold utilities — our font-weight values are
-// primitives (in :root), NOT semantic tokens, and currently share Tailwind's
-// --font-weight-* names. Default color is text-foreground (applied first): a consumer
+// Tailwind's built-in font-bold/font-semibold utilities — we dropped our redundant
+// font-weight primitives (they were identical to Tailwind's), so weight is fully
+// delegated to Tailwind. Default color is text-foreground (applied first): a consumer
 // className on a DIFFERENT property composes cleanly, but a conflicting same-property
 // override (e.g. another text-* color) resolves by stylesheet order — cx is a plain
 // joiner, not guaranteed last-wins.
 const sizeClasses: Record<HeadingSize, string> = {
   display: "text-display font-bold leading-heading text-balance",
   title: "text-title font-semibold leading-heading text-balance",
-  body: "text-body font-semibold leading-prose text-balance",
+  body: "text-body font-semibold leading-normal text-balance",
 };
 
 // Default visual size per level (override with `size`).

@@ -47,7 +47,7 @@ export function TextField({
         placeholder={placeholder}
         className={cx(
           // border-input (neutral.500) clears WCAG 1.4.11 (3:1) for the control boundary.
-          "min-h-11 w-full rounded-md border border-input bg-background px-3 text-body text-foreground",
+          "min-h-11 w-full rounded-lg border border-input bg-background px-3 text-body text-foreground",
           "placeholder:text-muted-foreground",
           "transition-colors motion-reduce:transition-none",
           "hover:border-foreground",
