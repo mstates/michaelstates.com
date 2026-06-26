@@ -78,17 +78,21 @@ lives in `docs/a11y/<component>.md`; manual screen-reader checks live in
   in ADRs / `docs/a11y` / build journal; this is the separate **Stage 5 narrative-layer decision**
   of whether to also capture an incident → fix → lesson narrative in-repo.
 
-## Storybook workbench — BLOCKING
+## Storybook workbench — RESOLVED
 
-- **Storybook renders nothing — "React is not defined" (dev _and_ static build).**
-  `@vitejs/plugin-react` is absent from the dependency tree and is not wired into
-  `.storybook/main.ts` `viteFinal`, so the `@storybook/react-vite` framework has no JSX transform
-  and every story throws at runtime. `build-storybook` exits 0 (it bundles fine), so the failure
-  was masked — discovered 2026-06-26 when `storybook dev` was first actually run. **Blocking
-  priority:** Storybook is the component workbench where the accessibility work is demonstrated, so
-  this gates all further component work and the manual screen-reader pass. Fix: add
-  `@vitejs/plugin-react` and apply it in `viteFinal`, then re-verify a story renders and the a11y
-  addon runs. (The token work was verified via a throwaway Astro page instead — see ADR-0004.)
+- ✅ **Storybook rendered nothing — "React is not defined" (dev _and_ static build)
+  — RESOLVED (2026-06-26) → commit `1213b36`.** `@vitejs/plugin-react` was present
+  in the store only as a transitive dep of `@astrojs/react` — unresolved at the
+  project root and unwired in `.storybook/main.ts` `viteFinal`, so
+  `@storybook/react-vite`'s preset (docgen plugins only) left no JSX transform under
+  `tsconfig` `jsx:"preserve"`, and every story threw at runtime. `build-storybook`
+  exited 0 (it bundled fine), masking the failure until `storybook dev` was first
+  actually run. Fix: pinned `@vitejs/plugin-react@5.2.0` (already the in-tree version
+  via `@astrojs/react`) and `unshift(react())` ahead of the docgen plugins in
+  `viteFinal`. Render-proven at runtime, not green-build-assumed — Link/InProse
+  (inline JSX) and Button render with a clean console in both `pnpm storybook` and
+  the served `storybook-static`. (The token work that this had blocked was verified
+  via a throwaway Astro page instead — see ADR-0004.)
 
 ## CI / build gate
 
