@@ -24,6 +24,25 @@ lives in `docs/a11y/<component>.md`; manual screen-reader checks live in
   `leading-prose`→`leading-normal` (Heading); `Link`'s `rounded-sm` now resolves to stock .25.
   Verified render-identical via a throwaway Astro page (Storybook being down — see below).
 
+## Figma / token sync
+
+- **Item H — point Figma variable code-syntax at the semantic layer, never the primitives.**
+  Figma's consumable references are the **semantic** tokens (bare-named, e.g. `--color-primary`) —
+  the public surface that both code and Figma consume. Set each Figma variable's code syntax to its
+  semantic token (e.g. `var(--color-primary)`) and **explicitly do not** reference the private
+  `--mc-*` primitives: primitives are internal, and wiring Figma to `--mc-*` would re-introduce the
+  exact tier-boundary violation the rename (ADR-0004) removed. Semantic names are unchanged by the
+  rename, so the task is a correctness/guardrail pass — ensure no Figma variable still points at a
+  now-renamed primitive — not a bulk re-map. Mechanism: the Figma **plugin code-connect path**; the
+  variables REST API is ruled out (Enterprise-gated). Ref the "Set Figma variable code syntax…" rule
+  in `.claude/rules/tokens.md`.
+- **`.claude/rules/tokens.md` Figma example is stale post-rename.** Its example
+  `var(--color-bg-primary)` is a non-existent, bare `--color-*` name; since `--color-*` is now
+  semantic-only (primitives are private `--mc-*`), it reads ambiguously. Replace it with a real
+  semantic token (e.g. `var(--color-primary)`) and add a note that Figma maps to **semantic** tokens,
+  not the private `--mc-*` primitives; align with item H (plugin path). Its own deliberate `.claude/`
+  change — **not** done this session.
+
 ## Components
 
 - **Button — distinct `pressed` token.** Pressed currently reuses the hover token; a
