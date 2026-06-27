@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#
+# pre-push hook — block non-fast-forward (force) pushes on ALL branches.
+# Activate per-clone with:  git config core.hooksPath .githooks   (see SETUP.md).
+#
+# Args:  $1 = remote name, $2 = remote URL
+# Stdin: one line per ref being pushed:  <local ref> <local sha> <remote ref> <remote sha>
+#
+# A non-fast-forward (force) push is one where the remote sha is NOT an ancestor of the
+# local sha — i.e. the push would rewrite or discard remote history. This is the mechanical
+# backstop; intent-gating (e.g. "only push when explicitly invoked") lives in a /push skill,
+# not here — a git hook cannot read intent.
+
+set -u
+
+# All-zeros sha (SHA-1 = 40 chars, SHA-256 = 64). Treat "all zeros" generically.
+is_zero_sha() { case "$1" in *[!0]*) return 1 ;; *) return 0 ;; esac; }
+
+status=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # Skip deleting a remote ref (local sha all zeros) — not a content force-push.
+  if is_zero_sha "$local_sha"; then continue; fi
+  # Skip pushing a brand-new branch (remote sha all zeros) — nothing to fast-forward over.
+  if is_zero_sha "$remote_sha"; then continue; fi
+
+  # Require fast-forward: the remote sha must be an ancestor of the local sha.
+  if git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+    continue
+  fi
+
+  echo "pre-push: BLOCKED — non-fast-forward (force) push to '${remote_ref}'." >&2
+  echo "  remote ${remote_sha} is not an ancestor of local ${local_sha}; this would rewrite remote history." >&2
+  echo "  Rebase onto the remote tip to fast-forward, or push a new branch instead." >&2
+  status=1
+done
+
+exit "$status"

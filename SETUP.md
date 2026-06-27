@@ -79,6 +79,24 @@ safeguarded — versioned and backed up.
 
 ---
 
+## Local git hooks — commit discipline
+
+The repo ships commit-discipline hooks in `.githooks/` — a `commit-msg` that enforces
+Conventional Commits and rejects `Co-authored-by:` trailers, and a `pre-push` that blocks
+non-fast-forward / force pushes. They live in a tracked directory (not `.git/hooks/`), so
+they're version-controlled — but git only runs them once you point it at them.
+
+▢ Activate them (one-time, per clone): `git config core.hooksPath .githooks` — this is **local
+git config**, not committed, so each clone sets it itself; without it the hooks are simply
+inactive. (They enforce commit discipline at the **git** layer for every actor — not just Claude
+Code, whose `.claude/` hooks only constrain its own tool calls.)
+
+**Confirm:** `git config --get core.hooksPath` prints `.githooks`; a commit with a
+non-conventional subject or a `Co-authored-by:` line is rejected, and a force / non-fast-forward
+push is blocked.
+
+---
+
 ## Stage 1 — Scaffold the Astro app into this repo
 
 The studio files live alongside your app. Initialize Astro **in place** (or scaffold in a

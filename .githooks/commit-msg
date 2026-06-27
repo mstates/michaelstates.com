@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#
+# commit-msg hook — commit-discipline at the git layer, for ALL actors (not just Claude).
+# Activate per-clone with:  git config core.hooksPath .githooks   (see SETUP.md).
+#
+# $1 is the path to the file holding the proposed commit message.
+# Two checks:
+#   1. Reject any "Co-authored-by:" trailer (case-insensitive), anywhere in the message.
+#   2. Validate the subject (first non-comment, non-blank line) against Conventional Commits.
+#
+# NOTE: `set -e` is intentionally NOT used — a non-matching `grep` returns exit 1, which
+# would abort the hook under `set -e`. We use explicit `if` blocks and exit codes instead.
+
+set -u
+
+msg_file="$1"
+
+# 1) No co-author trailers.
+if grep -iqE '^[[:space:]]*co-authored-by:' "$msg_file"; then
+  echo "commit-msg: BLOCKED — 'Co-authored-by:' trailers are not allowed." >&2
+  echo "  Repo policy: includeCoAuthoredBy = false. Remove the trailer and recommit." >&2
+  exit 1
+fi
+
+# 2) Conventional Commits on the subject line.
+#    Skip comment lines (default comment char '#') and leading blank lines.
+subject="$(grep -vE '^[[:space:]]*#' "$msg_file" | grep -vE '^[[:space:]]*$' | head -n 1)"
+
+types='feat|fix|docs|chore|refactor|test|perf|build|ci|style|revert'
+if ! printf '%s\n' "$subject" | grep -qE "^(${types})(\(.+\))?(!)?: .+"; then
+  echo "commit-msg: BLOCKED — subject must follow Conventional Commits." >&2
+  echo "  Format: <type>(<optional scope>)<optional !>: <subject>" >&2
+  echo "  Types:  ${types}" >&2
+  echo "  Got:    ${subject}" >&2
+  exit 1
+fi
+
+exit 0
