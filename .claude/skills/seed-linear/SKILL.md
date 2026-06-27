@@ -27,12 +27,14 @@ Confirm with `/mcp` that Linear shows as connected before running this.
 ## What it does
 
 1. Reads `seed/linear-import.csv` — the canonical task list. Each row has: Title,
-   Description, Labels, Estimate, Parent (epic), and a Reference column pointing to
-   the research file that informs the task.
+   Description, Labels, Estimate, Parent (epic), a Reference column pointing to the
+   research/ADR/a11y doc that informs the task, and a Status column (`Done` | `Todo`).
 2. Creates a project in Linear named **"Portfolio — Build"** (ask the user to confirm
    the team/workspace first).
 3. Creates the epics, then the child issues under each, preserving the
-   parent/child relationships and applying labels and estimates.
+   parent/child relationships and applying labels and estimates. Sets each issue's
+   workflow state from its Status column: `Done` → the team's completed/Done state,
+   `Todo` → the team's Todo/Backlog state.
 4. For each issue, includes the Description plus a "Source" line linking the relevant
    research doc (e.g. `docs/research/02-architecture-blueprint.md`), so every ticket
    traces back to the reasoning behind it.
@@ -42,7 +44,7 @@ Confirm with `/mcp` that Linear shows as connected before running this.
 
 When the user invokes `/seed-linear`:
 
-- First confirm the target Linear team and that they want ~30 issues created.
+- First confirm the target Linear team and that they want ~49 issues created.
 - Parse `seed/linear-import.csv`.
 - Create the project, epics, and issues via the Linear MCP.
 - Print a summary table of epic → issues with their new ids.
