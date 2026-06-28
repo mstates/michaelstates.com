@@ -112,3 +112,13 @@ lives in `docs/a11y/<component>.md`; manual screen-reader checks live in
   separately-reviewed config change (its own commit; exact-pin discipline). Verify by (a) the next
   build log no longer listing them under "Ignored build scripts" and (b) image-optimization output
   actually produced.
+- **Soft-404 — unmatched routes return 200 instead of 404 — deferred (tracked: `INC-223`).**
+  The first Cloudflare Pages production deploy (`2bf9d1b`, `michaelstates-com.pages.dev`)
+  serves HTTP 200 with the index page for unmatched paths instead of a 404. **Cause:** no
+  `dist/404.html` in the build output because there is no `src/pages/404.astro`, so Cloudflare
+  Pages falls back to a 200 index response for unmatched routes. **Why it matters:**
+  correctness + SEO — a missing URL returning 200 lets search engines index junk paths and gives
+  users no not-found signal. **Resolution:** add `src/pages/404.astro` (Astro emits
+  `dist/404.html`, served with a proper 404), as its own isolated branch/PR — the first source
+  change to exercise the build path since deploy, i.e. the first non-no-op production deploy;
+  filed under the `INC-180` deferred/hardening epic.
