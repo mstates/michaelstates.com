@@ -99,3 +99,16 @@ lives in `docs/a11y/<component>.md`; manual screen-reader checks live in
 - **CI is red until Stage 6.** `ci.yml` runs on push to `main` + PRs but fails at the lint step —
   eslint / vitest / Playwright + axe / lhci and their configs aren't installed until Stage 6.
   Expected, not a defect (no branch protection, no deploy gating; goes green at Stage 6).
+- **pnpm ignores `sharp` / `esbuild` build scripts on Cloudflare Pages — deferred (trigger is
+  future, not blocking).** The first Cloudflare Pages production deploy (`d14b827`) logged `sharp`
+  and `esbuild` under pnpm's "Ignored build scripts" warning — pnpm 10's default of not running a
+  dependency's install/build scripts unless it is allow-listed. The build still succeeded (static,
+  1 page) because nothing exercised those native binaries. **Trigger:** when Astro build-time image
+  optimization is introduced (`astro:assets` / `<Image>` / `getImage` rely on `sharp`), the ignored
+  `sharp` build script can fail the production build (missing native binary); `esbuild` is
+  lower-risk here (its platform binary resolved via an optional dep this build) but belongs in the
+  same fix. **Resolution when triggered:** allow-list the needed deps via pnpm
+  `onlyBuiltDependencies` in `package.json` (or `pnpm approve-builds`), as a deliberate,
+  separately-reviewed config change (its own commit; exact-pin discipline). Verify by (a) the next
+  build log no longer listing them under "Ignored build scripts" and (b) image-optimization output
+  actually produced.
