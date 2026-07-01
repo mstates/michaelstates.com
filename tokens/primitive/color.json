@@ -20,7 +20,8 @@
         "400": { "$type": "color", "$value": "oklch(72% 0.15 248)" },
         "500": { "$type": "color", "$value": "oklch(62% 0.17 248)" },
         "600": { "$type": "color", "$value": "oklch(54% 0.17 248)" },
-        "700": { "$type": "color", "$value": "oklch(47% 0.15 248)" }
+        "700": { "$type": "color", "$value": "oklch(47% 0.15 248)" },
+        "800": { "$type": "color", "$value": "oklch(40% 0.13 248)" }
       },
       "functional": {
         "danger": { "$type": "color", "$value": "oklch(58% 0.20 27)" },

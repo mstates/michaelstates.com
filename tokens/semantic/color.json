@@ -4,6 +4,7 @@
     "foreground": { "$type": "color", "$value": "{mc.color.neutral.900}" },
     "surface": { "$type": "color", "$value": "{mc.color.neutral.50}" },
     "surface-muted": { "$type": "color", "$value": "{mc.color.neutral.100}" },
+    "surface-pressed": { "$type": "color", "$value": "{mc.color.neutral.200}" },
     "border": { "$type": "color", "$value": "{mc.color.neutral.200}" },
     "input": { "$type": "color", "$value": "{mc.color.neutral.500}" },
     "ring": { "$type": "color", "$value": "{mc.color.brand.600}" },
@@ -14,6 +15,7 @@
     },
     "primary": { "$type": "color", "$value": "{mc.color.brand.600}" },
     "primary-hover": { "$type": "color", "$value": "{mc.color.brand.700}" },
+    "primary-pressed": { "$type": "color", "$value": "{mc.color.brand.800}" },
     "primary-foreground": {
       "$type": "color",
       "$value": "{mc.color.neutral.0}"

@@ -18,6 +18,7 @@
   --mc-color-brand-500: oklch(62% 0.17 248);
   --mc-color-brand-600: oklch(54% 0.17 248);
   --mc-color-brand-700: oklch(47% 0.15 248);
+  --mc-color-brand-800: oklch(40% 0.13 248);
   --mc-color-functional-danger: oklch(58% 0.20 27);
   --mc-color-functional-success: oklch(62% 0.15 150);
   --mc-space-0: 0rem;
@@ -54,6 +55,7 @@
   --color-foreground: var(--mc-color-neutral-900);
   --color-surface: var(--mc-color-neutral-50);
   --color-surface-muted: var(--mc-color-neutral-100);
+  --color-surface-pressed: var(--mc-color-neutral-200);
   --color-border: var(--mc-color-neutral-200);
   --color-input: var(--mc-color-neutral-500);
   --color-ring: var(--mc-color-brand-600);
@@ -61,6 +63,7 @@
   --color-muted-foreground: var(--mc-color-neutral-600);
   --color-primary: var(--mc-color-brand-600);
   --color-primary-hover: var(--mc-color-brand-700);
+  --color-primary-pressed: var(--mc-color-brand-800);
   --color-primary-foreground: var(--mc-color-neutral-0);
   --color-accent: var(--mc-color-brand-500);
   --color-accent-foreground: var(--mc-color-neutral-900);

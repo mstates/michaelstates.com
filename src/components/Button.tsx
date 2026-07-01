@@ -33,11 +33,11 @@ const base =
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-primary text-primary-foreground hover:bg-primary-hover pressed:bg-primary-hover",
+    "bg-primary text-primary-foreground hover:bg-primary-hover pressed:bg-primary-pressed",
   secondary:
-    "border border-input bg-surface text-foreground hover:bg-surface-muted pressed:bg-surface-muted",
+    "border border-input bg-surface text-foreground hover:bg-surface-muted pressed:bg-surface-pressed",
   ghost:
-    "bg-transparent text-foreground hover:bg-surface-muted pressed:bg-surface-muted",
+    "bg-transparent text-foreground hover:bg-surface-muted pressed:bg-surface-pressed",
 };
 
 // min-h ≥ 44px (md) / 36px (sm) and min-w-6 (24px) — clears WCAG 2.2 §2.5.8
