@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { ComponentPropsWithRef, ReactNode } from "react";
 import { cx } from "./utils/cx";
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
@@ -12,9 +12,15 @@ export type HeadingSize = "display" | "title" | "body";
  * (e.g. h2 → h4) — the component can't enforce that; it's a page-outline contract.
  * `size` is the visual scale, decoupled from `level`, so an `h2` can look like body text
  * without breaking the heading outline.
+ *
+ * `ref` is a regular prop (React 19) and attaches to the rendered `<h1>`–`<h6>` element
+ * (e.g. for scroll-to-heading / skip-link focus patterns).
+ * In dev builds, rendering with empty children and no `aria-label`/`aria-labelledby`
+ * logs a console warning (axe `empty-heading` / SC 2.4.6); the axe suite in CI
+ * (`pnpm test:a11y`) remains the authoritative gate.
  */
 export interface HeadingProps extends Omit<
-  ComponentPropsWithoutRef<"h1">,
+  ComponentPropsWithRef<"h1">,
   "className"
 > {
   level: HeadingLevel;
@@ -46,6 +52,19 @@ const defaultSize: Record<HeadingLevel, HeadingSize> = {
   6: "body",
 };
 
+// Dev-only heuristic for the guard below. Recurses into arrays so sibling expression
+// children that all render to nothing (e.g. {condA}{condB} → [false, false]) are caught;
+// [].every() is vacuously true, so an empty array counts as empty too. Prop-level only —
+// children that *render* empty (e.g. <span/>) are axe's job in CI, not ours.
+function isEmptyContent(node: ReactNode): boolean {
+  return (
+    node == null ||
+    typeof node === "boolean" ||
+    (typeof node === "string" && node.trim() === "") ||
+    (Array.isArray(node) && node.every(isEmptyContent))
+  );
+}
+
 export function Heading({
   level,
   size,
@@ -53,6 +72,20 @@ export function Heading({
   children,
   ...props
 }: HeadingProps) {
+  if (import.meta.env.DEV) {
+    if (
+      isEmptyContent(children) &&
+      !props["aria-label"] &&
+      !props["aria-labelledby"]
+    ) {
+      console.warn(
+        `<Heading level={${level}}> rendered with no accessible content. Empty ` +
+          "headings fail axe's empty-heading rule and break heading navigation " +
+          "for screen-reader users (WCAG 2.2 SC 2.4.6). Pass non-empty children " +
+          "or an aria-label.",
+      );
+    }
+  }
   const Tag = `h${level}` as `h${HeadingLevel}`;
   return (
     <Tag
