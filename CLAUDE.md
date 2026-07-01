@@ -86,5 +86,6 @@ for" for the full priorities.
 
 ## Connected services (via MCP — see `.mcp.json` and SETUP.md)
 
-Figma, Linear, Notion, Playwright. These are wired on your machine via
-`claude mcp add` / OAuth — they are not active until you complete SETUP.md Stage 4.
+Figma, Linear, Notion, Playwright. Figma, Linear, and Notion are remote servers
+authenticated via OAuth (`/mcp`); Playwright runs locally via `claude mcp add` — none
+are active until you complete SETUP.md Stage 4.
