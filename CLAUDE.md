@@ -86,5 +86,5 @@ for" for the full priorities.
 
 ## Connected services (via MCP — see `.mcp.json` and SETUP.md)
 
-Figma, Linear, Notion, GitHub, Playwright. These are wired on your machine via
+Figma, Linear, Notion, Playwright. These are wired on your machine via
 `claude mcp add` / OAuth — they are not active until you complete SETUP.md Stage 4.
