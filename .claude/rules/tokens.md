@@ -12,7 +12,7 @@ These apply when working in tokens/ or src/styles/.
   primitive whose value coincides with a stock Tailwind utility is dropped — components
   use the stock utility (e.g. rounded-lg, leading-normal). See
   docs/adr/0004-token-namespace-collision.md.
-- Set Figma variable code syntax to match our token names (e.g. var(--color-bg-primary))
+- Set Figma variable code syntax to match our token names (e.g. var(--color-primary))
   so the Figma MCP returns exact token references.
 - Never edit generated files (src/styles/tokens.css) by hand — edit the source tokens
   and rebuild.
