@@ -175,7 +175,16 @@ intermediate heading.
 
 ---
 
-### Issue #2 — [Medium] Explicit `text-foreground` is safe in context, but the dark/inverted-surface contract is still unenforced (SC 1.4.3)
+### Issue #2 — [Medium] Explicit `text-foreground` is safe in context, but the dark/inverted-surface contract is still unenforced (SC 1.4.3) — ✅ RESOLVED (2026-07-01)
+
+> **Resolved 2026-07-01:** the contract is now documented as prescribed — a "Surface
+> contracts" section in `src/components/CLAUDE.md` (with a pointer bullet in
+> `.claude/rules/accessibility.md` so it reaches pages/layouts work) requires a computed
+> contrast ratio from measured token values before any fg/bg override ships. Two
+> corrections to the fix text below: the risk mechanism is `cx` stylesheet-order on
+> deliberate overrides, not inheritance (see the 2026-06-26 correction above), and the
+> shipped rule uses WCAG's large-text thresholds (18pt ≈ 24px / 14pt bold ≈ 18.66px), not
+> the "18px / 14px bold" stated below. Original finding retained below for the record.
 
 **File:** `src/components/Heading.tsx` — no explicit file:line; this is an architectural
 observation about what the component does not do.
@@ -267,8 +276,8 @@ severity violations were found. The `level`/`size` decoupling is the correct arc
 pattern and the JSDoc makes the intended usage explicit. All font sizes are `rem`-based
 and token-driven; reflow and text-spacing overrides are compatible. The explicit `text-foreground` default (not inheritance) is safe in the current deployment context.
 
-One Medium finding (Issue #2) is an architectural note for future surface work — it is not
-a current failure. Issue #1 (JSDoc skip-levels note) remains a low-risk polish item; Issue #3 (`text-balance` on body) is now resolved (see the 2026-06-26 re-audit).
+One Medium finding (Issue #2, dark/inverted-surface contract) is now resolved (see the
+2026-07-01 resolution note). Issue #1 (JSDoc skip-levels note) remains a low-risk polish item; Issue #3 (`text-balance` on body) is now resolved (see the 2026-06-26 re-audit).
 
 ---
 
@@ -324,5 +333,6 @@ Re-verified after the `--mc-*` token refactor (which repointed body line-height 
   — semantic level correctly decoupled from visual size (1.3.1). `leading-normal` renders at
   exactly **1.5**, so the body repoint is 1.4.12-safe.
 - `text-foreground` (applied explicitly by the component) measured **17.84:1** on white.
-- Issue #3 (`text-balance` on body) confirmed **resolved**. #1 (skip-levels JSDoc) and #2
-  (dark/inverted-surface contract) remain **open**.
+- Issue #3 (`text-balance` on body) confirmed **resolved**. #1 (skip-levels JSDoc) remains
+  **open**; #2 (dark/inverted-surface contract) is now **resolved** (see the 2026-07-01
+  resolution note).
