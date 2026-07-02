@@ -69,7 +69,9 @@ const sizeClasses: Record<ButtonSize, string> = {
 
 ---
 
-### Issue #2 — [Nit] `pressed:` state is visually identical to `hover:` on primary and secondary variants
+### Issue #2 — [Nit] `pressed:` state is visually identical to `hover:` on primary and secondary variants — ✅ RESOLVED (2026-07-02)
+
+> **Resolved 2026-07-02:** Distinct pressed tokens shipped in INC-215 (`primary-pressed` = brand.800, `surface-pressed` = neutral.200); contrast proof recorded in the 2026-07-02 addendum below. Original finding retained below for the record.
 
 **File:** `src/components/Button.tsx` lines 28–31
 **Criterion:** Not a WCAG failure; design/UX note.
@@ -138,7 +140,7 @@ One note for screen reader testing: confirm that RAC sets both the `disabled` HT
 
 ## Verdict
 
-**PASS (AA)** — The Button primitive is WCAG 2.2 AA conformant in its current form. No blocker-level violations were identified. One Medium finding (Issue #1, target width floor) has since been **resolved** (`min-w-6` shipped — see the 2026-06-26 re-audit). Two Nit findings (#2 pressed token, #3 icon-only) remain logged for design polish.
+**PASS (AA)** — The Button primitive is WCAG 2.2 AA conformant in its current form. No blocker-level violations were identified. One Medium finding (Issue #1, target width floor) has since been **resolved** (`min-w-6` shipped — see the 2026-06-26 re-audit). One Nit finding (#3 icon-only) remains logged for design polish. Issue #2 (pressed token) was resolved 2026-07-02 — distinct pressed tokens with contrast proof in the addendum below.
 
 ---
 
@@ -167,3 +169,25 @@ axe-core 4.12.1 pass (WCAG 2.0/2.1/2.2 A + AA) through the rendered stories.
   story/guard) remain **open**.
 - Forced-colors / Windows HCM focus-ring and Focus Appearance remain **manual-only** — axe does
   not evaluate them; see the manual checklist above.
+
+---
+
+## Addendum — 2026-07-02: Pressed-pair contrast proof (INC-226)
+
+The distinct pressed tokens shipped in INC-215 (`8d0a67c`) predate the
+surface-contracts rule (INC-218, `src/components/CLAUDE.md`), which requires
+a computed contrast ratio from measured token values for every non-default
+fg/bg pair. Recorded here to close that gap; ratios computed from the token
+sources in `tokens/primitive/color.json`, oklch resolved to sRGB.
+
+| Pair                                                            | Background                                     | Foreground                                     | Ratio       | AA (4.5:1) |
+| --------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ----------- | ---------- |
+| `primary-pressed` / `primary-foreground` (primary variant)      | brand.800 oklch(40% 0.13 248) → `#004989`      | neutral.0 → `#ffffff`                          | **9.05:1**  | PASS       |
+| `surface-pressed` / `foreground` (secondary and ghost variants) | neutral.200 oklch(92.9% 0.005 247) → `#e5e8eb` | neutral.900 oklch(20.8% 0.010 247) → `#14181c` | **14.43:1** | PASS       |
+
+Notes: brand.800 sits outside the sRGB gamut; naive channel clamping and CSS
+oklch gamut mapping converge on the same sRGB result (`#004989`), so the
+ratio is stable across rendering strategies. Both pressed backgrounds are
+darker than their hover counterparts (9.05:1 vs 6.69:1 on primary), so the
+pressed state strictly increases text contrast. `surface-pressed` is shared
+by the secondary and ghost variants — one pair covers both.
