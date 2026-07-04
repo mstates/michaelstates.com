@@ -58,6 +58,12 @@ for" for the full priorities.
 - **Never** commit secrets. Tokens/keys go in `.env` (gitignored) or CI secrets.
 - **Never** modify a test to make it pass — fix the implementation (TDD discipline).
 - Use **Plan Mode** for any non-trivial change before editing files.
+- **Execute exactly the stated scope.** No refactors, reformatting, or "improvements"
+  beyond the prompt's boundary. If the correct fix requires touching anything outside
+  stated scope, STOP and report before proceeding.
+- **Self-report is not verification.** Close every task with checks against live ground
+  truth (git SHAs, rendered/compiled output, grep results), reported PASS/FAIL. A clean
+  build or a "done" summary is not proof.
 
 ## The agent studio (`.claude/agents/`)
 
