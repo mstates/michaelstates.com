@@ -19,7 +19,10 @@
   normal text, ≥ 3:1 for large text (≥ 24px, or ≥ 18.66px bold).
 - Proof is a computed contrast ratio from the measured token values (the oklch in
   `tokens/primitive/color.json`, resolved to sRGB), recorded in the PR body or the
-  component's `docs/a11y/` entry — "visually checked" is not proof. The axe gate
+  component's `docs/a11y/` entry — "visually checked" is not proof. Anchor the
+  computation to the oklch source values in float precision — hex in proof tables is a
+  display artifact, not a computation input (8-bit re-quantization shifts ratios:
+  9.05/14.43 vs 9.07/14.50 on the pressed pairs; INC-226). The axe gate
   (`pnpm test:a11y`) still checks the rendered result, but it only sees pages and stories
   it renders; the recorded ratio is the design-time contract.
 - Only token pairs: use an existing proven semantic pair (`primary`/`primary-foreground`,
