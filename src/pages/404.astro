@@ -1,22 +1,14 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { Heading, Link } from '../components';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Page not found · Michael States</title>
-	</head>
-	<body class="bg-background text-foreground">
-		<main class="mx-auto flex min-h-screen max-w-prose flex-col justify-center gap-4 px-6">
-			<Heading level={1}>Page not found</Heading>
-			<p class="text-body">The page you're looking for doesn't exist or may have moved.</p>
-			<Link href="/" variant="standalone">Return home</Link>
-		</main>
-	</body>
-</html>
+<BaseLayout
+	title="Page not found"
+	description="The page you're looking for doesn't exist or may have moved. Return to the homepage of Michael States' portfolio."
+	mainClass="mx-auto flex min-h-screen max-w-prose flex-col justify-center gap-4 px-6"
+>
+	<Heading level={1}>Page not found</Heading>
+	<p class="text-body">The page you're looking for doesn't exist or may have moved.</p>
+	<Link href="/" variant="standalone">Return home</Link>
+</BaseLayout>

@@ -6,6 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 // Static-first (no adapter) — see ADR-0001 and SETUP.md Stage 6 (Cloudflare static path).
 export default defineConfig({
+  site: 'https://michaelstates.com',
   output: 'static',
   integrations: [react()],
   vite: {

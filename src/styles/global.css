@@ -4,3 +4,40 @@
 /* Don't scan the a11y docs for class candidates — their prose quotes class names
    (e.g. ring-offset-background) and Tailwind would mint phantom dead utilities. */
 @source not "../../docs";
+
+@layer base {
+  :root {
+    /* Single-tier light token set (no dark semantics exist yet). Declaring the scheme
+       keeps native UI (form controls, scrollbars) consistently light; light-dark()
+       would be a lie until a dark tier ships through the token pipeline. */
+    color-scheme: light;
+  }
+
+  body {
+    /* Body baseline from the semantic tier. Line-height intentionally NOT set:
+       preflight's 1.5 IS the baseline — per ADR-0004 the leading.normal primitive was
+       deliberately dropped as a stock-Tailwind coincidence. */
+    font-size: var(--text-body);
+  }
+
+  /* Focus fallback for focusables without the component focusRing classes (skip link,
+     main[tabindex="-1"], plain anchors). Mirrors focusRing.ts geometry (ring-2/offset-2);
+     components override via focus-visible:outline-hidden (utilities layer wins). */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  /* Reduced motion floor: nothing animates yet; future intentional reduced-motion-safe
+     animation needs an explicit escape hatch (base-layer !important wins). */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

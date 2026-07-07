@@ -18,6 +18,14 @@ test.describe("not-found (404) accessibility", () => {
       page.getByRole("heading", { level: 1, name: "Page not found" }),
     ).toBeVisible();
 
+    await expect(page).toHaveTitle("Page not found · Michael States");
+    await expect(page.getByRole("main")).toBeVisible();
+    // Layout-level skip link present here too; keyboard operability is covered once in
+    // homepage.spec.ts (same BaseLayout code path).
+    await expect(
+      page.getByRole("link", { name: "Skip to main content" }),
+    ).toBeAttached();
+
     const results = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
       .analyze();
