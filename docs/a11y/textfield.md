@@ -203,3 +203,28 @@ non-text contrast.
   live-region first-announcement risk is dynamic and undetectable by axe); pending manual NVDA +
   Firefox verification.
 - Forced-colors / Windows HCM focus-ring remains **manual-only**.
+
+---
+
+## Addendum — 2026-07-08: danger retune + warm-ramp repoint; erratum in the 4.77 record (INC-242)
+
+**Erratum (ratified 2026-07-08).** The 4.77:1 recorded in the criterion table above for error
+text / danger border on white is reproducible by no computation path from
+`oklch(58% 0.20 27)`: the float-oklch pipeline gives **4.73:1** and the 8-bit/rendered path
+**4.75:1** (Chrome canvas readback agrees byte-for-byte, `#d73431` — and the 2026-06-26
+re-audit's own 4.74/4.746 measurements above are this same 8-bit path). This is the same
+artifact class as the 17.84-vs-17.78 default-pair adjudication in
+`docs/a11y/inc-242-design-language-proof.md`. Corrected record: **4.73 float / 4.75 8-bit**.
+
+**Danger retune.** The re-audit above asked to "re-check if the danger hue is ever retuned" —
+INC-242 (as amended) did: `functional.danger` is now `oklch(57% 0.20 27)` so error text clears
+the new warm page background with margin. Re-proven against ratified floors: danger on
+`background` **4.66:1** (floor 4.65); on `surface` (white) **4.94:1** (floor 4.9);
+`danger-foreground` on `danger` **4.94:1**.
+
+**Warm-ramp repoints** (token names unchanged; values superseded — see the proof doc):
+label/value `foreground` **16.38:1** on `background`, **17.36:1** on white `surface`;
+description/placeholder `muted-foreground` **5.37:1** on `background`, **5.69:1** on `surface`
+(was 7.55:1); `border-input` boundary **3.64:1** on `background`, **3.86:1** on `surface`
+(was 4.76:1 — reduced margin, still above the 3.0 floor); focus ring now `accent-ink`
+(terracotta.600) at **5.80:1** / **6.15:1** (was 4.96:1).

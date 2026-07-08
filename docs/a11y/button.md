@@ -191,3 +191,24 @@ ratio is stable across rendering strategies. Both pressed backgrounds are
 darker than their hover counterparts (9.05:1 vs 6.69:1 on primary), so the
 pressed state strictly increases text contrast. `surface-pressed` is shared
 by the secondary and ghost variants — one pair covers both.
+
+---
+
+## Addendum — 2026-07-08: Warm-ramp repoint supersedes surface ratios (INC-242)
+
+INC-242 re-derived every `mc.color.neutral.*` value warm (hue ≈ 78–82) and swapped the
+`background`/`surface` roles (cards now sit white above a warm page). The token **names**
+Button consumes are unchanged; the **values** behind its non-primary pairs changed, so the
+ratios recorded above are superseded for current values by
+`docs/a11y/inc-242-design-language-proof.md` (float-oklch per INC-227). Finding bodies above
+are retained verbatim per the record-keeping convention.
+
+- Secondary/ghost `foreground` on `surface` (now white): **17.36:1**.
+- `foreground` on `surface-muted` (hover): **15.69:1**; on `surface-pressed`: **14.11:1** —
+  supersedes the 2026-07-02 addendum's 14.43:1. The primary pressed pair (9.05:1) is
+  value-identical and re-proven — `brand.*` is untouched by INC-242.
+- Secondary border `input` boundary: **3.86:1** on `surface`, **3.64:1** on `background`
+  (was 4.76:1 — reduced margin, still above the 3:1 floor; flagged in the proof doc).
+- Focus ring repointed `brand.600` → `accent-ink` (terracotta.600): **5.80:1** vs
+  `background`, **6.15:1** vs `surface` (was 4.96:1) — the 1.4.11/2.4.13 margin improves.
+- Primary fill pairs (4.96 / 6.69 / 9.05) are value-identical and re-proven.

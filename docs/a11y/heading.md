@@ -336,3 +336,18 @@ Re-verified after the `--mc-*` token refactor (which repointed body line-height 
 - Issue #3 (`text-balance` on body) confirmed **resolved**. #1 (skip-levels JSDoc) remains
   **open**; #2 (dark/inverted-surface contract) is now **resolved** (see the 2026-07-01
   resolution note).
+
+---
+
+## Addendum — 2026-07-08: Warm-ramp repoint supersedes the default-pair ratio (INC-242)
+
+INC-242 re-derived the neutral ramp warm and repointed `background` to the warm off-white
+stop (`#faf8f5` display). The default pair recorded above as 17.84:1 (`text-foreground` on
+white) is superseded: the current pair computes **16.38:1**, and on the new white `surface`
+(cards) **17.36:1** (float-oklch per INC-227; `docs/a11y/inc-242-design-language-proof.md`).
+For the record, 17.84 was itself an 8-bit-rendered artifact of the old pair — the
+float-correct value was **17.78** (adjudicated in the proof doc; same drift class as
+INC-226's 9.05→9.07). Headroom remains far above the 4.5:1 and 3:1 floors at every heading
+size. The dark/inverted-surface contract flagged in Issue #2 now has real tokens behind it:
+`inverted` / `inverted-foreground` (**17.36:1**) and `inverted-foreground-muted` (**9.44:1**)
+shipped through the pipeline in INC-242.

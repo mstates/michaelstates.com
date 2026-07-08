@@ -262,3 +262,18 @@ aria-disabled="true" data-disabled="true">` with computed `tabIndex -1` — **re
   corrected in §6 / Issue #4 / Disabled State Analysis.
 - Issues #1 (standalone `min-h-6`) and #3 (ring-offset) confirmed **resolved**. #2 (icon-only)
   remains **open**. Forced-colors / Windows HCM focus-ring remains **manual-only**.
+
+---
+
+## Addendum — 2026-07-08: Warm-ramp repoint — link ratios re-proven (INC-242)
+
+INC-242 repointed `background` to a warm off-white (`#faf8f5` display) and `surface` to
+white. `text-primary` (brand.600) is value-unchanged, but its surroundings are not; re-proven
+in `docs/a11y/inc-242-design-language-proof.md` (float-oklch per INC-227):
+
+- `text-primary` on `background`: **4.68:1** (≥ 4.5:1 holds); on `surface` — the white the
+  4.96:1 above was recorded against — **4.96:1**, unchanged.
+- Hover `text-primary-hover`: **6.31:1** on `background`, **6.69:1** on `surface`.
+- Focus ring repointed `brand.600` → `accent-ink` (terracotta.600): **5.80:1** vs
+  `background`, **6.15:1** vs `surface` (recorded above as 4.96:1) — the 1.4.11 margin
+  improves. The persistent underline (1.4.1 non-color cue) is unaffected by the repoint.
