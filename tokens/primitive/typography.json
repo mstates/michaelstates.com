@@ -4,11 +4,15 @@
       "family": {
         "sans": {
           "$type": "fontFamily",
-          "$value": "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+          "$value": "'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+        },
+        "serif": {
+          "$type": "fontFamily",
+          "$value": "'Newsreader', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif"
         },
         "mono": {
           "$type": "fontFamily",
-          "$value": "ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
+          "$value": "'Space Mono', ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
         }
       }
     },
@@ -21,7 +25,9 @@
       "2xl": { "$type": "dimension", "$value": "1.5rem" },
       "3xl": { "$type": "dimension", "$value": "1.875rem" },
       "4xl": { "$type": "dimension", "$value": "2.25rem" },
-      "5xl": { "$type": "dimension", "$value": "3rem" }
+      "5xl": { "$type": "dimension", "$value": "3rem" },
+      "hero-min": { "$type": "dimension", "$value": "2.75rem" },
+      "hero-max": { "$type": "dimension", "$value": "4rem" }
     },
     "leading": {
       "tight": { "$type": "number", "$value": 1.15 },

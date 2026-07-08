@@ -2,24 +2,28 @@
 
 :root {
   --mc-color-neutral-0: oklch(100% 0 0);
-  --mc-color-neutral-50: oklch(98.4% 0.002 247);
-  --mc-color-neutral-100: oklch(96.8% 0.003 247);
-  --mc-color-neutral-200: oklch(92.9% 0.005 247);
-  --mc-color-neutral-300: oklch(86.9% 0.007 247);
-  --mc-color-neutral-400: oklch(70.7% 0.012 247);
-  --mc-color-neutral-500: oklch(55.4% 0.014 247);
-  --mc-color-neutral-600: oklch(44.6% 0.014 247);
-  --mc-color-neutral-700: oklch(37.2% 0.013 247);
-  --mc-color-neutral-800: oklch(27.9% 0.011 247);
-  --mc-color-neutral-900: oklch(20.8% 0.010 247);
-  --mc-color-neutral-950: oklch(14.5% 0.009 247);
+  --mc-color-neutral-50: oklch(97.98% 0.0045 78.3);
+  --mc-color-neutral-100: oklch(96.52% 0.0067 78.73);
+  --mc-color-neutral-200: oklch(92.97% 0.012 79.78);
+  --mc-color-neutral-300: oklch(87.78% 0.0122 79.78);
+  --mc-color-neutral-400: oklch(73.79% 0.0129 79.76);
+  --mc-color-neutral-500: oklch(60.57% 0.0135 79.74);
+  --mc-color-neutral-600: oklch(51.24% 0.0139 79.73);
+  --mc-color-neutral-700: oklch(39.58% 0.0127 81.76);
+  --mc-color-neutral-800: oklch(29.55% 0.0092 79.73);
+  --mc-color-neutral-900: oklch(21.89% 0.0065 78.18);
+  --mc-color-neutral-950: oklch(15.26% 0.0045 78.18);
   --mc-color-neutral-1000: oklch(0% 0 0);
   --mc-color-brand-400: oklch(72% 0.15 248);
   --mc-color-brand-500: oklch(62% 0.17 248);
   --mc-color-brand-600: oklch(54% 0.17 248);
   --mc-color-brand-700: oklch(47% 0.15 248);
   --mc-color-brand-800: oklch(40% 0.13 248);
-  --mc-color-functional-danger: oklch(58% 0.20 27);
+  --mc-color-terracotta-300: oklch(78.14% 0.0993 58.1);
+  --mc-color-terracotta-500: oklch(60.85% 0.1601 40.73);
+  --mc-color-terracotta-600: oklch(50.77% 0.1305 40.71);
+  --mc-color-terracotta-700: oklch(42.26% 0.1086 41.41);
+  --mc-color-functional-danger: oklch(57% 0.20 27);
   --mc-color-functional-success: oklch(62% 0.15 150);
   --mc-space-0: 0rem;
   --mc-space-1: 0.25rem;
@@ -31,8 +35,9 @@
   --mc-space-12: 3rem;
   --mc-space-16: 4rem;
   --mc-space-24: 6rem;
-  --mc-font-family-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --mc-font-family-mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  --mc-font-family-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mc-font-family-serif: 'Newsreader', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --mc-font-family-mono: 'Space Mono', ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
   --mc-size-xs: 0.75rem;
   --mc-size-sm: 0.875rem;
   --mc-size-base: 1rem;
@@ -42,6 +47,8 @@
   --mc-size-3xl: 1.875rem;
   --mc-size-4xl: 2.25rem;
   --mc-size-5xl: 3rem;
+  --mc-size-hero-min: 2.75rem;
+  --mc-size-hero-max: 4rem;
   --mc-leading-tight: 1.15;
   --mc-leading-snug: 1.3;
   --mc-leading-relaxed: 1.65;
@@ -51,31 +58,38 @@
 }
 
 @theme {
-  --color-background: var(--mc-color-neutral-0);
+  --color-inverted-foreground-muted: oklch(80.45% 0.0013 78.31); /** Solid composite of 72% white over inverted (neutral.900, #1c1a17), computed in encoded sRGB by `scripts/contrast-proof.mjs derive` — deterministic, no alpha in the token (INC-242). */
+  --color-background: var(--mc-color-neutral-50);
   --color-foreground: var(--mc-color-neutral-900);
-  --color-surface: var(--mc-color-neutral-50);
+  --color-surface: var(--mc-color-neutral-0);
   --color-surface-muted: var(--mc-color-neutral-100);
   --color-surface-pressed: var(--mc-color-neutral-200);
   --color-border: var(--mc-color-neutral-200);
   --color-input: var(--mc-color-neutral-500);
-  --color-ring: var(--mc-color-brand-600);
   --color-muted: var(--mc-color-neutral-100);
   --color-muted-foreground: var(--mc-color-neutral-600);
   --color-primary: var(--mc-color-brand-600);
   --color-primary-hover: var(--mc-color-brand-700);
   --color-primary-pressed: var(--mc-color-brand-800);
   --color-primary-foreground: var(--mc-color-neutral-0);
-  --color-accent: var(--mc-color-brand-500);
-  --color-accent-foreground: var(--mc-color-neutral-900);
+  --color-accent: var(--mc-color-terracotta-500);
+  --color-accent-foreground: var(--mc-color-neutral-0);
+  --color-accent-ink: var(--mc-color-terracotta-600);
+  --color-accent-ink-hover: var(--mc-color-terracotta-700);
   --color-danger: var(--mc-color-functional-danger);
   --color-danger-foreground: var(--mc-color-neutral-0);
   --color-success: var(--mc-color-functional-success);
   --color-success-foreground: var(--mc-color-neutral-900);
+  --color-inverted: var(--mc-color-neutral-900);
+  --color-inverted-foreground: var(--mc-color-neutral-0);
   --font-sans: var(--mc-font-family-sans);
+  --font-serif: var(--mc-font-family-serif);
   --font-mono: var(--mc-font-family-mono);
   --text-caption: var(--mc-size-sm);
   --text-body: var(--mc-size-base);
   --text-title: var(--mc-size-2xl);
   --text-display: var(--mc-size-4xl);
+  --text-hero: clamp(var(--mc-size-hero-min), 5.4vw, var(--mc-size-hero-max)); /** Fluid hero scale pinned to the Home.dc.html export (2026-07-08): clamp(44px, 5.4vw, 64px). The slope is owned at the semantic tier; the endpoints are primitives (INC-242). */
   --leading-heading: var(--mc-leading-tight);
+  --color-ring: var(--color-accent-ink);
 }

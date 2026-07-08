@@ -1,13 +1,19 @@
 {
   "font": {
     "sans": { "$type": "fontFamily", "$value": "{mc.font.family.sans}" },
+    "serif": { "$type": "fontFamily", "$value": "{mc.font.family.serif}" },
     "mono": { "$type": "fontFamily", "$value": "{mc.font.family.mono}" }
   },
   "text": {
     "caption": { "$type": "dimension", "$value": "{mc.size.sm}" },
     "body": { "$type": "dimension", "$value": "{mc.size.base}" },
     "title": { "$type": "dimension", "$value": "{mc.size.2xl}" },
-    "display": { "$type": "dimension", "$value": "{mc.size.4xl}" }
+    "display": { "$type": "dimension", "$value": "{mc.size.4xl}" },
+    "hero": {
+      "$type": "dimension",
+      "$value": "clamp({mc.size.hero-min}, 5.4vw, {mc.size.hero-max})",
+      "$description": "Fluid hero scale pinned to the Home.dc.html export (2026-07-08): clamp(44px, 5.4vw, 64px). The slope is owned at the semantic tier; the endpoints are primitives (INC-242)."
+    }
   },
   "leading": {
     "heading": { "$type": "number", "$value": "{mc.leading.tight}" }

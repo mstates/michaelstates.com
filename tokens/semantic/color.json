@@ -1,13 +1,13 @@
 {
   "color": {
-    "background": { "$type": "color", "$value": "{mc.color.neutral.0}" },
+    "background": { "$type": "color", "$value": "{mc.color.neutral.50}" },
     "foreground": { "$type": "color", "$value": "{mc.color.neutral.900}" },
-    "surface": { "$type": "color", "$value": "{mc.color.neutral.50}" },
+    "surface": { "$type": "color", "$value": "{mc.color.neutral.0}" },
     "surface-muted": { "$type": "color", "$value": "{mc.color.neutral.100}" },
     "surface-pressed": { "$type": "color", "$value": "{mc.color.neutral.200}" },
     "border": { "$type": "color", "$value": "{mc.color.neutral.200}" },
     "input": { "$type": "color", "$value": "{mc.color.neutral.500}" },
-    "ring": { "$type": "color", "$value": "{mc.color.brand.600}" },
+    "ring": { "$type": "color", "$value": "{color.accent-ink}" },
     "muted": { "$type": "color", "$value": "{mc.color.neutral.100}" },
     "muted-foreground": {
       "$type": "color",
@@ -20,10 +20,15 @@
       "$type": "color",
       "$value": "{mc.color.neutral.0}"
     },
-    "accent": { "$type": "color", "$value": "{mc.color.brand.500}" },
+    "accent": { "$type": "color", "$value": "{mc.color.terracotta.500}" },
     "accent-foreground": {
       "$type": "color",
-      "$value": "{mc.color.neutral.900}"
+      "$value": "{mc.color.neutral.0}"
+    },
+    "accent-ink": { "$type": "color", "$value": "{mc.color.terracotta.600}" },
+    "accent-ink-hover": {
+      "$type": "color",
+      "$value": "{mc.color.terracotta.700}"
     },
     "danger": { "$type": "color", "$value": "{mc.color.functional.danger}" },
     "danger-foreground": { "$type": "color", "$value": "{mc.color.neutral.0}" },
@@ -31,6 +36,16 @@
     "success-foreground": {
       "$type": "color",
       "$value": "{mc.color.neutral.900}"
+    },
+    "inverted": { "$type": "color", "$value": "{mc.color.neutral.900}" },
+    "inverted-foreground": {
+      "$type": "color",
+      "$value": "{mc.color.neutral.0}"
+    },
+    "inverted-foreground-muted": {
+      "$type": "color",
+      "$value": "oklch(80.45% 0.0013 78.31)",
+      "$description": "Solid composite of 72% white over inverted (neutral.900, #1c1a17), computed in encoded sRGB by `scripts/contrast-proof.mjs derive` — deterministic, no alpha in the token (INC-242)."
     }
   }
 }

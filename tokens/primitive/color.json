@@ -3,17 +3,17 @@
     "color": {
       "neutral": {
         "0": { "$type": "color", "$value": "oklch(100% 0 0)" },
-        "50": { "$type": "color", "$value": "oklch(98.4% 0.002 247)" },
-        "100": { "$type": "color", "$value": "oklch(96.8% 0.003 247)" },
-        "200": { "$type": "color", "$value": "oklch(92.9% 0.005 247)" },
-        "300": { "$type": "color", "$value": "oklch(86.9% 0.007 247)" },
-        "400": { "$type": "color", "$value": "oklch(70.7% 0.012 247)" },
-        "500": { "$type": "color", "$value": "oklch(55.4% 0.014 247)" },
-        "600": { "$type": "color", "$value": "oklch(44.6% 0.014 247)" },
-        "700": { "$type": "color", "$value": "oklch(37.2% 0.013 247)" },
-        "800": { "$type": "color", "$value": "oklch(27.9% 0.011 247)" },
-        "900": { "$type": "color", "$value": "oklch(20.8% 0.010 247)" },
-        "950": { "$type": "color", "$value": "oklch(14.5% 0.009 247)" },
+        "50": { "$type": "color", "$value": "oklch(97.98% 0.0045 78.3)" },
+        "100": { "$type": "color", "$value": "oklch(96.52% 0.0067 78.73)" },
+        "200": { "$type": "color", "$value": "oklch(92.97% 0.012 79.78)" },
+        "300": { "$type": "color", "$value": "oklch(87.78% 0.0122 79.78)" },
+        "400": { "$type": "color", "$value": "oklch(73.79% 0.0129 79.76)" },
+        "500": { "$type": "color", "$value": "oklch(60.57% 0.0135 79.74)" },
+        "600": { "$type": "color", "$value": "oklch(51.24% 0.0139 79.73)" },
+        "700": { "$type": "color", "$value": "oklch(39.58% 0.0127 81.76)" },
+        "800": { "$type": "color", "$value": "oklch(29.55% 0.0092 79.73)" },
+        "900": { "$type": "color", "$value": "oklch(21.89% 0.0065 78.18)" },
+        "950": { "$type": "color", "$value": "oklch(15.26% 0.0045 78.18)" },
         "1000": { "$type": "color", "$value": "oklch(0% 0 0)" }
       },
       "brand": {
@@ -23,8 +23,14 @@
         "700": { "$type": "color", "$value": "oklch(47% 0.15 248)" },
         "800": { "$type": "color", "$value": "oklch(40% 0.13 248)" }
       },
+      "terracotta": {
+        "300": { "$type": "color", "$value": "oklch(78.14% 0.0993 58.1)" },
+        "500": { "$type": "color", "$value": "oklch(60.85% 0.1601 40.73)" },
+        "600": { "$type": "color", "$value": "oklch(50.77% 0.1305 40.71)" },
+        "700": { "$type": "color", "$value": "oklch(42.26% 0.1086 41.41)" }
+      },
       "functional": {
-        "danger": { "$type": "color", "$value": "oklch(58% 0.20 27)" },
+        "danger": { "$type": "color", "$value": "oklch(57% 0.20 27)" },
         "success": { "$type": "color", "$value": "oklch(62% 0.15 150)" }
       }
     }
