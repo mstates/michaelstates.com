@@ -19,3 +19,13 @@
   # HSTS: enforce HTTPS. Add "; preload" only once you're certain every
   # subdomain is HTTPS-only — preload is hard to reverse.
   Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# Noindex every *.pages.dev host — the bare production alias and all preview
+# hosts. Host-scoped on purpose: the literal ".pages.dev" suffix in the matcher
+# makes these rules structurally inert on the custom domain after the Stage 8
+# cutover, even though this file ships with every build. INC-235 / audit P5.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
