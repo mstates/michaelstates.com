@@ -1,0 +1,5 @@
+# Point-in-time records, published verbatim — the formatter must never touch them.
+# Scope-enforces the verbatim rule documented in docs/build-journal/0007-proof-travels.md
+# (entry 0007 itself is not prettier-stable: it contains *and*, which prettier would
+# rewrite to _and_, silently breaking byte-identity with the published mirror).
+docs/build-journal/
