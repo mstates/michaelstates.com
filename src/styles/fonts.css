@@ -1,0 +1,171 @@
+/* Brand webfonts — INC-242 phase 2 (ADR 0008 serving strategy).
+   Self-hosted latin-subset woff2 from Fontsource prebuilt static files
+   (Newsreader v5.2.10, Plus Jakarta Sans v5.2.8, Space Mono v5.2.9 — all
+   SIL OFL 1.1; per-family LICENSE files sit alongside the fonts in
+   public/fonts/). Version-suffixed filenames + the /fonts/* immutable
+   stanza in public/_headers make every file cache-forever safe.
+
+   font-display: swap on every face — text is never invisible (no FOIT);
+   the three above-the-fold faces (Newsreader 500, Jakarta 400, Space Mono
+   700) are additionally preloaded from BaseLayout.astro. The latin
+   unicode-range below is the canonical range these subset builds cover
+   (verified against the upstream Google Fonts css2 response for the same
+   families). */
+
+/* ---------- Newsreader — display & headings (serif) ---------- */
+
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/newsreader-latin-500-normal-v5.2.10.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/newsreader-latin-600-normal-v5.2.10.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Newsreader";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/newsreader-latin-500-italic-v5.2.10.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---------- Plus Jakarta Sans — body & UI (sans) ---------- */
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/plus-jakarta-sans-latin-400-normal-v5.2.8.woff2")
+    format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/plus-jakarta-sans-latin-600-normal-v5.2.8.woff2")
+    format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/plus-jakarta-sans-latin-700-normal-v5.2.8.woff2")
+    format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---------- Space Mono — eyebrow / stats / code accents (mono) ---------- */
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/space-mono-latin-400-normal-v5.2.9.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/space-mono-latin-700-normal-v5.2.9.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---------- Metric-adjusted local fallbacks (CLS tuning, ADR 0006) ----------
+
+   One fallback face per family, sized so the swap from local fallback to
+   webfont occupies the same space (capsize method: size-adjust matches
+   average advance widths; ascent/descent/line-gap follow, divided by the
+   size-adjust). Values computed from @capsizecss/metrics@4.1.0
+   (entireMetricsCollection/<family>/index.mjs), never eyeballed.
+
+   These faces take effect because the font-family token stacks reference
+   them immediately after each primary face ('Newsreader', 'Newsreader
+   Fallback', ui-serif, …); the stack activation lands in the companion
+   feat(tokens) commit.
+
+   Newsreader 500 (UPM 2000, ascent 1470, descent -530, lineGap 0,
+   xWidthAvg 877) vs Georgia (UPM 2048, ascent 1878, descent -449,
+   lineGap 0, xWidthAvg 913). Georgia is the first metrics-available font
+   in the serif chain (ui-serif has no published metrics). */
+@font-face {
+  font-family: "Newsreader Fallback";
+  src: local("Georgia");
+  size-adjust: 98.3623%;
+  ascent-override: 74.7237%;
+  descent-override: 26.9412%;
+  line-gap-override: 0%;
+}
+
+/* Plus Jakarta Sans 400 (UPM 1000, ascent 1038, descent -222, lineGap 0,
+   xWidthAvg 468) vs Arial (UPM 2048, ascent 1854, descent -434, lineGap 67,
+   xWidthAvg 913). Arial is the metrics-available anchor of the sans chain. */
+@font-face {
+  font-family: "Plus Jakarta Sans Fallback";
+  src: local("Arial");
+  size-adjust: 104.9796%;
+  ascent-override: 98.8763%;
+  descent-override: 21.147%;
+  line-gap-override: 0%;
+}
+
+/* Space Mono 400 (UPM 1000, ascent 1120, descent -361, lineGap 0,
+   xWidthAvg 612) vs Courier New (UPM 2048, ascent 1705, descent -615,
+   lineGap 0, xWidthAvg 1229). Deviation, documented: the mono chain's
+   Menlo/Consolas/Liberation Mono have no published capsize metrics
+   (proprietary); Courier New is the cross-platform mono with published
+   metrics, and fixed-pitch advance widths make the match tight. */
+@font-face {
+  font-family: "Space Mono Fallback";
+  src: local("Courier New");
+  size-adjust: 101.9834%;
+  ascent-override: 109.8218%;
+  descent-override: 35.3979%;
+  line-gap-override: 0%;
+}

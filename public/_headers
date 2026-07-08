@@ -6,6 +6,11 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Self-hosted webfonts are version-suffixed — same immutability contract.
+# INC-242 (ADR 0008).
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
 # HTML should always revalidate so deploys show up immediately.
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
