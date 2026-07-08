@@ -4,15 +4,15 @@
       "family": {
         "sans": {
           "$type": "fontFamily",
-          "$value": "'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+          "$value": "'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
         },
         "serif": {
           "$type": "fontFamily",
-          "$value": "'Newsreader', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif"
+          "$value": "'Newsreader', 'Newsreader Fallback', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif"
         },
         "mono": {
           "$type": "fontFamily",
-          "$value": "'Space Mono', ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
+          "$value": "'Space Mono', 'Space Mono Fallback', ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace"
         }
       }
     },

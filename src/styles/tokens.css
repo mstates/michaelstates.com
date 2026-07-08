@@ -35,9 +35,9 @@
   --mc-space-12: 3rem;
   --mc-space-16: 4rem;
   --mc-space-24: 6rem;
-  --mc-font-family-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --mc-font-family-serif: 'Newsreader', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --mc-font-family-mono: 'Space Mono', ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  --mc-font-family-sans: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mc-font-family-serif: 'Newsreader', 'Newsreader Fallback', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --mc-font-family-mono: 'Space Mono', 'Space Mono Fallback', ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
   --mc-size-xs: 0.75rem;
   --mc-size-sm: 0.875rem;
   --mc-size-base: 1rem;
