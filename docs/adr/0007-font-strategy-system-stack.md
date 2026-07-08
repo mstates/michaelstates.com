@@ -1,6 +1,6 @@
 # ADR 0007: Font strategy — system stack, no webfont
 
-- Status: Accepted
+- Status: Superseded by ADR 0008 (2026-07-08, docs/adr/0008-font-strategy-brand-webfonts.md)
 - Date: 2026-07-07
 - Relates to: Stage 5 readiness audit P4 (docs/research/03-stage5-readiness-audit.md); tokens/primitive/typography.json
 

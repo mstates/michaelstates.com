@@ -8,4 +8,6 @@ ADR 0004 records the token-namespace collision (private --mc-\* primitives +
 stock-utility adoption); ADR 0005 records the ESLint flat config (ESLint 9 island,
 native jsx-a11y on the React islands); ADR 0006 records the Lighthouse CI thresholds
 (accessibility is the blocking gate, verified 100); ADR 0007 records the font strategy
-(system stack, no webfont; reopen trigger: a named brand font).
+(system stack, no webfont; reopen trigger: a named brand font); ADR 0008 records the
+brand-webfont adoption (self-hosted Newsreader, Plus Jakarta Sans, Space Mono;
+supersedes ADR 0007).
