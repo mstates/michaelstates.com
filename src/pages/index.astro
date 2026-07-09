@@ -9,8 +9,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const stats: { value: string; label: string; accent?: boolean }[] = [
 	{ value: '15+', label: 'Years in the field' },
 	{ value: '4,500+', label: 'People trained' },
-	{ value: '92%', label: 'Defect reduction', accent: true },
-	{ value: 'CPWA', label: 'IAAP certified' },
+	{ value: '92%', label: 'Accessibility defect reduction', accent: true },
+	{ value: 'IAAP', label: 'Certified (CPWA)' },
 ];
 
 const clients = ['Walmart', 'Netflix', 'Nike', 'Disney', 'Allyant', 'Fidelity', 'AT&T', 'Zillow'];
@@ -96,7 +96,7 @@ const footerLink =
 			id="hero-h"
 			class="max-w-2xl font-serif text-hero font-medium leading-heading tracking-tight text-balance"
 		>
-			I design — and ship — products that work for everyone.
+			I design and ship products that work for everyone.
 		</h1>
 		<p class="mt-6 max-w-xl text-lg leading-relaxed text-foreground">
 			Fifteen years across design and engineering, focused on one thing: experiences that hold up
@@ -129,7 +129,7 @@ const footerLink =
 				}
 			</dl>
 			<p class="max-w-sm font-mono text-caption leading-relaxed text-muted-foreground">
-				Trusted by teams at<br />
+				Worked with teams at<br />
 				<span class="font-bold text-foreground">{clients.join(' · ')}</span>
 			</p>
 		</div>
