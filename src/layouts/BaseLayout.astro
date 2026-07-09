@@ -1,6 +1,11 @@
 ---
 import '../styles/global.css';
 
+// Named slots (INC-243): "header" renders between the skip link and <main> so a page
+// header lands outside main with its native banner role; "footer" renders after
+// </main> (contentinfo). Both are placed flush against the adjacent tags because an
+// unfilled slot must emit zero bytes — pages that don't use them (404) keep
+// byte-identical output.
 interface Props {
 	/** Page title; rendered as `${title} · Michael States` unless titleSuffix is false. */
 	title: string;
@@ -37,7 +42,6 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).href;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
 		<!-- Above-the-fold brand faces only (INC-242 / ADR 0008): Newsreader 500
 		     (hero/headings), Jakarta 400 (body), Space Mono 700 (eyebrow).
 		     crossorigin is required for font preloads even same-origin. -->
@@ -77,9 +81,9 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).href;
 			class="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:inline-flex focus:min-h-6 focus:items-center focus:rounded-sm focus:border focus:border-border focus:bg-background focus:px-4 focus:py-2 focus:text-body focus:text-foreground focus:underline"
 		>
 			Skip to main content
-		</a>
+		</a><slot name="header" />
 		<main id="main" tabindex="-1" class={mainClass}>
 			<slot />
-		</main>
+		</main><slot name="footer" />
 	</body>
 </html>

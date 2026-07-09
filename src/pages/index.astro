@@ -1,5 +1,70 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// INC-243 homepage shell. Zero-hydration by contract (B4): every interactive element
+// is a native link; no client:* directives, no <style>/<script> blocks. All hrefs are
+// on-page anchors, "/", or the real mailto — routes that don't exist yet ship without
+// link affordance (decision log in the PR body).
+
+const stats: { value: string; label: string; accent?: boolean }[] = [
+	{ value: '15+', label: 'Years in the field' },
+	{ value: '4,500+', label: 'People trained' },
+	{ value: '92%', label: 'Defect reduction', accent: true },
+	{ value: 'CPWA', label: 'IAAP certified' },
+];
+
+const clients = ['Walmart', 'Netflix', 'Nike', 'Disney', 'Allyant', 'Fidelity', 'AT&T', 'Zillow'];
+
+const cases = [
+	{
+		title: 'Redesigning how millions see prices',
+		outcome:
+			'A color-only sale price failed colorblind and screen-reader shoppers. Fixed at the system level, across three platforms.',
+		tags: ['Figma', 'WCAG 2.2', 'Cross-platform'],
+	},
+	{
+		title: 'Making membership accessible to everyone',
+		outcome:
+			'A signup flow rebuilt around research with assistive-tech users — and validated with A/B testing at scale.',
+		tags: ['User research', 'A/B testing'],
+	},
+	{
+		title: 'Building the tools that scale accessibility',
+		outcome:
+			"Internal tooling that turns one expert's judgment into something every team can run — audits included.",
+		tags: ['React', 'AI automation'],
+	},
+];
+
+const services = [
+	{
+		title: 'Accessibility audits',
+		description:
+			"WCAG 2.2 audits that come back as fixes, not findings — prioritized, scoped, and written for the engineers who'll ship them.",
+	},
+	{
+		title: 'Design systems',
+		description:
+			'Accessible components built once, correctly — tokens, patterns, and documentation that keep every product AA by default.',
+	},
+	{
+		title: 'Team training',
+		description:
+			'Hands-on workshops for designers and engineers — 4,500+ people trained, with defect rates that stay down after I leave.',
+	},
+];
+
+// Shared class recipes. Colors are semantic tokens only; every pair's computed ratio
+// is recorded in the PR body per the surface-contract rule.
+const eyebrow = 'font-mono text-caption font-bold uppercase tracking-widest';
+const sectionH2 = 'font-serif text-display font-semibold leading-heading tracking-tight text-balance';
+const pillPrimary =
+	'inline-flex items-center rounded-full bg-accent-ink text-body font-bold text-accent-foreground transition-colors hover:bg-accent-ink-hover';
+const pillOutline =
+	'inline-flex items-center rounded-full border border-input text-body font-bold text-foreground transition-colors hover:bg-surface-muted';
+const navLink = 'inline-flex min-h-6 items-center text-body font-semibold text-foreground hover:underline';
+const footerLink =
+	'inline-flex min-h-6 items-center text-caption font-semibold text-muted-foreground hover:text-foreground hover:underline';
 ---
 
 <BaseLayout
@@ -7,5 +72,178 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	titleSuffix={false}
 	description="Portfolio of Michael States — accessibility-first front-end engineering, with the design decisions and reasoning behind it."
 >
-	<h1 class="text-display font-bold">Astro</h1>
+	<header slot="header" class="sticky top-0 z-40 border-b border-border bg-background">
+		<nav
+			aria-label="Primary"
+			class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-4 sm:px-10"
+		>
+			<a href="/" class="inline-flex min-h-6 items-center gap-2.5 text-body font-bold text-foreground">
+				<span aria-hidden="true" class="size-6 rounded-md bg-accent"></span>
+				Michael States
+			</a>
+			<div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+				<a href="#work" class={navLink}>Work</a>
+				<a href="#services" class={navLink}>Services</a>
+				<a href="#about" class={navLink}>About</a>
+				<a href="#contact" class={`${pillPrimary} px-5 py-2.5`}>Work with me</a>
+			</div>
+		</nav>
+	</header>
+
+	<section aria-labelledby="hero-h" class="mx-auto max-w-6xl px-6 pb-16 pt-20 sm:px-10">
+		<p class={`${eyebrow} mb-5 text-accent-ink`}>Accessibility Design Engineer</p>
+		<h1
+			id="hero-h"
+			class="max-w-2xl font-serif text-hero font-medium leading-heading tracking-tight text-balance"
+		>
+			I design — and ship — products that work for everyone.
+		</h1>
+		<p class="mt-6 max-w-xl text-lg leading-relaxed text-foreground">
+			Fifteen years across design and engineering, focused on one thing: experiences that hold up
+			for every user, on every device, with any assistive tech. From Figma to production code.
+		</p>
+		<div class="mt-8 flex flex-wrap gap-3.5">
+			<a href="#contact" class={`${pillPrimary} px-7 py-3.5`}>Work with me</a>
+			<a href="#work" class={`${pillOutline} px-7 py-3.5`}>See case studies</a>
+		</div>
+	</section>
+
+	<section aria-label="Credentials" class="border-y border-border bg-surface">
+		<div
+			class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-12 gap-y-8 px-6 py-9 sm:px-10"
+		>
+			<dl class="flex flex-wrap gap-x-14 gap-y-8">
+				{
+					stats.map((stat) => (
+						<div class="flex flex-col-reverse gap-2">
+							<dt class={`${eyebrow} text-muted-foreground`}>{stat.label}</dt>
+							<dd
+								class={`font-serif text-display font-semibold leading-none tracking-tight ${
+									stat.accent ? 'text-accent-ink' : 'text-foreground'
+								}`}
+							>
+								{stat.value}
+							</dd>
+						</div>
+					))
+				}
+			</dl>
+			<p class="max-w-sm font-mono text-caption leading-relaxed text-muted-foreground">
+				Trusted by teams at<br />
+				<span class="font-bold text-foreground">{clients.join(' · ')}</span>
+			</p>
+		</div>
+	</section>
+
+	<section id="work" aria-labelledby="work-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
+		<p class={`${eyebrow} mb-3.5 text-muted-foreground`}>Featured work</p>
+		<h2 id="work-h" class={`${sectionH2} max-w-xl`}>Case studies with the receipts</h2>
+		<ul role="list" class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				cases.map((c) => (
+					<li class="flex flex-col gap-2.5 rounded-2xl border border-border bg-surface p-6 shadow-sm">
+						<h3 class="font-serif text-title font-semibold leading-heading tracking-tight text-balance">
+							{c.title}
+						</h3>
+						<p class="flex-1 text-body text-muted-foreground">{c.outcome}</p>
+						<div class="mt-1.5 flex flex-wrap gap-2">
+							{c.tags.map((tag) => (
+								<span class="rounded-full border border-border px-3 py-1 font-mono text-caption text-muted-foreground">
+									{tag}
+								</span>
+							))}
+						</div>
+					</li>
+				))
+			}
+		</ul>
+		<aside
+			aria-label="Note about NDA work"
+			class="mt-6 flex flex-wrap items-baseline gap-3.5 rounded-2xl border border-dashed border-border px-6 py-5"
+		>
+			<span class={`${eyebrow} text-accent-ink`}>NDA</span>
+			<p class="min-w-64 flex-1 text-body text-foreground">
+				Much of my recent work lives behind NDAs. These cards show the shape of it —
+				<a href="#contact" class="font-bold text-accent-ink underline hover:text-accent-ink-hover"
+					>book a call</a
+				> and I'll walk you through the depth.
+			</p>
+		</aside>
+	</section>
+
+	<section
+		id="services"
+		aria-labelledby="services-h"
+		class="mx-auto max-w-6xl px-6 pt-24 sm:px-10"
+	>
+		<p class={`${eyebrow} mb-3.5 text-muted-foreground`}>How I can help</p>
+		<h2 id="services-h" class={`${sectionH2} max-w-xl`}>Three ways teams bring me in</h2>
+		<div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				services.map((service) => (
+					<div class="rounded-b-2xl border border-border border-t-4 border-t-accent bg-surface p-7">
+						<h3 class="font-serif text-title font-semibold leading-heading tracking-tight">
+							{service.title}
+						</h3>
+						<p class="mt-2.5 text-body leading-relaxed text-muted-foreground">{service.description}</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<section id="about" aria-labelledby="about-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
+		<div class="border-t border-border pt-16">
+			<p class={`${eyebrow} mb-3.5 text-muted-foreground`}>About</p>
+			<h2 id="about-h" class={`${sectionH2} max-w-xl`}>
+				Engineer turned designer. Designer turned advocate.
+			</h2>
+			<p class="mt-5 max-w-xl text-lg leading-relaxed text-foreground">
+				I started in code, moved into design, and found the work that matters in the space between:
+				making sure the things we ship actually work for the people usually left out. That's been
+				the through-line for fifteen years.
+			</p>
+		</div>
+	</section>
+
+	<section
+		id="contact"
+		aria-labelledby="contact-h"
+		class="mx-auto max-w-6xl px-6 py-24 sm:px-10"
+	>
+		<div class="rounded-3xl bg-inverted p-10 text-inverted-foreground sm:p-16">
+			<p class={`${eyebrow} mb-3.5 text-inverted-foreground-muted`}>Work with me</p>
+			<h2 id="contact-h" class="max-w-2xl font-serif text-display font-medium leading-heading tracking-tight text-balance">
+				Hiring for a role, or need an accessibility partner? Let's talk.
+			</h2>
+			<p class="mt-5 max-w-xl text-body leading-relaxed text-inverted-foreground-muted">
+				A 20-minute call is enough to tell whether I'm the right fit — and I'll walk you through
+				the NDA work live.
+			</p>
+			<div class="mt-8">
+				<a
+					href="mailto:hello@michaelstates.com"
+					class="inline-flex items-center rounded-full bg-inverted-foreground px-7 py-3.5 text-body font-bold text-inverted transition-colors hover:bg-inverted-foreground-muted focus-visible:outline-inverted-foreground"
+				>
+					hello@michaelstates.com
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<footer slot="footer" class="border-t border-border bg-surface-muted">
+		<div
+			class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-6 py-8 sm:px-10"
+		>
+			<p class="text-caption text-muted-foreground">
+				© 2026 Michael States · Designed &amp; built to be accessible
+			</p>
+			<nav aria-label="Footer" class="flex flex-wrap gap-x-5 gap-y-2">
+				<a href="#work" class={footerLink}>Work</a>
+				<a href="#services" class={footerLink}>Services</a>
+				<a href="#about" class={footerLink}>About</a>
+				<a href="#contact" class={footerLink}>Hire</a>
+			</nav>
+		</div>
+	</footer>
 </BaseLayout>

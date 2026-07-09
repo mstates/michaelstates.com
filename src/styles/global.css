@@ -21,6 +21,23 @@
     font-size: var(--text-body);
   }
 
+  /* SC 2.4.11 Focus Not Obscured (INC-243 amendment): the homepage header is sticky.
+     Root scroll-padding clears it for BOTH fragment navigation and focus-driven
+     scrolls in every engine — per-target scroll-margin only covers the former, which
+     is why the per-section scroll-mt-24 utilities collapsed into this (keeping both
+     would double the anchor offset). Sized to the measured header: single row is
+     ≤77px above 40rem (6rem clears it); the nav wraps to ≤141px below 40rem, so the
+     offset steps up. */
+  html {
+    scroll-padding-top: 6rem;
+  }
+
+  @media (max-width: 40rem) {
+    html {
+      scroll-padding-top: 9.5rem;
+    }
+  }
+
   /* Focus fallback for focusables without the component focusRing classes (skip link,
      main[tabindex="-1"], plain anchors). Mirrors focusRing.ts geometry (ring-2/offset-2);
      components override via focus-visible:outline-hidden (utilities layer wins). */
