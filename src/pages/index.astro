@@ -3,8 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 // INC-243 homepage shell. Zero-hydration by contract (B4): every interactive element
 // is a native link; no client:* directives, no <style>/<script> blocks. All hrefs are
-// on-page anchors, "/", or the real mailto — routes that don't exist yet ship without
-// link affordance (decision log in the PR body).
+// on-page anchors, "/", the real mailto, or the external proof links (INC-245) —
+// routes that don't exist yet ship without link affordance (decision log in the PR body).
 
 const stats: { value: string; label: string; accent?: boolean }[] = [
 	{ value: '15+', label: 'Years in the field' },
@@ -243,6 +243,8 @@ const footerLink =
 				<a href="#services" class={footerLink}>Services</a>
 				<a href="#about" class={footerLink}>About</a>
 				<a href="#contact" class={footerLink}>Hire</a>
+				<a href="https://github.com/mstates/michaelstates.com" class={footerLink}>GitHub</a>
+				<a href="https://www.linkedin.com/in/mstates/" rel="me" class={footerLink}>LinkedIn</a>
 			</nav>
 		</div>
 	</footer>
