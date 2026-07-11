@@ -24,6 +24,7 @@
   "_comment": "Dependencies are pinned all-exact (no caret ranges) by deliberate decision — edit versions explicitly and treat the pnpm lockfile as authoritative; this project does not use `astro add` / range resolution. The scripts below are the command contract the studio expects — do not remove them; some tools (eslint, vitest, Playwright + axe, lhci) are installed at SETUP.md Stage 6.",
   "dependencies": {
     "@astrojs/react": "5.0.7",
+    "@astrojs/sitemap": "3.7.3",
     "@tailwindcss/vite": "4.3.1",
     "astro": "6.4.8",
     "react": "19.2.7",
