@@ -277,3 +277,25 @@ in `docs/a11y/inc-242-design-language-proof.md` (float-oklch per INC-227):
 - Focus ring repointed `brand.600` → `accent-ink` (terracotta.600): **5.80:1** vs
   `background`, **6.15:1** vs `surface` (recorded above as 4.96:1) — the 1.4.11 margin
   improves. The persistent underline (1.4.1 non-color cue) is unaffected by the repoint.
+
+---
+
+## Addendum — 2026-07-10: Brand retirement — link color repointed to terracotta (INC-244)
+
+INC-244 deleted the legacy blue `mc.color.brand.*` ramp; `text-primary` now resolves to
+terracotta.600 and `text-primary-hover` to terracotta.700 — the same stops the focus ring
+adopted in INC-242. The SC 1.4.3 ratios recorded above are superseded for current values by
+`docs/a11y/inc-244-brand-retirement-proof.md` (float-oklch per INC-227). Finding bodies
+above are retained verbatim per the record-keeping convention.
+
+- `text-primary` on `background`: **5.80:1** (was 4.68); on `surface`: **6.15:1**
+  (was 4.96) — the 1.4.3 margin improves in both contexts.
+- Hover `text-primary-hover`: **8.27:1** on `background` (was 6.31), **8.77:1** on
+  `surface` (was 6.69).
+- Link text and focus ring now share the terracotta.600 stop (`primary` = `accent-ink`),
+  so text and ring are chromatically identical by construction; the ring ratios in the
+  2026-07-08 addendum are unchanged. The persistent underline (1.4.1 non-color cue) is
+  unaffected.
+- Rendered check (Chromium computed style): built `/404` "Return home" and the Storybook
+  Standalone story both compute `#a14622` (terracotta.600) with the underline present;
+  axe suite 6/6 with zero A/AA violations.

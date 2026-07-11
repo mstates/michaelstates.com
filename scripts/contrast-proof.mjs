@@ -342,6 +342,14 @@ const MUTED_ON_INVERTED_ALPHA = 0.72; // 72% white over the block (ticket fact 3
 // text clears 4.5:1 on the warm background with margin. Verification floors
 // ratified with it: ≥ 4.65 vs background, ≥ 4.9 vs surface.
 const DANGER_RETUNED = "oklch(57% 0.20 27)";
+// Ratified 2026-07-10 (INC-244): terracotta.800 extends the ramp so primary-pressed
+// survives the brand retirement. DERIVED, not sampled (no Home.dc source hex → no
+// round-trip gate): L continues the ramp's geometric progression, C the dark-end
+// C∝L coupling (C/L ≈ 0.00257 at both 600 and 700), H holds the 700 hue (dark-end
+// hue is flat within hex-quantization noise). Gates in derive(): the recomputation
+// must reproduce this authored value, white-on-800 must clear the 4.5:1 pressed-pair
+// floor, and the stop must be in-gamut (the retired brand.800 was not).
+const TERRACOTTA_800 = "oklch(35.22% 0.0905 41.41)";
 // Pre-INC-242 neutral-ramp oklab-L per stop (tokens @ b4ad5c5) — the
 // HISTORICAL input that fixes each in-between stop's position between its
 // bracketing anchors. Pinned so the derivation is reproducible after the
@@ -486,6 +494,37 @@ function derive() {
   );
   if (rBg < 4.65 || rSurf < 4.9) anyFail = true;
 
+  // INC-244: recompute the terracotta.800 extension from the token-precision
+  // 500/600/700 anchors and gate the authored constant against it (the derivation
+  // gate stands in for the round-trip gate a sampled stop would get).
+  const anchor = (stop) => parseOklch(oklchToken(hexToOklch(TERRACOTTA[stop])));
+  const a5 = anchor(500);
+  const a6 = anchor(600);
+  const a7 = anchor(700);
+  const rGeo = Math.sqrt((a6.L / a5.L) * (a7.L / a6.L));
+  const L800 = a7.L * rGeo;
+  const slope = (a6.C / a6.L + a7.C / a7.L) / 2;
+  const recomputed = oklchToken({ L: L800, C: slope * L800, H: a7.H });
+  const match = recomputed === TERRACOTTA_800;
+  const rPressed = ratioFloat("oklch(100% 0 0)", TERRACOTTA_800);
+  const inGamut = oklchToLinearSrgb(parseOklch(TERRACOTTA_800)).every(
+    (c) => c >= -1e-4 && c <= 1 + 1e-4,
+  );
+  console.log("\n## terracotta.800 extension (ratified 2026-07-10, INC-244)\n");
+  console.log(
+    `geometric L ratio ${rGeo.toFixed(6)} → L ${(L800 * 100).toFixed(4)}%; ` +
+      `dark-end C/L ${slope.toFixed(6)} → C ${(slope * L800).toFixed(6)}; ` +
+      `H held from 700 → \`${recomputed}\` — ` +
+      `authored \`${TERRACOTTA_800}\` ${match ? "OK" : "FAIL (recomputation drifted)"}`,
+  );
+  console.log(
+    `white / terracotta.800: ${rPressed.toFixed(4)} float ` +
+      `(pressed text pair, floor 4.5) ${rPressed >= 4.5 ? "OK" : "FAIL"}; ` +
+      `display ${oklchToHex(TERRACOTTA_800)}; ` +
+      `in-gamut ${inGamut ? "OK — the retired brand.800 was not" : "FAIL"}`,
+  );
+  if (!match || rPressed < 4.5 || !inGamut) anyFail = true;
+
   if (anyFail) {
     console.log(
       "\nSTOP: a round-trip failed — raise token precision before use.",
@@ -498,7 +537,7 @@ function derive() {
 // Mode: prove — full-ramp proof table over the (edited) semantic tier.
 // Normative rows carry a WCAG threshold; informational rows document pairs
 // with no normative requirement (border is never the sole indicator today;
-// success has no text usage; terracotta.300 has no semantic consumer yet).
+// success has no text usage).
 // ---------------------------------------------------------------------------
 
 function prove() {
@@ -553,6 +592,7 @@ function prove() {
     ["success-foreground", "success", 4.5, "text"],
     ["inverted-foreground", "inverted", 4.5, "text (inverted pair)"],
     ["inverted-foreground-muted", "inverted", 4.5, "text (inverted muted)"],
+    ["inverted-accent", "inverted", 3.0, "on-dark accent, large/fill"],
     [
       "success",
       "background",
@@ -579,15 +619,6 @@ function prove() {
       `| ${fg} | ${bg} | ${r.toFixed(2)} | ${min === null ? "—" : `≥ ${min}:1`} (${label}) | ${verdict} |`,
     );
   }
-
-  // On-dark accent: primitive-only this phase (no semantic consumer until the
-  // shell ticket); proven here so the value ships pre-proven.
-  const t300 = resolve("mc.color.terracotta.300");
-  const rInv = ratioFloat(t300, S("inverted"));
-  console.log(
-    `| terracotta.300 (primitive) | inverted | ${rInv.toFixed(2)} | ≥ 3:1 (future on-dark accent, large/fill) | ${rInv >= 3 ? "PASS" : "**FAIL**"} |`,
-  );
-  if (rInv < 3) failed++;
 
   console.log(
     failed

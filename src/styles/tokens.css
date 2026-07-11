@@ -14,15 +14,11 @@
   --mc-color-neutral-900: oklch(21.89% 0.0065 78.18);
   --mc-color-neutral-950: oklch(15.26% 0.0045 78.18);
   --mc-color-neutral-1000: oklch(0% 0 0);
-  --mc-color-brand-400: oklch(72% 0.15 248);
-  --mc-color-brand-500: oklch(62% 0.17 248);
-  --mc-color-brand-600: oklch(54% 0.17 248);
-  --mc-color-brand-700: oklch(47% 0.15 248);
-  --mc-color-brand-800: oklch(40% 0.13 248);
   --mc-color-terracotta-300: oklch(78.14% 0.0993 58.1);
   --mc-color-terracotta-500: oklch(60.85% 0.1601 40.73);
   --mc-color-terracotta-600: oklch(50.77% 0.1305 40.71);
   --mc-color-terracotta-700: oklch(42.26% 0.1086 41.41);
+  --mc-color-terracotta-800: oklch(35.22% 0.0905 41.41);
   --mc-color-functional-danger: oklch(57% 0.20 27);
   --mc-color-functional-success: oklch(62% 0.15 150);
   --mc-space-0: 0rem;
@@ -68,9 +64,9 @@
   --color-input: var(--mc-color-neutral-500);
   --color-muted: var(--mc-color-neutral-100);
   --color-muted-foreground: var(--mc-color-neutral-600);
-  --color-primary: var(--mc-color-brand-600);
-  --color-primary-hover: var(--mc-color-brand-700);
-  --color-primary-pressed: var(--mc-color-brand-800);
+  --color-primary: var(--mc-color-terracotta-600);
+  --color-primary-hover: var(--mc-color-terracotta-700);
+  --color-primary-pressed: var(--mc-color-terracotta-800);
   --color-primary-foreground: var(--mc-color-neutral-0);
   --color-accent: var(--mc-color-terracotta-500);
   --color-accent-foreground: var(--mc-color-neutral-0);
@@ -82,6 +78,7 @@
   --color-success-foreground: var(--mc-color-neutral-900);
   --color-inverted: var(--mc-color-neutral-900);
   --color-inverted-foreground: var(--mc-color-neutral-0);
+  --color-inverted-accent: var(--mc-color-terracotta-300); /** On-dark accent for inverted surfaces — large-text/fill usage only, ≥ 3:1 non-text/large floor vs inverted; proven in `scripts/contrast-proof.mjs prove` (INC-244). */
   --font-sans: var(--mc-font-family-sans);
   --font-serif: var(--mc-font-family-serif);
   --font-mono: var(--mc-font-family-mono);

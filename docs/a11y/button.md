@@ -212,3 +212,26 @@ are retained verbatim per the record-keeping convention.
 - Focus ring repointed `brand.600` → `accent-ink` (terracotta.600): **5.80:1** vs
   `background`, **6.15:1** vs `surface` (was 4.96:1) — the 1.4.11/2.4.13 margin improves.
 - Primary fill pairs (4.96 / 6.69 / 9.05) are value-identical and re-proven.
+
+---
+
+## Addendum — 2026-07-10: Brand retirement — primary variant repointed to terracotta (INC-244)
+
+INC-244 deleted the legacy blue `mc.color.brand.*` ramp and repointed the `primary*`
+semantics at the terracotta ramp (`primary` → terracotta.600, `primary-hover` → 700,
+`primary-pressed` → the new derived 800). The token **names** Button consumes are again
+unchanged; the **values** behind the primary variant changed, so the primary fill ratios
+recorded above are superseded for current values by
+`docs/a11y/inc-244-brand-retirement-proof.md` (float-oklch per INC-227). Finding bodies
+above are retained verbatim per the record-keeping convention.
+
+- Primary fill pairs (`primary-foreground` on `primary`/`primary-hover`/`primary-pressed`):
+  **6.15 / 8.77 / 11.62** (were 4.96 / 6.69 / 9.05) — every state's margin improves, and
+  pressed remains strictly darker than hover, preserving the Issue #2 resolution rationale.
+- The 2026-07-02 addendum's gamut note is retired with the ramp: brand.800 sat outside
+  sRGB; the derived terracotta.800 (`oklch(35.22% 0.0905 41.41)`, display `#61270f`) is
+  in-gamut, so the clip-vs-mapping caveat no longer applies to any primary value.
+- Secondary/ghost pairs, the `input` boundary, and the focus `ring` (`accent-ink`) are
+  untouched by INC-244 — the 2026-07-08 addendum's values remain current for them.
+- Rendered check (Chromium computed style, Storybook Primary story): fill `#a14622`
+  (terracotta.600), text `#ffffff`; axe suite 6/6 with zero A/AA violations.

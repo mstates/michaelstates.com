@@ -16,18 +16,12 @@
         "950": { "$type": "color", "$value": "oklch(15.26% 0.0045 78.18)" },
         "1000": { "$type": "color", "$value": "oklch(0% 0 0)" }
       },
-      "brand": {
-        "400": { "$type": "color", "$value": "oklch(72% 0.15 248)" },
-        "500": { "$type": "color", "$value": "oklch(62% 0.17 248)" },
-        "600": { "$type": "color", "$value": "oklch(54% 0.17 248)" },
-        "700": { "$type": "color", "$value": "oklch(47% 0.15 248)" },
-        "800": { "$type": "color", "$value": "oklch(40% 0.13 248)" }
-      },
       "terracotta": {
         "300": { "$type": "color", "$value": "oklch(78.14% 0.0993 58.1)" },
         "500": { "$type": "color", "$value": "oklch(60.85% 0.1601 40.73)" },
         "600": { "$type": "color", "$value": "oklch(50.77% 0.1305 40.71)" },
-        "700": { "$type": "color", "$value": "oklch(42.26% 0.1086 41.41)" }
+        "700": { "$type": "color", "$value": "oklch(42.26% 0.1086 41.41)" },
+        "800": { "$type": "color", "$value": "oklch(35.22% 0.0905 41.41)" }
       },
       "functional": {
         "danger": { "$type": "color", "$value": "oklch(57% 0.20 27)" },

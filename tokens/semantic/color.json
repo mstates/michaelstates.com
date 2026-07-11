@@ -13,9 +13,15 @@
       "$type": "color",
       "$value": "{mc.color.neutral.600}"
     },
-    "primary": { "$type": "color", "$value": "{mc.color.brand.600}" },
-    "primary-hover": { "$type": "color", "$value": "{mc.color.brand.700}" },
-    "primary-pressed": { "$type": "color", "$value": "{mc.color.brand.800}" },
+    "primary": { "$type": "color", "$value": "{mc.color.terracotta.600}" },
+    "primary-hover": {
+      "$type": "color",
+      "$value": "{mc.color.terracotta.700}"
+    },
+    "primary-pressed": {
+      "$type": "color",
+      "$value": "{mc.color.terracotta.800}"
+    },
     "primary-foreground": {
       "$type": "color",
       "$value": "{mc.color.neutral.0}"
@@ -46,6 +52,11 @@
       "$type": "color",
       "$value": "oklch(80.45% 0.0013 78.31)",
       "$description": "Solid composite of 72% white over inverted (neutral.900, #1c1a17), computed in encoded sRGB by `scripts/contrast-proof.mjs derive` — deterministic, no alpha in the token (INC-242)."
+    },
+    "inverted-accent": {
+      "$type": "color",
+      "$value": "{mc.color.terracotta.300}",
+      "$description": "On-dark accent for inverted surfaces — large-text/fill usage only, ≥ 3:1 non-text/large floor vs inverted; proven in `scripts/contrast-proof.mjs prove` (INC-244)."
     }
   }
 }
