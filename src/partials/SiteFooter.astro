@@ -1,0 +1,27 @@
+---
+// INC-250: site footer, extracted verbatim from src/pages/index.astro (INC-243 shell).
+// Zero-hydration by contract (B4): every interactive element is a native link; no
+// client:* directives, no <style>/<script> blocks. Byte-parity discipline: the template
+// is a verbatim copy (text-node line structure matters under compressHTML) — commentary
+// stays in frontmatter, never in the template.
+const footerLink =
+	'inline-flex min-h-6 items-center text-caption font-semibold text-muted-foreground hover:text-foreground hover:underline';
+---
+
+<footer class="border-t border-border bg-surface-muted">
+	<div
+		class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-6 py-8 sm:px-10"
+	>
+		<p class="text-caption text-muted-foreground">
+			© 2026 Michael States · Designed &amp; built to be accessible
+		</p>
+		<nav aria-label="Footer" class="flex flex-wrap gap-x-5 gap-y-2">
+			<a href="#work" class={footerLink}>Work</a>
+			<a href="#services" class={footerLink}>Services</a>
+			<a href="#about" class={footerLink}>About</a>
+			<a href="#contact" class={footerLink}>Hire</a>
+			<a href="https://github.com/mstates/michaelstates.com" class={footerLink}>GitHub</a>
+			<a href="https://www.linkedin.com/in/mstates/" rel="me" class={footerLink}>LinkedIn</a>
+		</nav>
+	</div>
+</footer>

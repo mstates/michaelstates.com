@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { pillPrimary } from '../partials/recipes';
+import SiteFooter from '../partials/SiteFooter.astro';
+import SiteHeader from '../partials/SiteHeader.astro';
 
 // INC-243 homepage shell. Zero-hydration by contract (B4): every interactive element
 // is a native link; no client:* directives, no <style>/<script> blocks. All hrefs are
@@ -58,13 +61,8 @@ const services = [
 // is recorded in the PR body per the surface-contract rule.
 const eyebrow = 'font-mono text-caption font-bold uppercase tracking-widest';
 const sectionH2 = 'font-serif text-display font-semibold leading-heading tracking-tight text-balance';
-const pillPrimary =
-	'inline-flex items-center rounded-full bg-accent-ink text-body font-bold text-accent-foreground transition-colors hover:bg-accent-ink-hover';
 const pillOutline =
 	'inline-flex items-center rounded-full border border-input text-body font-bold text-foreground transition-colors hover:bg-surface-muted';
-const navLink = 'inline-flex min-h-6 items-center text-body font-semibold text-foreground hover:underline';
-const footerLink =
-	'inline-flex min-h-6 items-center text-caption font-semibold text-muted-foreground hover:text-foreground hover:underline';
 ---
 
 <BaseLayout
@@ -72,23 +70,7 @@ const footerLink =
 	titleSuffix={false}
 	description="Portfolio of Michael States — accessibility-first front-end engineering, with the design decisions and reasoning behind it."
 >
-	<header slot="header" class="sticky top-0 z-40 border-b border-border bg-background">
-		<nav
-			aria-label="Primary"
-			class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-4 sm:px-10"
-		>
-			<a href="/" class="inline-flex min-h-6 items-center gap-2.5 text-body font-bold text-foreground">
-				<span aria-hidden="true" class="size-6 rounded-md bg-accent"></span>
-				Michael States
-			</a>
-			<div class="flex flex-wrap items-center gap-x-6 gap-y-2">
-				<a href="#work" class={navLink}>Work</a>
-				<a href="#services" class={navLink}>Services</a>
-				<a href="#about" class={navLink}>About</a>
-				<a href="#contact" class={`${pillPrimary} px-5 py-2.5`}>Work with me</a>
-			</div>
-		</nav>
-	</header>
+	<SiteHeader slot="header" />
 
 	<section aria-labelledby="hero-h" class="mx-auto max-w-6xl px-6 pb-16 pt-20 sm:px-10">
 		<p class={`${eyebrow} mb-5 text-accent-ink`}>Accessibility Design Engineer</p>
@@ -231,21 +213,5 @@ const footerLink =
 		</div>
 	</section>
 
-	<footer slot="footer" class="border-t border-border bg-surface-muted">
-		<div
-			class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-6 py-8 sm:px-10"
-		>
-			<p class="text-caption text-muted-foreground">
-				© 2026 Michael States · Designed &amp; built to be accessible
-			</p>
-			<nav aria-label="Footer" class="flex flex-wrap gap-x-5 gap-y-2">
-				<a href="#work" class={footerLink}>Work</a>
-				<a href="#services" class={footerLink}>Services</a>
-				<a href="#about" class={footerLink}>About</a>
-				<a href="#contact" class={footerLink}>Hire</a>
-				<a href="https://github.com/mstates/michaelstates.com" class={footerLink}>GitHub</a>
-				<a href="https://www.linkedin.com/in/mstates/" rel="me" class={footerLink}>LinkedIn</a>
-			</nav>
-		</div>
-	</footer>
+	<SiteFooter slot="footer" />
 </BaseLayout>
