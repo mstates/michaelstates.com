@@ -1,0 +1,100 @@
+/* INC-251: prose layer for long-form case-study bodies (src/layouts/CaseStudyLayout.astro).
+   Element selectors scoped under .prose — article body HTML can't carry utility classes.
+   Colors and type come from semantic tokens (via @apply or var()); spacing sits on the
+   stock Tailwind rem scale (ADR-0004: values coinciding with stock utilities ARE the
+   stock surface). Rules live in @layer components so utility classes on elements inside
+   .prose (e.g. the KeyTakeaways eyebrow heading) still win.
+
+   Bundled globally (imported from global.css) by necessity, not preference: Tailwind v4
+   emits @theme variables only when it sees them referenced inside the compiled bundle —
+   a page-scoped stylesheet would leave --color-code-* tree-shaken out of :root
+   (probe-verified during INC-251). The .prose scope prevents leakage elsewhere. */
+
+@layer components {
+  .prose {
+    @apply text-body leading-relaxed;
+  }
+
+  /* Flow rhythm between top-level blocks; headings open their sections with more air. */
+  .prose > * + * {
+    margin-top: 1.25rem;
+  }
+  .prose > h2 {
+    margin-top: 3rem;
+  }
+  .prose > h3 {
+    margin-top: 2rem;
+  }
+
+  .prose h1 {
+    @apply font-serif text-display font-medium leading-heading tracking-tight text-balance;
+  }
+  .prose h2 {
+    @apply font-serif text-title font-semibold leading-heading tracking-tight text-balance;
+  }
+  .prose h3 {
+    @apply font-serif text-lg font-semibold leading-heading tracking-tight;
+  }
+  .prose h4 {
+    @apply text-body font-bold;
+  }
+
+  .prose ul {
+    @apply list-disc pl-6;
+  }
+  .prose ol {
+    @apply list-decimal pl-6;
+  }
+  .prose li + li {
+    margin-top: 0.5rem;
+  }
+  .prose li::marker {
+    color: var(--color-muted-foreground);
+  }
+
+  /* Quotes: accent border + indent (color is never the sole indicator). The attributed
+     variant is <figure><blockquote/><figcaption/></figure>; the figcaption rule below
+     covers both quote attributions and figure captions. */
+  .prose blockquote {
+    @apply border-l-4 border-accent pl-6 font-serif text-lg;
+  }
+  .prose figure > figcaption {
+    @apply mt-3 text-caption text-muted-foreground;
+  }
+
+  /* Inline code: light chip on the default surface (foreground/surface-muted, a proven
+     pair — 15.69:1 float, scripts/contrast-proof.mjs). */
+  .prose :not(pre) > code {
+    @apply rounded-md bg-surface-muted px-1.5 py-0.5 text-caption text-foreground;
+  }
+
+  /* Code blocks: Shiki-rendered <pre class="astro-code"> on the inverted surface.
+     Shiki owns color/background via the --astro-code-* bindings below; this rule owns
+     shape. The route passes tabindex="0" + role="region" + aria-label on the pre for
+     keyboard access to the horizontal scroll. */
+  .prose pre {
+    @apply overflow-x-auto rounded-2xl p-6 text-caption;
+  }
+}
+
+/* Shiki css-variables theme bindings (Astro prefix --astro-code-). Semantic code-*
+   tokens only — proven ≥ 4.5:1 vs inverted in scripts/contrast-proof.mjs prove
+   (INC-251). Custom-property declarations, so no @apply/@layer needed. Diff roles
+   (inserted/deleted/changed) are NEUTRALIZED to the default foreground — not a diff
+   treatment; INC-248 owns real added/removed styling. */
+.astro-code {
+  --astro-code-foreground: var(--color-code-foreground);
+  --astro-code-background: var(--color-inverted);
+  --astro-code-token-comment: var(--color-code-comment);
+  --astro-code-token-keyword: var(--color-code-keyword);
+  --astro-code-token-string: var(--color-code-string);
+  --astro-code-token-string-expression: var(--color-code-string);
+  --astro-code-token-link: var(--color-code-string);
+  --astro-code-token-constant: var(--color-code-function);
+  --astro-code-token-function: var(--color-code-function);
+  --astro-code-token-parameter: var(--color-code-foreground);
+  --astro-code-token-punctuation: var(--color-code-foreground);
+  --astro-code-token-inserted: var(--color-code-foreground);
+  --astro-code-token-deleted: var(--color-code-foreground);
+  --astro-code-token-changed: var(--color-code-foreground);
+}

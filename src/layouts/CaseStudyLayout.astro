@@ -1,0 +1,35 @@
+---
+// INC-251: article shell for long-form case studies. Composes BaseLayout (SiteHeader/
+// SiteFooter in the named slots), renders the back-nav to home, and owns the .prose
+// scope (src/styles/prose.css) the page body flows into. Zero-hydration by contract
+// (B4): every interactive element is a native link; no client:* directives, no
+// <style>/<script> blocks.
+import BaseLayout from './BaseLayout.astro';
+import SiteFooter from '../partials/SiteFooter.astro';
+import SiteHeader from '../partials/SiteHeader.astro';
+
+interface Props {
+	/** Page title; BaseLayout appends the "· Michael States" suffix. */
+	title: string;
+	/** One-sentence page summary; feeds meta description and og:description. */
+	description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} ogType="article">
+	<SiteHeader slot="header" />
+	<div class="mx-auto max-w-prose px-6 py-16 sm:px-10">
+		<a
+			href="/"
+			class="inline-flex min-h-6 items-center gap-2 text-body font-semibold text-foreground hover:underline"
+		>
+			<span aria-hidden="true">←</span>Back to home
+		</a>
+		<article class="prose mt-10">
+			<slot />
+		</article>
+	</div>
+	<SiteFooter slot="footer" />
+</BaseLayout>

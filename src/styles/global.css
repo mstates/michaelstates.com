@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./tokens.css";
 @import "./fonts.css";
+@import "./prose.css";
 @plugin "tailwindcss-react-aria-components";
 /* Don't scan the a11y docs for class candidates — their prose quotes class names
    (e.g. ring-offset-background) and Tailwind would mint phantom dead utilities. */

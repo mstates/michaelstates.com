@@ -34,6 +34,13 @@ export const routes: A11yRoute[] = [
     h1: "I design and ship products that work for everyone.",
   },
   {
+    id: "/work/sample-case-study/",
+    path: "/work/sample-case-study/",
+    status: 200,
+    title: "Sample case study · Michael States",
+    h1: "Sample case study",
+  },
+  {
     // Not a 200 route: reached via a nonexistent path so the static 404.html is served
     // with a real 404 status (astro preview / Cloudflare Pages both do this).
     id: "404",

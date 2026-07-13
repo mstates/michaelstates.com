@@ -1,0 +1,24 @@
+---
+// INC-251: key-takeaways aside for case-study prose. The accessible label IS the
+// visible heading (aria-labelledby → #takeaways-h), styled with the eyebrow recipe —
+// in the document outline by design (settled in the ticket). CONTRACT: the id is
+// hardcoded, so this partial is single-instance-per-page; a second instance would
+// duplicate the id and break the label association. The <ul> deliberately carries no
+// utility classes — it inherits the prose layer's list styling, so this partial must
+// render inside a .prose scope. Zero-hydration by contract (B4): no client:*
+// directives, no <style>/<script> blocks.
+import { eyebrow } from './recipes';
+
+interface Props {
+	items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<aside aria-labelledby="takeaways-h" class="rounded-2xl border border-dashed border-border px-6 py-5">
+	<h2 id="takeaways-h" class={`${eyebrow} mb-3.5 text-accent-ink`}>Key takeaways</h2>
+	<ul>
+		{items.map((item) => <li>{item}</li>)}
+	</ul>
+</aside>
