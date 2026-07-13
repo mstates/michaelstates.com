@@ -55,6 +55,8 @@
 
 @theme {
   --color-inverted-foreground-muted: oklch(80.45% 0.0013 78.31); /** Solid composite of 72% white over inverted (neutral.900, #1c1a17), computed in encoded sRGB by `scripts/contrast-proof.mjs derive` — deterministic, no alpha in the token (INC-242). */
+  --color-code-string: oklch(85% 0.1 95); /** Syntax: strings — warm gold, semantic-tier literal (`inverted-foreground-muted` precedent; INC-251's boundary excludes tokens/primitive/), 11.02:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251). */
+  --color-code-function: oklch(82% 0.06 250); /** Syntax: functions/constants — soft periwinkle, the palette's one deliberate cool counterpoint (syntax-only, not brand usage; ratified in INC-251 planning), 9.99:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251). */
   --color-background: var(--mc-color-neutral-50);
   --color-foreground: var(--mc-color-neutral-900);
   --color-surface: var(--mc-color-neutral-0);
@@ -79,6 +81,8 @@
   --color-inverted: var(--mc-color-neutral-900);
   --color-inverted-foreground: var(--mc-color-neutral-0);
   --color-inverted-accent: var(--mc-color-terracotta-300); /** On-dark accent for inverted surfaces — large-text/fill usage only, ≥ 3:1 non-text/large floor vs inverted; proven in `scripts/contrast-proof.mjs prove` (INC-244). */
+  --color-code-comment: var(--color-inverted-foreground-muted); /** Syntax: comments — muted but 9.44:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251). */
+  --color-code-keyword: var(--mc-color-terracotta-300); /** Syntax: keywords — same primitive as inverted-accent but a distinct SMALL-TEXT contract: 8.52:1 float vs inverted, ≥ 4.5:1 floor (inverted-accent's own contract stays large/fill-only); proven in `scripts/contrast-proof.mjs prove` (INC-251). */
   --font-sans: var(--mc-font-family-sans);
   --font-serif: var(--mc-font-family-serif);
   --font-mono: var(--mc-font-family-mono);
@@ -89,4 +93,5 @@
   --text-hero: clamp(var(--mc-size-hero-min), 5.4vw, var(--mc-size-hero-max)); /** Fluid hero scale pinned to the Home.dc.html export (2026-07-08): clamp(44px, 5.4vw, 64px). The slope is owned at the semantic tier; the endpoints are primitives (INC-242). */
   --leading-heading: var(--mc-leading-tight);
   --color-ring: var(--color-accent-ink);
+  --color-code-foreground: var(--color-inverted-foreground); /** Default code text on the inverted code-block surface — 17.36:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251). */
 }

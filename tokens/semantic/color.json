@@ -57,6 +57,31 @@
       "$type": "color",
       "$value": "{mc.color.terracotta.300}",
       "$description": "On-dark accent for inverted surfaces — large-text/fill usage only, ≥ 3:1 non-text/large floor vs inverted; proven in `scripts/contrast-proof.mjs prove` (INC-244)."
+    },
+    "code-foreground": {
+      "$type": "color",
+      "$value": "{color.inverted-foreground}",
+      "$description": "Default code text on the inverted code-block surface — 17.36:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251)."
+    },
+    "code-comment": {
+      "$type": "color",
+      "$value": "{color.inverted-foreground-muted}",
+      "$description": "Syntax: comments — muted but 9.44:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251)."
+    },
+    "code-keyword": {
+      "$type": "color",
+      "$value": "{mc.color.terracotta.300}",
+      "$description": "Syntax: keywords — same primitive as inverted-accent but a distinct SMALL-TEXT contract: 8.52:1 float vs inverted, ≥ 4.5:1 floor (inverted-accent's own contract stays large/fill-only); proven in `scripts/contrast-proof.mjs prove` (INC-251)."
+    },
+    "code-string": {
+      "$type": "color",
+      "$value": "oklch(85% 0.1 95)",
+      "$description": "Syntax: strings — warm gold, semantic-tier literal (`inverted-foreground-muted` precedent; INC-251's boundary excludes tokens/primitive/), 11.02:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251)."
+    },
+    "code-function": {
+      "$type": "color",
+      "$value": "oklch(82% 0.06 250)",
+      "$description": "Syntax: functions/constants — soft periwinkle, the palette's one deliberate cool counterpoint (syntax-only, not brand usage; ratified in INC-251 planning), 9.99:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251)."
     }
   }
 }

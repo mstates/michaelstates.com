@@ -593,6 +593,16 @@ function prove() {
     ["inverted-foreground", "inverted", 4.5, "text (inverted pair)"],
     ["inverted-foreground-muted", "inverted", 4.5, "text (inverted muted)"],
     ["inverted-accent", "inverted", 3.0, "on-dark accent, large/fill"],
+    ["code-foreground", "inverted", 4.5, "code text (on-dark code block, INC-251)"],
+    ["code-comment", "inverted", 4.5, "code comment text (INC-251)"],
+    [
+      "code-keyword",
+      "inverted",
+      4.5,
+      "code keyword — terracotta.300 SMALL-TEXT proof (vs inverted-accent's 3.0 large/fill floor, INC-251)",
+    ],
+    ["code-string", "inverted", 4.5, "code string text (INC-251)"],
+    ["code-function", "inverted", 4.5, "code function/constant text (INC-251)"],
     [
       "success",
       "background",
