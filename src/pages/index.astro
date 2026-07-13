@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { pillPrimary } from '../partials/recipes';
+import Card from '../partials/Card.astro';
+import { eyebrow, pillPrimary } from '../partials/recipes';
 import SiteFooter from '../partials/SiteFooter.astro';
 import SiteHeader from '../partials/SiteHeader.astro';
 
@@ -58,8 +59,8 @@ const services = [
 ];
 
 // Shared class recipes. Colors are semantic tokens only; every pair's computed ratio
-// is recorded in the PR body per the surface-contract rule.
-const eyebrow = 'font-mono text-caption font-bold uppercase tracking-widest';
+// is recorded in the PR body per the surface-contract rule. (eyebrow moved to
+// partials/recipes.ts with INC-251 — second consumer.)
 const sectionH2 = 'font-serif text-display font-semibold leading-heading tracking-tight text-balance';
 const pillOutline =
 	'inline-flex items-center rounded-full border border-input text-body font-bold text-foreground transition-colors hover:bg-surface-muted';
@@ -121,23 +122,7 @@ const pillOutline =
 		<p class={`${eyebrow} mb-3.5 text-muted-foreground`}>Featured work</p>
 		<h2 id="work-h" class={`${sectionH2} max-w-xl`}>Case studies with the receipts</h2>
 		<ul role="list" class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-			{
-				cases.map((c) => (
-					<li class="flex flex-col gap-2.5 rounded-2xl border border-border bg-surface p-6 shadow-sm">
-						<h3 class="font-serif text-title font-semibold leading-heading tracking-tight text-balance">
-							{c.title}
-						</h3>
-						<p class="flex-1 text-body text-muted-foreground">{c.outcome}</p>
-						<div class="mt-1.5 flex flex-wrap gap-2">
-							{c.tags.map((tag) => (
-								<span class="rounded-full border border-border px-3 py-1 font-mono text-caption text-muted-foreground">
-									{tag}
-								</span>
-							))}
-						</div>
-					</li>
-				))
-			}
+			{cases.map((c) => <Card title={c.title} outcome={c.outcome} tags={c.tags} />)}
 		</ul>
 		<aside
 			aria-label="Note about NDA work"

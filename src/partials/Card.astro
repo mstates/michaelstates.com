@@ -1,0 +1,27 @@
+---
+// INC-251: homepage case card, extracted verbatim from src/pages/index.astro (INC-243
+// shell). Cards are deliberately non-links (INC-243 decision log) — no href until real
+// case-study copy ships with INC-248. Zero-hydration by contract (B4): no client:*
+// directives, no <style>/<script> blocks. Byte-parity discipline: the template is a
+// verbatim copy (text-node line structure matters under compressHTML) — commentary
+// stays in frontmatter, never in the template.
+import Tag from './Tag.astro';
+
+interface Props {
+	title: string;
+	outcome: string;
+	tags: string[];
+}
+
+const { title, outcome, tags } = Astro.props;
+---
+
+<li class="flex flex-col gap-2.5 rounded-2xl border border-border bg-surface p-6 shadow-sm">
+	<h3 class="font-serif text-title font-semibold leading-heading tracking-tight text-balance">
+		{title}
+	</h3>
+	<p class="flex-1 text-body text-muted-foreground">{outcome}</p>
+	<div class="mt-1.5 flex flex-wrap gap-2">
+		{tags.map((tag) => <Tag tag={tag} />)}
+	</div>
+</li>
