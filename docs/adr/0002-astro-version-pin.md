@@ -1,6 +1,6 @@
 # ADR 0002: Pin Astro 6.4.8 now; fast-follow to Astro 7
 
-- Status: Accepted (amended 2026-06-24 — fast-follow to Astro 7 attempted and blocked; see "Fast-follow attempt" below)
+- Status: Accepted (fast-follow completed 2026-07-14 — Astro 7 landed via INC-220; see "Re-attempt — 2026-07-14" below)
 - Date: 2026-06-22
 - Relates to: ADR-0001 (framework choice — unchanged; this records the _version_)
 
@@ -92,3 +92,82 @@ re-run the full build + `build-storybook` + a11y gate. **Vite 8 / Rolldown is a 
 compile path, so the re-attempt must also re-run the `accessibility-reviewer` agent on at least
 one primitive — the rendered output cannot be assumed identical to the Vite 7 build and must be
 re-audited, not waved through.** Kept open in `docs/follow-ups.md`.
+
+## Re-attempt — 2026-07-14 (INC-220): landed
+
+Astro 7 landed on the second attempt with an amended matrix. The June re-attempt trigger
+("Storybook ships stable Vite 8 / Rolldown support") never fired and is superseded: it rested
+on a misattribution. `@storybook/builder-vite` never owned JSX transformation — its preset
+adds only docgen plugins — so waiting on Storybook could not have unblocked anything.
+
+**What June actually ran.** At the 2026-06-24 attempt, the Storybook pipeline contained no
+React JSX plugin at all: `@vitejs/plugin-react` entered `package.json` and `viteFinal` two
+days later (`1213b36`, 2026-06-26, fixing the unrelated "React is not defined" render bug —
+see `docs/follow-ups.md`, "Storybook workbench"). Under Vite 7 that gap was masked at build
+time (esbuild transformed `.tsx` implicitly; the breakage was runtime-only and undiscovered).
+Under Vite 8, Rolldown enables no implicit JSX transform — hence `[PARSE_ERROR] ... JSX
+syntax is disabled` at build. The install stayed silent in June because every peer range in
+the tree was satisfied — `@vitejs/plugin-react@5.2.0` (in-tree via `@astrojs/react@6.0.0`)
+already peer-allowed `vite ^8` — so nothing could warn; the incompatibility had no surface
+until build time. (That 5.2.0 also shipped `@rolldown/pluginutils@1.0.0-rc.3` is
+corroborating detail on how close, yet short of Vite-8-native, that line was — not the
+cause.)
+
+**Matrix (exact pins, hand-edited in `package.json`; lockfile via `pnpm install` only):**
+
+| package                   | June attempt                       | INC-220                       |
+| ------------------------- | ---------------------------------- | ----------------------------- |
+| astro                     | 7.0.2                              | 7.0.9                         |
+| @astrojs/react            | 6.0.0                              | 6.0.1                         |
+| @vitejs/plugin-react      | absent from the Storybook pipeline | 6.0.3 (wired since `1213b36`) |
+| storybook + @storybook/\* | 10.4.6                             | 10.4.6 — deliberately held    |
+
+**Resolved tree after install (node 22.16.0, pnpm 10.33.0):** one standalone `vite@8.1.4`
+serves every consumer (`pnpm why vite`: "Found 1 version"); `rolldown@1.1.5`. Install exit 0
+with zero peer warnings; the only advisories were five deprecated transitive subdependencies
+and pnpm's default-ignored build script (`esbuild@0.28.1`). Two `@vitejs/plugin-react`
+instances exist by design: ours (6.0.3) drives the Storybook + Vitest pipeline;
+`@astrojs/react@6.0.1` internally still uses 5.2.0 on the Astro build path — the path that
+passed even in June.
+
+**Gate results.** Baseline = the full ladder re-run on `main` @ `35fa9d2` the same day, all
+green — including `pnpm build-storybook`, which CI does not run.
+
+| gate                                     | baseline (6.4.8 / Vite 7.3.5)            | INC-220 (7.0.9 / Vite 8.1.4)                               |
+| ---------------------------------------- | ---------------------------------------- | ---------------------------------------------------------- |
+| `pnpm install`                           | n/a                                      | exit 0, zero peer warnings                                 |
+| `pnpm build`                             | exit 0, 3 pages                          | exit 0, dist inventory identical                           |
+| emitted-CSS token gate                   | 5/5 `--color-code-*` defs; prose present | counts identical to baseline                               |
+| `pnpm build-storybook`                   | exit 0                                   | exit 0; zero PARSE_ERROR / JSX-syntax hits                 |
+| `pnpm test`                              | 33/33                                    | 33/33 (stories re-run through axe, hard-fail mode)         |
+| `pnpm test:a11y`                         | 8/8                                      | 8/8                                                        |
+| `pnpm lint`                              | clean                                    | clean — `astro check` 0 errors on 36 files (Rust compiler) |
+| accessibility-reviewer re-audit (Button) | n/a                                      | PASS (AA) — zero rendered drift under Rolldown             |
+
+**Finding.** The June hypothesis is corrected in two layers: (1) confirmed — the blocker was
+never `@storybook/builder-vite`; (2) refined — the JSX transform we control was not merely
+the pre-Vite-8 major in June, it was absent from the pipeline entirely. With Storybook held
+at exactly 10.4.6 and the Vite-8-native `@vitejs/plugin-react@6.0.3` wired, the June failure
+signature does not reproduce. Residual confound, recorded for honesty: Vite's patch level
+necessarily differs from June (8.1.4 today; June's exact 8.0.x went unrecorded), and the
+5.2.0-wired permutation was never tested under Rolldown — 6.0.3 is the proven-green pin.
+
+**Source/config changes required by the v7 migration guide: none.** `astro.config.mjs` uses
+no removed experimental flags; `src/fetch.ts` (now reserved) does not exist; the Rust
+compiler's stricter HTML parsing produced zero diagnostics.
+
+**Corrections to the June section above (append-only; the original text stands as written):**
+
+- "our pages import no React components" was imprecise — `404.astro` statically renders the
+  React `Heading` and `Link` primitives (zero hydration). The real June distinction was that
+  Astro's build path had a working JSX transform under Rolldown while the Storybook pipeline
+  had none.
+- The June re-attempt trigger and pins are superseded by this section; the corresponding
+  `docs/follow-ups.md` entry is closed alongside this change.
+
+**Carried forward (pre-existing, surfaced by the re-audit — not a migration regression):**
+`--color-ring` and `--color-primary` both alias `--mc-color-terracotta-600` (independent
+INC-242 / INC-244 decisions), so the focus ring on primary/small fills is same-hue behind a
+2px offset gap. Contrast math passes (ring vs background 5.80:1, per the INC-244 proof); a
+deliberate design pass — or a documented acceptance in `docs/a11y/button.md` — is
+recommended so the coincidence doesn't read as unexamined.
