@@ -1,0 +1,189 @@
+---
+// INC-248: the real case study, replacing the INC-251 placeholder route. Copy is
+// ratified verbatim (INC-248 thread, comment 5055e06e) — do not reword. The two code
+// samples are display excerpts as ratified, NOT live reads of the underlying files.
+// Zero-hydration by contract (B4): no client:* directives, no React/RAC.
+import { Code } from 'astro:components';
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import KeyTakeaways from '../../partials/KeyTakeaways.astro';
+
+const tokensSample = `"primary": { "$value": "{mc.color.terracotta.600}" },
+"ring":    { "$value": "{color.accent-ink}" },
+"inverted-foreground-muted": {
+  "$value": "oklch(80.45% 0.0013 78.31)",
+  "$description": "Solid composite of 72% white over inverted (neutral.900),
+  computed by scripts/contrast-proof.mjs — deterministic, no alpha in the token."
+}`;
+
+const manifestSample = `// routes.ts — single source of truth for a11y coverage. Adding a page = adding one
+// entry here; dist-parity.spec.ts fails the build if a route exists in dist/
+// without an entry (no silent coverage gaps).
+{
+  id: "/work/building-michaelstates-com/",
+  path: "/work/building-michaelstates-com/",
+  status: 200,
+  title: "How this site was built accessibly · Michael States",
+  h1: "How this site was built accessibly",
+}`;
+
+// Article links: prose.css deliberately has no `a` rule, so anchors carry the proofed
+// accent-ink treatment (accent-ink/background and accent-ink-hover/background,
+// scripts/contrast-proof.mjs prove rows) — same classes as the homepage NDA-aside link.
+const articleLink = 'font-bold text-accent-ink underline hover:text-accent-ink-hover';
+---
+
+<CaseStudyLayout
+	title="How this site was built accessibly"
+	description="How michaelstates.com was built as a public accessibility exhibit — design tokens with computed contrast proofs, CI-enforced axe audits, and decision records that preserve honest mistakes."
+>
+	<h1>How this site was built accessibly</h1>
+	<p>
+		Every portfolio site claims the work is good. This page is the one case study I can show
+		with no NDA in the way — the site you're reading, built as a public exhibit of how I work:
+		the design tokens, the accessibility gates, the decision records, and the mistakes left
+		honestly in the record.
+	</p>
+
+	<h2>The problem</h2>
+	<figure>
+		<blockquote>
+			<p>"The site asks me to take the work on faith."</p>
+		</blockquote>
+		<figcaption>— External hiring-manager review, July 2026</figcaption>
+	</figure>
+	<p>
+		That was the verdict on the first version of this homepage, and it was fair. The case-study
+		cards didn't open. The NDA note routed everything to a call. For a hiring manager with eight
+		tabs open, "book a call and I'll explain" is a dead end.
+	</p>
+	<p>
+		The constraint is real — most of my recent work lives behind NDAs — but the conclusion I'd
+		been drawing from it was wrong. I couldn't publish the client work, so I'd published nothing.
+		The fix was noticing that one project had no NDA at all: this site. Its repository is public.
+		Its decision records are public. Its accessibility proofs are computed, committed, and
+		enforced by CI. So the constraints for this page became:
+	</p>
+	<ul>
+		<li>
+			No claims without a public artifact behind them — every statement here traces to a commit,
+			a decision record, or a test.
+		</li>
+		<li>Accessibility proven by machinery, not asserted in copy.</li>
+		<li>The record stays honest: wrong first attempts are preserved, not rewritten.</li>
+	</ul>
+
+	<h2>The system</h2>
+	<p>
+		Everything visual on this site resolves through a three-tier token pipeline — primitive →
+		semantic → component — built with Style Dictionary. Color primitives live in a private
+		<code>--mc-*</code> namespace; pages and components are only allowed to consume semantic
+		tokens, so a palette change is a repoint, not a hunt-and-replace.
+	</p>
+	<p>
+		The part I care about most is that contrast is <em>computed into</em> the tokens, not
+		eyeballed onto them:
+	</p>
+	<figure>
+		<Code
+			code={tokensSample}
+			lang="json"
+			theme="css-variables"
+			tabindex="0"
+			role="region"
+			aria-label="Code sample: semantic color tokens"
+		/>
+		<figcaption>Listing: semantic color tokens, including one derived by the contrast-proof script.</figcaption>
+	</figure>
+	<p>
+		That third token is a solid color derived by script from an intended 72%-white-over-dark
+		composite, so the contrast math runs on exactly what ships. Every non-default
+		foreground/background pair on this site carries a computed ratio, recorded in the pull
+		request that introduced it — a surface contract, enforced at review.
+	</p>
+	<p>
+		Behavior and appearance are split the same way: React Aria Components own keyboard
+		interaction, focus, and ARIA semantics; tokens and Tailwind own how things look. Neither
+		layer can quietly break the other.
+	</p>
+
+	<h2>The gates</h2>
+	<p>
+		A route on this site physically cannot ship without an accessibility audit. The test suite
+		is driven by a single manifest, and a build-parity check fails CI if a page exists in the
+		build output without a manifest entry:
+	</p>
+	<figure>
+		<Code
+			code={manifestSample}
+			lang="ts"
+			theme="css-variables"
+			tabindex="0"
+			role="region"
+			aria-label="Code sample: a11y route manifest entry"
+		/>
+		<figcaption>Listing: this page's own entry in the a11y route manifest.</figcaption>
+	</figure>
+	<p>
+		Every entry gets a full axe pass against the complete WCAG 2.0/2.1/2.2 A and AA tag set —
+		deliberately not narrowed — plus a render guard asserting the page's real h1, so the audit
+		provably scanned the right document and not an error page. Lighthouse runs in CI with
+		accessibility thresholds treated as a gate, not a dashboard. The page you're reading passed
+		all of it before it could deploy.
+	</p>
+	<p>
+		Automated checks are the floor, not the ceiling — axe catches roughly a third of WCAG
+		failures. The rest is manual: keyboard passes, forced-colors mode, screen-reader runs,
+		recorded as findings documents in the repo alongside the code they audit.
+	</p>
+
+	<h2>The discipline</h2>
+	<p>
+		The repository's decision records are point-in-time artifacts: when one turns out wrong, it
+		gets a dated correction appended — never a rewrite. The Astro 7 upgrade is the best example,
+		because the first attempt failed and the first diagnosis was wrong.
+	</p>
+	<p>
+		In June 2026, the upgrade broke the component workbench build and was reverted clean the
+		same day. The failure was recorded with a hypothesis — a bundler-compatibility gap in a
+		Storybook dependency — and a trigger condition for re-attempting. Three weeks later, the
+		re-attempt succeeded and disproved the hypothesis: the real cause was a JSX plugin that had
+		been missing from the pipeline all along, silently masked by the old bundler's implicit
+		transform. The decision record now carries both layers — the June diagnosis verbatim, and
+		the July correction appended with the evidence, including the residual uncertainty that
+		couldn't be eliminated.
+	</p>
+	<p>
+		That's the discipline I'd bring to your codebase: reverted-clean failures, recorded
+		hypotheses, corrections that strengthen the record instead of sanitizing it.
+	</p>
+
+	<h2>Working with AI</h2>
+	<p>
+		This site pairs fifteen years of design and engineering practice with a modern AI workflow.
+		I orchestrate; nothing lands unreviewed. Every commit is human-reviewed, accessibility is
+		enforced by the automated gates above — axe, Lighthouse, the route manifest — and by my own
+		hands-on manual audits. The gates are the point: they hold regardless of who, or what,
+		wrote the code.
+	</p>
+
+	<KeyTakeaways
+		items={[
+			'Accessibility here is enforced by machinery — a route manifest, full-suite axe runs, and CI thresholds — not promised in copy.',
+			"Contrast is computed into the design tokens by script and recorded as proofs, so what's audited is exactly what ships.",
+			'The decision records preserve wrong first attempts with dated corrections — the process, including its failures, is the portfolio.',
+		]}
+	/>
+
+	<h2>The receipts</h2>
+	<p>
+		Everything above is verifiable:
+		<a href="https://github.com/mstates/michaelstates.com" class={articleLink}>the repository</a>,
+		<a
+			href="https://github.com/mstates/michaelstates.com/blob/main/docs/adr/0002-astro-version-pin.md"
+			class={articleLink}>the Astro upgrade decision record</a
+		>, and
+		<a href="https://github.com/mstates/michaelstates.com/tree/main/docs/a11y" class={articleLink}
+			>the accessibility findings</a
+		>.
+	</p>
+</CaseStudyLayout>

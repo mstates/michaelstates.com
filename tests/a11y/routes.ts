@@ -34,11 +34,11 @@ export const routes: A11yRoute[] = [
     h1: "I design and ship products that work for everyone.",
   },
   {
-    id: "/work/sample-case-study/",
-    path: "/work/sample-case-study/",
+    id: "/work/building-michaelstates-com/",
+    path: "/work/building-michaelstates-com/",
     status: 200,
-    title: "Sample case study · Michael States",
-    h1: "Sample case study",
+    title: "How this site was built accessibly · Michael States",
+    h1: "How this site was built accessibly",
   },
   {
     // Not a 200 route: reached via a nonexistent path so the static 404.html is served

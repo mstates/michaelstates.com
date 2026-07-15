@@ -7,8 +7,9 @@ import SiteHeader from '../partials/SiteHeader.astro';
 
 // INC-243 homepage shell. Zero-hydration by contract (B4): every interactive element
 // is a native link; no client:* directives, no <style>/<script> blocks. All hrefs are
-// on-page anchors, "/", the real mailto, or the external proof links (INC-245) —
-// routes that don't exist yet ship without link affordance (decision log in the PR body).
+// on-page anchors, "/", the real mailto, the external proof links (INC-245), or the
+// case-study route (INC-248) — routes that don't exist yet ship without link affordance
+// (decision log in the PR body).
 
 const stats: { value: string; label: string; accent?: boolean }[] = [
 	{ value: '15+', label: 'Years in the field' },
@@ -19,7 +20,7 @@ const stats: { value: string; label: string; accent?: boolean }[] = [
 
 const clients = ['Walmart', 'Netflix', 'Nike', 'Disney', 'Allyant', 'Fidelity', 'AT&T', 'Zillow'];
 
-const cases = [
+const cases: { title: string; outcome: string; tags: string[]; href?: string }[] = [
 	{
 		title: 'Redesigning how millions see prices',
 		outcome:
@@ -37,6 +38,13 @@ const cases = [
 		outcome:
 			"Internal tooling that turns one expert's judgment into something every team can run — audits included.",
 		tags: ['React', 'AI automation'],
+	},
+	{
+		title: 'How this site was built accessibly',
+		outcome:
+			'The one project with no NDA: this site — token pipeline, CI-enforced audits, and decision records, all public.',
+		tags: ['Astro', 'Design tokens', 'CI gates'],
+		href: '/work/building-michaelstates-com/',
 	},
 ];
 
@@ -121,8 +129,8 @@ const pillOutline =
 	<section id="work" aria-labelledby="work-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
 		<p class={`${eyebrow} mb-3.5 text-muted-foreground`}>Featured work</p>
 		<h2 id="work-h" class={`${sectionH2} max-w-xl`}>Case studies with the receipts</h2>
-		<ul role="list" class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-			{cases.map((c) => <Card title={c.title} outcome={c.outcome} tags={c.tags} />)}
+		<ul role="list" class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+			{cases.map((c) => <Card title={c.title} outcome={c.outcome} tags={c.tags} href={c.href} />)}
 		</ul>
 		<aside
 			aria-label="Note about NDA work"
@@ -133,7 +141,7 @@ const pillOutline =
 				Much of my recent work lives behind NDAs. These cards show the shape of it —
 				<a href="#contact" class="font-bold text-accent-ink underline hover:text-accent-ink-hover"
 					>book a call</a
-				> and I'll walk you through the depth.
+				> and I'll walk you through the depth. The fourth card doesn't need one — it's this site.
 			</p>
 		</aside>
 	</section>
