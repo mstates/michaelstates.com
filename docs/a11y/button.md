@@ -255,3 +255,23 @@ value behind it changed, so the ring ratios in the 2026-07-08 addendum are super
   Button's other pairs are re-proven in `scripts/contrast-proof.mjs prove` (all normative
   pairs PASS — primary fill pairs now **9.70 / 12.56 / 15.12**, secondary border `input`
   boundary **3.52** on `background` / **3.94** on `surface`, both above the 3:1 floor).
+
+---
+
+## Superseding note — 2026-07-17: Variant 3a two-tier red split (INC-252 Phase 1b)
+
+Variant 3a (Linear comment 489685c6) supersedes the 2a palette values recorded in the
+addendum above, same ticket, same token names. The role axis is **interactivity**, not
+size: `primary` is now the **cranberry action tier** (oxblood.500, anchored #A62244),
+its **hover lands on the brand tier** (oxblood.600, anchored #7D2B3C), and pressed goes
+one step deeper (oxblood.700, #6E2434). No third red exists. The token names Button
+consumes are again unchanged; superseding proven ratios:
+
+- Primary fill pairs (`primary-foreground` on `primary`/`primary-hover`/`primary-pressed`):
+  **7.16 / 9.20 / 10.69** (were 9.70 / 12.56 / 15.12) — every state clears the 4.5:1
+  small-text floor with ≥ 59% margin, and pressed remains strictly darker than hover.
+- **Ring ruling REAFFIRMED:** `ring` stays `{color.foreground}` (ink) — a deliberate
+  exemption from the action tier, unchanged from the 2026-07-17 addendum above. On the
+  lighter 3a ground the ring proves **15.60:1** vs `background`, **17.00:1** vs `surface`.
+- Secondary border `input` boundary on the re-anchored ground: **3.55** on `background`,
+  **3.87** on `surface` — above the 3:1 floor (margin watch continues).

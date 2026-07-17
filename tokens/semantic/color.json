@@ -13,20 +13,20 @@
       "$type": "color",
       "$value": "{mc.color.neutral.600}"
     },
-    "primary": { "$type": "color", "$value": "{mc.color.oxblood.600}" },
+    "primary": { "$type": "color", "$value": "{mc.color.oxblood.500}" },
     "primary-hover": {
       "$type": "color",
-      "$value": "{mc.color.oxblood.700}"
+      "$value": "{mc.color.oxblood.600}"
     },
     "primary-pressed": {
       "$type": "color",
-      "$value": "{mc.color.oxblood.800}"
+      "$value": "{mc.color.oxblood.700}"
     },
     "primary-foreground": {
       "$type": "color",
       "$value": "{mc.color.neutral.0}"
     },
-    "accent": { "$type": "color", "$value": "{mc.color.oxblood.500}" },
+    "accent": { "$type": "color", "$value": "{mc.color.oxblood.600}" },
     "accent-foreground": {
       "$type": "color",
       "$value": "{mc.color.neutral.0}"
@@ -34,7 +34,18 @@
     "accent-ink": { "$type": "color", "$value": "{mc.color.oxblood.600}" },
     "accent-ink-hover": {
       "$type": "color",
-      "$value": "{mc.color.oxblood.700}"
+      "$value": "{mc.color.oxblood.700}",
+      "$description": "Interim value under the 3a role split (INC-252 Phase 1b): every current consumer is interactive and moves to action-ink in Phase 1c; retirement candidate thereafter — advisory decision, do not delete preemptively."
+    },
+    "action-ink": {
+      "$type": "color",
+      "$value": "{mc.color.oxblood.500}",
+      "$description": "Action-tier interactive text ink (cranberry) — text links, active nav, selected states; hover lands on the brand tier per the 3a role map. Minted in INC-252 Phase 1b with zero consumers until the Phase 1c markup pass (expected, transient within PR #34). 6.57:1 vs background / 7.16:1 vs surface, ≥ 4.5:1 link-text floors — proven via the exported contrast-proof math (the frozen prove row list predates this token; see the Phase 1b record)."
+    },
+    "action-ink-hover": {
+      "$type": "color",
+      "$value": "{mc.color.oxblood.600}",
+      "$description": "Hover for action-ink — lands on the brand tier (3a rule: hover ON brand, one step deeper only when pressed). 8.44:1 vs background / 9.20:1 vs surface, ≥ 4.5:1 floors — proven via the exported contrast-proof math (INC-252 Phase 1b)."
     },
     "danger": { "$type": "color", "$value": "{mc.color.functional.danger}" },
     "danger-foreground": { "$type": "color", "$value": "{mc.color.neutral.0}" },
@@ -56,7 +67,7 @@
     "inverted-accent": {
       "$type": "color",
       "$value": "{mc.color.oxblood.300}",
-      "$description": "On-dark accent for inverted surfaces — large-text/fill usage only, 7.68:1 float vs inverted, ≥ 3:1 non-text/large floor; proven in `scripts/contrast-proof.mjs prove` (INC-244; repointed to oxblood.300, INC-252)."
+      "$description": "On-dark accent for inverted surfaces — large-text/fill usage only, 6.79:1 float vs inverted, ≥ 3:1 non-text/large floor; proven in `scripts/contrast-proof.mjs prove` (INC-244; repointed to oxblood.300, INC-252; 3a rose retune, Phase 1b)."
     },
     "code-foreground": {
       "$type": "color",
@@ -71,7 +82,7 @@
     "code-keyword": {
       "$type": "color",
       "$value": "{mc.color.oxblood.300}",
-      "$description": "Syntax: keywords — same primitive as inverted-accent but a distinct SMALL-TEXT contract: 7.68:1 float vs inverted, ≥ 4.5:1 floor (inverted-accent's own contract stays large/fill-only); proven in `scripts/contrast-proof.mjs prove` (INC-251; repointed to oxblood.300, INC-252)."
+      "$description": "Syntax: keywords — same primitive as inverted-accent but a distinct SMALL-TEXT contract: 6.79:1 float vs inverted, ≥ 4.5:1 floor (inverted-accent's own contract stays large/fill-only); proven in `scripts/contrast-proof.mjs prove` (INC-251; repointed to oxblood.300, INC-252; 3a rose retune, Phase 1b)."
     },
     "code-string": {
       "$type": "color",
