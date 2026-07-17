@@ -29,6 +29,10 @@ const manifestSample = `// routes.ts — single source of truth for a11y coverag
 // Article links: prose.css deliberately has no `a` rule, so anchors carry the proofed
 // accent-ink treatment (accent-ink/background and accent-ink-hover/background,
 // scripts/contrast-proof.mjs prove rows) — same classes as the homepage NDA-aside link.
+// Whitespace discipline: compressHTML strips newline-containing whitespace at text↔tag
+// boundaries, so every space adjacent to an inline element (<a>, <code>) must be either
+// same-line plain text or expression output ({' '}) — never a line break. No whitespace
+// inside any anchor's text node: accessible names stay clean.
 const articleLink = 'font-bold text-accent-ink underline hover:text-accent-ink-hover';
 ---
 
@@ -75,7 +79,7 @@ const articleLink = 'font-bold text-accent-ink underline hover:text-accent-ink-h
 	<h2>The system</h2>
 	<p>
 		Everything visual on this site resolves through a three-tier token pipeline — primitive →
-		semantic → component — built with Style Dictionary. Color primitives live in a private
+		semantic → component — built with Style Dictionary. Color primitives live in a private{' '}
 		<code>--mc-*</code> namespace; pages and components are only allowed to consume semantic
 		tokens, so a palette change is a repoint, not a hunt-and-replace.
 	</p>
@@ -176,12 +180,12 @@ const articleLink = 'font-bold text-accent-ink underline hover:text-accent-ink-h
 
 	<h2>The receipts</h2>
 	<p>
-		Everything above is verifiable:
-		<a href="https://github.com/mstates/michaelstates.com" class={articleLink}>the repository</a>,
+		Everything above is verifiable:{' '}
+		<a href="https://github.com/mstates/michaelstates.com" class={articleLink}>the repository</a>,{' '}
 		<a
 			href="https://github.com/mstates/michaelstates.com/blob/main/docs/adr/0002-astro-version-pin.md"
 			class={articleLink}>the Astro upgrade decision record</a
-		>, and
+		>, and{' '}
 		<a href="https://github.com/mstates/michaelstates.com/tree/main/docs/a11y" class={articleLink}
 			>the accessibility findings</a
 		>.
