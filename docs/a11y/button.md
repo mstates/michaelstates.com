@@ -235,3 +235,23 @@ above are retained verbatim per the record-keeping convention.
   untouched by INC-244 — the 2026-07-08 addendum's values remain current for them.
 - Rendered check (Chromium computed style, Storybook Primary story): fill `#a14622`
   (terracotta.600), text `#ffffff`; axe suite 6/6 with zero A/AA violations.
+
+---
+
+## Addendum — 2026-07-17: Focus ring decoupled from brand accent (INC-252)
+
+Advisory ruling (final, ratified in the INC-252 thread): the semantic `ring` token
+repoints from `{color.accent-ink}` to `{color.foreground}` — focus indication decouples
+from the brand accent **permanently**. Rationale: under the oxblood identity (variant 2a),
+a same-hue ring would sit adjacent to the oxblood primary fill; hue-divergence keeps the
+focus indicator perceptually distinct from the control it encloses. Same-hue acceptance
+was considered and **rejected**. The token **name** Button consumes is unchanged; the
+value behind it changed, so the ring ratios in the 2026-07-08 addendum are superseded:
+
+- Focus `ring` (`foreground` = stone neutral.900) vs `background`: **15.20:1**; vs
+  `surface`: **17.00:1** (was 5.80/6.15 via accent-ink) — the 1.4.11/2.4.13 margins
+  improve by ~2.6×, and the ring is now hue-divergent from every oxblood fill state.
+- INC-252 also repointed the terracotta ramp to oxblood and the cream neutrals to stone;
+  Button's other pairs are re-proven in `scripts/contrast-proof.mjs prove` (all normative
+  pairs PASS — primary fill pairs now **9.70 / 12.56 / 15.12**, secondary border `input`
+  boundary **3.52** on `background` / **3.94** on `surface`, both above the 3:1 floor).

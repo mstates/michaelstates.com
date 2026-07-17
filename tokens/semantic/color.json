@@ -7,34 +7,34 @@
     "surface-pressed": { "$type": "color", "$value": "{mc.color.neutral.200}" },
     "border": { "$type": "color", "$value": "{mc.color.neutral.200}" },
     "input": { "$type": "color", "$value": "{mc.color.neutral.500}" },
-    "ring": { "$type": "color", "$value": "{color.accent-ink}" },
+    "ring": { "$type": "color", "$value": "{color.foreground}" },
     "muted": { "$type": "color", "$value": "{mc.color.neutral.100}" },
     "muted-foreground": {
       "$type": "color",
       "$value": "{mc.color.neutral.600}"
     },
-    "primary": { "$type": "color", "$value": "{mc.color.terracotta.600}" },
+    "primary": { "$type": "color", "$value": "{mc.color.oxblood.600}" },
     "primary-hover": {
       "$type": "color",
-      "$value": "{mc.color.terracotta.700}"
+      "$value": "{mc.color.oxblood.700}"
     },
     "primary-pressed": {
       "$type": "color",
-      "$value": "{mc.color.terracotta.800}"
+      "$value": "{mc.color.oxblood.800}"
     },
     "primary-foreground": {
       "$type": "color",
       "$value": "{mc.color.neutral.0}"
     },
-    "accent": { "$type": "color", "$value": "{mc.color.terracotta.500}" },
+    "accent": { "$type": "color", "$value": "{mc.color.oxblood.500}" },
     "accent-foreground": {
       "$type": "color",
       "$value": "{mc.color.neutral.0}"
     },
-    "accent-ink": { "$type": "color", "$value": "{mc.color.terracotta.600}" },
+    "accent-ink": { "$type": "color", "$value": "{mc.color.oxblood.600}" },
     "accent-ink-hover": {
       "$type": "color",
-      "$value": "{mc.color.terracotta.700}"
+      "$value": "{mc.color.oxblood.700}"
     },
     "danger": { "$type": "color", "$value": "{mc.color.functional.danger}" },
     "danger-foreground": { "$type": "color", "$value": "{mc.color.neutral.0}" },
@@ -50,38 +50,38 @@
     },
     "inverted-foreground-muted": {
       "$type": "color",
-      "$value": "oklch(80.45% 0.0013 78.31)",
-      "$description": "Solid composite of 72% white over inverted (neutral.900, #1c1a17), computed in encoded sRGB by `scripts/contrast-proof.mjs derive` — deterministic, no alpha in the token (INC-242)."
+      "$value": "oklch(80.62% 0.0013 78.31)",
+      "$description": "Solid composite of 72% white over inverted (stone neutral.900, #1e1c19), computed in encoded sRGB by the INC-242 derive algorithm (`scripts/contrast-proof.mjs` exported math) — deterministic, no alpha in the token (re-derived for the stone ramp, INC-252)."
     },
     "inverted-accent": {
       "$type": "color",
-      "$value": "{mc.color.terracotta.300}",
-      "$description": "On-dark accent for inverted surfaces — large-text/fill usage only, ≥ 3:1 non-text/large floor vs inverted; proven in `scripts/contrast-proof.mjs prove` (INC-244)."
+      "$value": "{mc.color.oxblood.300}",
+      "$description": "On-dark accent for inverted surfaces — large-text/fill usage only, 7.68:1 float vs inverted, ≥ 3:1 non-text/large floor; proven in `scripts/contrast-proof.mjs prove` (INC-244; repointed to oxblood.300, INC-252)."
     },
     "code-foreground": {
       "$type": "color",
       "$value": "{color.inverted-foreground}",
-      "$description": "Default code text on the inverted code-block surface — 17.36:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251)."
+      "$description": "Default code text on the inverted code-block surface — 17.00:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251; re-proven vs the stone inverted, INC-252)."
     },
     "code-comment": {
       "$type": "color",
       "$value": "{color.inverted-foreground-muted}",
-      "$description": "Syntax: comments — muted but 9.44:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251)."
+      "$description": "Syntax: comments — muted but 9.29:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251; re-proven vs the stone inverted, INC-252)."
     },
     "code-keyword": {
       "$type": "color",
-      "$value": "{mc.color.terracotta.300}",
-      "$description": "Syntax: keywords — same primitive as inverted-accent but a distinct SMALL-TEXT contract: 8.52:1 float vs inverted, ≥ 4.5:1 floor (inverted-accent's own contract stays large/fill-only); proven in `scripts/contrast-proof.mjs prove` (INC-251)."
+      "$value": "{mc.color.oxblood.300}",
+      "$description": "Syntax: keywords — same primitive as inverted-accent but a distinct SMALL-TEXT contract: 7.68:1 float vs inverted, ≥ 4.5:1 floor (inverted-accent's own contract stays large/fill-only); proven in `scripts/contrast-proof.mjs prove` (INC-251; repointed to oxblood.300, INC-252)."
     },
     "code-string": {
       "$type": "color",
       "$value": "oklch(85% 0.1 95)",
-      "$description": "Syntax: strings — warm gold, semantic-tier literal (`inverted-foreground-muted` precedent; INC-251's boundary excludes tokens/primitive/), 11.02:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251)."
+      "$description": "Syntax: strings — warm gold, semantic-tier literal (`inverted-foreground-muted` precedent; INC-251's boundary excludes tokens/primitive/), 10.79:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251; re-proven vs the stone inverted, INC-252)."
     },
     "code-function": {
       "$type": "color",
       "$value": "oklch(82% 0.06 250)",
-      "$description": "Syntax: functions/constants — soft periwinkle, the palette's one deliberate cool counterpoint (syntax-only, not brand usage; ratified in INC-251 planning), 9.99:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251)."
+      "$description": "Syntax: functions/constants — soft periwinkle, the palette's one deliberate cool counterpoint (syntax-only, not brand usage; ratified in INC-251 planning), 9.78:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251; re-proven vs the stone inverted, INC-252)."
     }
   }
 }

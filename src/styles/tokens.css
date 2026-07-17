@@ -2,24 +2,24 @@
 
 :root {
   --mc-color-neutral-0: oklch(100% 0 0);
-  --mc-color-neutral-50: oklch(97.98% 0.0045 78.3);
-  --mc-color-neutral-100: oklch(96.52% 0.0067 78.73);
-  --mc-color-neutral-200: oklch(92.97% 0.012 79.78);
-  --mc-color-neutral-300: oklch(87.78% 0.0122 79.78);
-  --mc-color-neutral-400: oklch(73.79% 0.0129 79.76);
-  --mc-color-neutral-500: oklch(60.57% 0.0135 79.74);
-  --mc-color-neutral-600: oklch(51.24% 0.0139 79.73);
-  --mc-color-neutral-700: oklch(39.58% 0.0127 81.76);
-  --mc-color-neutral-800: oklch(29.55% 0.0092 79.73);
-  --mc-color-neutral-900: oklch(21.89% 0.0065 78.18);
-  --mc-color-neutral-950: oklch(15.26% 0.0045 78.18);
+  --mc-color-neutral-50: oklch(96.16% 0.0057 84.57);
+  --mc-color-neutral-100: oklch(94.75% 0.0058 84.44);
+  --mc-color-neutral-200: oklch(91.32% 0.0058 84.15);
+  --mc-color-neutral-300: oklch(86.32% 0.0058 83.71);
+  --mc-color-neutral-400: oklch(72.82% 0.006 82.54);
+  --mc-color-neutral-500: oklch(60.07% 0.0061 81.43);
+  --mc-color-neutral-600: oklch(51.07% 0.0062 80.65);
+  --mc-color-neutral-700: oklch(39.82% 0.0063 79.67);
+  --mc-color-neutral-800: oklch(30.15% 0.0064 78.83);
+  --mc-color-neutral-900: oklch(22.76% 0.0065 78.19);
+  --mc-color-neutral-950: oklch(15.86% 0.0045 78.19);
   --mc-color-neutral-1000: oklch(0% 0 0);
-  --mc-color-terracotta-300: oklch(78.14% 0.0993 58.1);
-  --mc-color-terracotta-500: oklch(60.85% 0.1601 40.73);
-  --mc-color-terracotta-600: oklch(50.77% 0.1305 40.71);
-  --mc-color-terracotta-700: oklch(42.26% 0.1086 41.41);
-  --mc-color-terracotta-800: oklch(35.22% 0.0905 41.41);
-  --mc-color-functional-danger: oklch(57% 0.20 27);
+  --mc-color-oxblood-300: oklch(76% 0.07 15);
+  --mc-color-oxblood-500: oklch(48.2% 0.1413 15.52);
+  --mc-color-oxblood-600: oklch(40.21% 0.1152 15.52);
+  --mc-color-oxblood-700: oklch(33.47% 0.0959 15.52);
+  --mc-color-oxblood-800: oklch(27.9% 0.0799 15.52);
+  --mc-color-functional-danger: oklch(55.5% 0.20 27);
   --mc-color-functional-success: oklch(62% 0.15 150);
   --mc-space-0: 0rem;
   --mc-space-1: 0.25rem;
@@ -54,9 +54,9 @@
 }
 
 @theme {
-  --color-inverted-foreground-muted: oklch(80.45% 0.0013 78.31); /** Solid composite of 72% white over inverted (neutral.900, #1c1a17), computed in encoded sRGB by `scripts/contrast-proof.mjs derive` — deterministic, no alpha in the token (INC-242). */
-  --color-code-string: oklch(85% 0.1 95); /** Syntax: strings — warm gold, semantic-tier literal (`inverted-foreground-muted` precedent; INC-251's boundary excludes tokens/primitive/), 11.02:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251). */
-  --color-code-function: oklch(82% 0.06 250); /** Syntax: functions/constants — soft periwinkle, the palette's one deliberate cool counterpoint (syntax-only, not brand usage; ratified in INC-251 planning), 9.99:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251). */
+  --color-inverted-foreground-muted: oklch(80.62% 0.0013 78.31); /** Solid composite of 72% white over inverted (stone neutral.900, #1e1c19), computed in encoded sRGB by the INC-242 derive algorithm (`scripts/contrast-proof.mjs` exported math) — deterministic, no alpha in the token (re-derived for the stone ramp, INC-252). */
+  --color-code-string: oklch(85% 0.1 95); /** Syntax: strings — warm gold, semantic-tier literal (`inverted-foreground-muted` precedent; INC-251's boundary excludes tokens/primitive/), 10.79:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251; re-proven vs the stone inverted, INC-252). */
+  --color-code-function: oklch(82% 0.06 250); /** Syntax: functions/constants — soft periwinkle, the palette's one deliberate cool counterpoint (syntax-only, not brand usage; ratified in INC-251 planning), 9.78:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251; re-proven vs the stone inverted, INC-252). */
   --color-background: var(--mc-color-neutral-50);
   --color-foreground: var(--mc-color-neutral-900);
   --color-surface: var(--mc-color-neutral-0);
@@ -66,23 +66,23 @@
   --color-input: var(--mc-color-neutral-500);
   --color-muted: var(--mc-color-neutral-100);
   --color-muted-foreground: var(--mc-color-neutral-600);
-  --color-primary: var(--mc-color-terracotta-600);
-  --color-primary-hover: var(--mc-color-terracotta-700);
-  --color-primary-pressed: var(--mc-color-terracotta-800);
+  --color-primary: var(--mc-color-oxblood-600);
+  --color-primary-hover: var(--mc-color-oxblood-700);
+  --color-primary-pressed: var(--mc-color-oxblood-800);
   --color-primary-foreground: var(--mc-color-neutral-0);
-  --color-accent: var(--mc-color-terracotta-500);
+  --color-accent: var(--mc-color-oxblood-500);
   --color-accent-foreground: var(--mc-color-neutral-0);
-  --color-accent-ink: var(--mc-color-terracotta-600);
-  --color-accent-ink-hover: var(--mc-color-terracotta-700);
+  --color-accent-ink: var(--mc-color-oxblood-600);
+  --color-accent-ink-hover: var(--mc-color-oxblood-700);
   --color-danger: var(--mc-color-functional-danger);
   --color-danger-foreground: var(--mc-color-neutral-0);
   --color-success: var(--mc-color-functional-success);
   --color-success-foreground: var(--mc-color-neutral-900);
   --color-inverted: var(--mc-color-neutral-900);
   --color-inverted-foreground: var(--mc-color-neutral-0);
-  --color-inverted-accent: var(--mc-color-terracotta-300); /** On-dark accent for inverted surfaces — large-text/fill usage only, ≥ 3:1 non-text/large floor vs inverted; proven in `scripts/contrast-proof.mjs prove` (INC-244). */
-  --color-code-comment: var(--color-inverted-foreground-muted); /** Syntax: comments — muted but 9.44:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251). */
-  --color-code-keyword: var(--mc-color-terracotta-300); /** Syntax: keywords — same primitive as inverted-accent but a distinct SMALL-TEXT contract: 8.52:1 float vs inverted, ≥ 4.5:1 floor (inverted-accent's own contract stays large/fill-only); proven in `scripts/contrast-proof.mjs prove` (INC-251). */
+  --color-inverted-accent: var(--mc-color-oxblood-300); /** On-dark accent for inverted surfaces — large-text/fill usage only, 7.68:1 float vs inverted, ≥ 3:1 non-text/large floor; proven in `scripts/contrast-proof.mjs prove` (INC-244; repointed to oxblood.300, INC-252). */
+  --color-code-comment: var(--color-inverted-foreground-muted); /** Syntax: comments — muted but 9.29:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251; re-proven vs the stone inverted, INC-252). */
+  --color-code-keyword: var(--mc-color-oxblood-300); /** Syntax: keywords — same primitive as inverted-accent but a distinct SMALL-TEXT contract: 7.68:1 float vs inverted, ≥ 4.5:1 floor (inverted-accent's own contract stays large/fill-only); proven in `scripts/contrast-proof.mjs prove` (INC-251; repointed to oxblood.300, INC-252). */
   --font-sans: var(--mc-font-family-sans);
   --font-serif: var(--mc-font-family-serif);
   --font-mono: var(--mc-font-family-mono);
@@ -92,6 +92,6 @@
   --text-display: var(--mc-size-4xl);
   --text-hero: clamp(var(--mc-size-hero-min), 5.4vw, var(--mc-size-hero-max)); /** Fluid hero scale pinned to the Home.dc.html export (2026-07-08): clamp(44px, 5.4vw, 64px). The slope is owned at the semantic tier; the endpoints are primitives (INC-242). */
   --leading-heading: var(--mc-leading-tight);
-  --color-ring: var(--color-accent-ink);
-  --color-code-foreground: var(--color-inverted-foreground); /** Default code text on the inverted code-block surface — 17.36:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251). */
+  --color-ring: var(--color-foreground);
+  --color-code-foreground: var(--color-inverted-foreground); /** Default code text on the inverted code-block surface — 17.00:1 float vs inverted, ≥ 4.5:1 small-text floor; proven in `scripts/contrast-proof.mjs prove` (INC-251; re-proven vs the stone inverted, INC-252). */
 }
