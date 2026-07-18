@@ -40,7 +40,7 @@
     "action-ink": {
       "$type": "color",
       "$value": "{mc.color.oxblood.500}",
-      "$description": "Action-tier interactive text ink (cranberry) — text links, active nav, selected states; hover lands on the brand tier per the 3a role map. Minted in INC-252 Phase 1b with zero consumers until the Phase 1c markup pass (expected, transient within PR #34). 6.57:1 vs background / 7.16:1 vs surface, ≥ 4.5:1 link-text floors — proven via the exported contrast-proof math (the frozen prove row list predates this token; see the Phase 1b record)."
+      "$description": "Action-tier interactive text ink (cranberry) — text links, active nav, selected states; hover lands on the brand tier per the 3a role map. Consumers (INC-252 Phase 1c): text links (contact, card title, article), the card affordance line, and the pill CTA fill. 6.57:1 vs background / 7.16:1 vs surface, ≥ 4.5:1 link-text floors — proven via the exported contrast-proof math (the frozen prove row list predates this token; see the Phase 1b record)."
     },
     "action-ink-hover": {
       "$type": "color",

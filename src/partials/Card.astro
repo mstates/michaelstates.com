@@ -6,8 +6,10 @@
 // affordance line sits inside the hit area without becoming a second link. Accessible
 // name = the title text; accepted tradeoff: text selection inside a linked card.
 // Non-href cards render byte-identically to the INC-243 output. Link colors are the
-// proofed accent-ink treatment (accent-ink and accent-ink-hover vs surface,
-// scripts/contrast-proof.mjs prove rows). Zero-hydration by contract (B4): no client:*
+// proofed action-ink treatment (action-ink and action-ink-hover vs surface — INC-252
+// Phase 1c tier move; exported-math proof, Phase 1b); the affordance line carries
+// action-ink at rest only (it is the card's click cue inside the stretched-link hit
+// area — action tier per the role map; not focusable, no hover). Zero-hydration by contract (B4): no client:*
 // directives, no <style>/<script> blocks. Byte-parity discipline: the template is a
 // verbatim copy (text-node line structure matters under compressHTML) — commentary
 // stays in frontmatter, never in the template.
@@ -26,7 +28,7 @@ const cardClass = `flex flex-col gap-2.5 rounded-2xl border border-border bg-sur
 	href ? ' relative' : ''
 }`;
 const titleLink =
-	'text-accent-ink underline transition-colors after:absolute after:inset-0 hover:text-accent-ink-hover';
+	'text-action-ink underline transition-colors after:absolute after:inset-0 hover:text-action-ink-hover';
 ---
 
 <li class={cardClass}>
@@ -39,7 +41,7 @@ const titleLink =
 	</div>
 	{
 		href && (
-			<p class="text-body font-bold text-accent-ink">
+			<p class="text-body font-bold text-action-ink">
 				Read the case study <span aria-hidden="true">→</span>
 			</p>
 		)

@@ -27,13 +27,13 @@ const manifestSample = `// routes.ts — single source of truth for a11y coverag
 }`;
 
 // Article links: prose.css deliberately has no `a` rule, so anchors carry the proofed
-// accent-ink treatment (accent-ink/background and accent-ink-hover/background,
-// scripts/contrast-proof.mjs prove rows) — same classes as the homepage NDA-aside link.
+// action-ink treatment (action-ink/background and action-ink-hover/background — INC-252
+// Phase 1c tier move; exported-math proof, Phase 1b) — same classes as the homepage NDA-aside link.
 // Whitespace discipline: compressHTML strips newline-containing whitespace at text↔tag
 // boundaries, so every space adjacent to an inline element (<a>, <code>) must be either
 // same-line plain text or expression output ({' '}) — never a line break. No whitespace
 // inside any anchor's text node: accessible names stay clean.
-const articleLink = 'font-bold text-accent-ink underline hover:text-accent-ink-hover';
+const articleLink = 'font-bold text-action-ink underline hover:text-action-ink-hover';
 ---
 
 <CaseStudyLayout
