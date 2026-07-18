@@ -9,7 +9,29 @@
 // proofed action-ink treatment (action-ink and action-ink-hover vs surface — INC-252
 // Phase 1c tier move; exported-math proof, Phase 1b); the affordance line carries
 // action-ink at rest only (it is the card's click cue inside the stretched-link hit
-// area — action tier per the role map; not focusable, no hover). Zero-hydration by contract (B4): no client:*
+// area — action tier per the role map; not focusable, no hover). The title link is
+// underline-free at rest (INC-252 polish): card titles are positionally distinct
+// components, not links inside blocks of text, so WCAG 1.4.1's underline logic does
+// not apply — underlines stay only where they're load-bearing (inline prose links).
+// The linked card is a `group`; the affordance arrow nudges 2px on card hover,
+// motion-safe gated (the translate never applies under prefers-reduced-motion — the
+// global 0.01ms floor only collapses duration, so the end-state must be gated too).
+// The linked title anchor carries aria-describedby → outcome + tags: the accessible
+// NAME stays the title alone (concise for links lists and voice control); the rich
+// content rides as the DESCRIPTION, which users can skip. The affordance line is
+// visible card content and rides the description for parity (it carries the "case
+// study" action context the title alone doesn't). Ids are deterministic
+// title slugs (build byte-reproducibility; titles are unique by contract), rendered
+// only in the href branch. Tags carry a collective sr-only "Topics:" prefix on ALL
+// cards: bare chip text lacks non-visual context, and a per-chip category:value
+// treatment would require category metadata the tags don't have. The focus ring
+// draws at the card boundary via the stretched pseudo (rounded to match) because
+// the card IS the interactive region — the indicator follows the hit area. The
+// anchor uses outline-none (deliberate deviation from the global.css outline-hidden
+// convention): the convention's HCM rationale is satisfied by the pseudo's outline,
+// which forced-colors preserves — outline-hidden here would resurrect a second
+// title-hugging ring in HCM.
+// Zero-hydration by contract (B4): no client:*
 // directives, no <style>/<script> blocks. Byte-parity discipline: the template is a
 // verbatim copy (text-node line structure matters under compressHTML) — commentary
 // stays in frontmatter, never in the template.
@@ -24,25 +46,31 @@ interface Props {
 
 const { title, outcome, tags, href } = Astro.props;
 
+// Deterministic ids for the describedby chain — a slug of the (unique) title.
+const slug = title
+	.toLowerCase()
+	.replace(/[^a-z0-9]+/g, '-')
+	.replace(/^-|-$/g, '');
+
 const cardClass = `flex flex-col gap-2.5 rounded-2xl border border-border bg-surface p-6 shadow-sm${
-	href ? ' relative' : ''
+	href ? ' group relative' : ''
 }`;
 const titleLink =
-	'text-action-ink underline transition-colors after:absolute after:inset-0 hover:text-action-ink-hover';
+	'text-action-ink transition-colors after:absolute after:inset-0 after:rounded-2xl hover:text-action-ink-hover focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-solid focus-visible:after:outline-offset-2 focus-visible:after:outline-ring';
 ---
 
 <li class={cardClass}>
 	<h3 class="font-serif text-title font-semibold leading-heading tracking-tight text-balance">
-		{href ? <a href={href} class={titleLink}>{title}</a> : title}
+		{href ? <a href={href} class={titleLink} aria-describedby={`${slug}-outcome ${slug}-tags ${slug}-cta`}>{title}</a> : title}
 	</h3>
-	<p class="flex-1 text-body text-muted-foreground">{outcome}</p>
-	<div class="mt-1.5 flex flex-wrap gap-2">
-		{tags.map((tag) => <Tag tag={tag} />)}
+	<p class="flex-1 text-body text-muted-foreground" id={href ? `${slug}-outcome` : undefined}>{outcome}</p>
+	<div class="mt-1.5 flex flex-wrap gap-2" id={href ? `${slug}-tags` : undefined}>
+		<span class="sr-only">Topics:</span>{tags.map((tag) => <Tag tag={tag} />)}
 	</div>
 	{
 		href && (
-			<p class="text-body font-bold text-action-ink">
-				Read the case study <span aria-hidden="true">→</span>
+			<p class="text-body font-bold text-action-ink" id={`${slug}-cta`}>
+				Read the case study <span aria-hidden="true" class="inline-block transition-transform motion-reduce:transition-none motion-safe:group-hover:translate-x-0.5">→</span>
 			</p>
 		)
 	}
