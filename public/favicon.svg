@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
     <!-- Brand mark (INC-243): the rounded accent square from the Home.dc.html logo
          treatment. Fills are the ratified display hexes of the token oklch values
-         (a standalone favicon can't reference page CSS vars): light =
-         mc.color.terracotta.500 #cf5a2b, dark = mc.color.terracotta.300 #e8a877
-         (the proven on-dark accent, 8.52:1 vs inverted) — see
-         docs/a11y/inc-242-design-language-proof.md §2. -->
-    <rect width="128" height="128" rx="37" fill="#cf5a2b" />
+         (a standalone favicon can't reference page CSS vars): light = accent
+         (mc.color.oxblood.600) #7d2b3c, dark = inverted-accent
+         (mc.color.oxblood.300) #d98fa0 (the proven on-dark accent, 6.79:1 vs
+         inverted) — see the INC-252 Phase 1b record: the inverted-accent
+         $description in tokens/semantic/color.json + contrast-proof.mjs prove. -->
+    <rect width="128" height="128" rx="37" fill="#7d2b3c" />
     <style>
         @media (prefers-color-scheme: dark) {
-            rect { fill: #e8a877; }
+            rect { fill: #d98fa0; }
         }
     </style>
 </svg>
