@@ -8,21 +8,6 @@ import { Heading, Link } from '../components';
 	description="The page you're looking for doesn't exist or may have moved. Return to the homepage of Michael States' portfolio."
 	mainClass="mx-auto flex min-h-screen max-w-prose flex-col justify-center gap-4 px-6"
 >
-	<script is:inline>
-		/* INC-237 red-gate demo: deliberate main-thread blocking so /404 fails the
-		   promoted performance gate on every run. Performance-only by construction —
-		   no network, no console output, no DOM changes. Reverted in the next commit. */
-		(function () {
-			const block = function (ms) {
-		const t0 = performance.now();
-		while (performance.now() - t0 < ms);
-	};
-			block(3000);
-			setTimeout(function () {
-				block(2500);
-			}, 50);
-		})();
-	</script>
 	<Heading level={1}>Page not found</Heading>
 	<p class="text-body">The page you're looking for doesn't exist or may have moved.</p>
 	<Link href="/" variant="standalone">Return home</Link>
