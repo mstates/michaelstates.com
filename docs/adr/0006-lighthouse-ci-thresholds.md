@@ -63,3 +63,25 @@ output itself — no preview server to coordinate) and `numberOfRuns: 3` to medi
   confirmed the scores, so there's no reason to ship a hollow gate even temporarily.
 - **Make perf/seo blocking too.** Rejected for now: they'd fail on the placeholder content and on
   runner variance — revisit once launch content exists.
+
+## Addendum — 2026-07-20: perf/best-practices/seo promoted to `error` (INC-237)
+
+The re-measurement this ADR instructs ("as real pages/content arrive, re-measure") happened
+twice — INC-237 Checkpoint 1 and Checkpoint 2 (main @ `45d96c85`, CI run 29741457884). The
+launch content that capped SEO landed long since. Checkpoint 2's worst observed run across
+every category/route/run is **performance 96 on `/404`**; every other measurement is **100**.
+The "revisit once launch content exists" condition above is met, so:
+
+- **performance, best-practices, and seo are now `error` at unchanged floors** (0.9 / 0.95 /
+  0.9). Assertion levels only; the decision table above is preserved as written at acceptance —
+  this addendum, not an edit, carries the update. Raising the floors beyond those values isn't
+  supported by two checkpoints of variance data.
+- **Assertion aggregation stays lhci's default `optimistic`** — the _best_ of the 3 runs is
+  compared to the floor (confirmed in `@lhci/utils` `assertions.js`, not the median implied by
+  "numberOfRuns: 3 to median out variance" above). Kept deliberately: single-run runner variance
+  can't flake the gate, while a sustained regression (all 3 runs under the floor) still fails.
+  `pessimistic` was considered and rejected as over-tightening on two checkpoints of variance
+  data.
+- **Maintainer note:** with error-level gates, a local `lhci autorun` is no longer a reliable
+  green pre-push check for performance on slower machines — observed uniform 0.87 locally vs
+  96–100 on the CI runner for the same commit. CI is the authoritative gate.
