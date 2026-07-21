@@ -56,6 +56,9 @@ for" for the full priorities.
 
 - **Always** run `pnpm lint && pnpm test:a11y` before declaring a UI task complete.
 - **Never** commit secrets. Tokens/keys go in `.env` (gitignored) or CI secrets.
+- **Never** append `Claude-Session:`, `Co-authored-by:`, or any attribution
+  trailer to a commit message — the repo's history is trailer-free by
+  design, and session URLs are private-workspace metadata.
 - **Never** modify a test to make it pass — fix the implementation (TDD discipline).
 - Use **Plan Mode** for any non-trivial change before editing files.
 - **Execute exactly the stated scope.** No refactors, reformatting, or "improvements"
