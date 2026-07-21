@@ -5,7 +5,9 @@
 #
 # $1 is the path to the file holding the proposed commit message.
 # Two checks:
-#   1. Reject any "Co-authored-by:" trailer (case-insensitive), anywhere in the message.
+#   1. Reject any attribution trailer (Co-authored-by, Claude-Session, Generated-by;
+#      case-insensitive), anywhere in the message. Conventional footers (Refs, Closes,
+#      Fixes, BREAKING CHANGE) are untouched — only the listed keys match.
 #   2. Validate the subject (first non-comment, non-blank line) against Conventional Commits.
 #
 # NOTE: `set -e` is intentionally NOT used — a non-matching `grep` returns exit 1, which
@@ -15,10 +17,10 @@ set -u
 
 msg_file="$1"
 
-# 1) No co-author trailers.
-if grep -iqE '^[[:space:]]*co-authored-by:' "$msg_file"; then
-  echo "commit-msg: BLOCKED — 'Co-authored-by:' trailers are not allowed." >&2
-  echo "  Repo policy: includeCoAuthoredBy = false. Remove the trailer and recommit." >&2
+# 1) No attribution trailers.
+if grep -iqE '^[[:space:]]*(co-authored-by|claude-session|generated-by)[[:space:]]*:' "$msg_file"; then
+  echo "commit-msg: BLOCKED — attribution trailers are rejected; this repo's history is trailer-free by design." >&2
+  echo "  Matched one of: Co-authored-by, Claude-Session, Generated-by. Remove the trailer and recommit." >&2
   exit 1
 fi
 
