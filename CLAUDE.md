@@ -18,7 +18,7 @@ for" for the full priorities.
 
 ## Stack (mid-2026)
 
-- **Framework:** Astro 6 (static-first, zero-JS islands)
+- **Framework:** Astro 7 (static-first, zero-JS islands)
 - **Interactive islands:** React 19.2
 - **Styling:** Tailwind CSS v4 (CSS-first config, OKLCH)
 - **Accessible primitives:** React Aria Components (Adobe)
@@ -36,9 +36,9 @@ for" for the full priorities.
 - `pnpm dev` — Astro dev server
 - `pnpm build` — production build
 - `pnpm preview` — serve the build locally
-- `pnpm test` — Vitest unit/component tests
+- `pnpm test` — Vitest — unit tests (jsdom) + Storybook stories-as-tests (chromium)
 - `pnpm test:a11y` — Playwright + @axe-core/playwright accessibility suite
-- `pnpm lint` — ESLint (includes eslint-plugin-jsx-a11y)
+- `pnpm lint` — ESLint (includes eslint-plugin-jsx-a11y) + `astro check`
 - `pnpm storybook` — Storybook dev
 - `pnpm tokens` — rebuild design tokens (Style Dictionary)
 
@@ -84,6 +84,10 @@ for" for the full priorities.
 - `/sync-tokens` — run the Style Dictionary token build.
 - `/seed-linear` — create the full project backlog in Linear (run once).
 - `/seed-notion` — publish research + journal into Notion (run once).
+- `/commit` — stage and commit with an approved message (Conventional Commits, no trailers). Never pushes.
+- `/push` — push gate: preflight checks, then a plain fast-forward push. Never `--force`.
+- `/recon` — read-only session-opener: live git/deploy/Linear ground truth. Never writes.
+- `/follow-up` — file a deferred item in both Linear and `docs/follow-ups.md`.
 
 ## Reference docs
 
@@ -96,5 +100,6 @@ for" for the full priorities.
 ## Connected services (via MCP — see `.mcp.json` and SETUP.md)
 
 Figma, Linear, Notion, Playwright. Figma, Linear, and Notion are remote servers
-authenticated via OAuth (`/mcp`); Playwright runs locally via `claude mcp add` — none
-are active until you complete SETUP.md Stage 4.
+authenticated via OAuth (`/mcp`); Playwright is a project-scoped command entry in
+`.mcp.json` (`npx @playwright/mcp`). All four are configured — SETUP.md Stage 4 is
+complete.
