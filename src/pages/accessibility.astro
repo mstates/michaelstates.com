@@ -1,0 +1,132 @@
+---
+// INC-207: public accessibility statement. Claims-audited page — every factual
+// sentence traces to a repo artifact or a ticket named inline (trace table in the
+// PR body). Living page by design: the copy and the "Last reviewed" date update as
+// limitations close — unlike ADRs and audit records, which stay verbatim.
+// Zero-hydration by contract (B4): every interactive element is a native link; no
+// client:* directives, no <style>/<script> blocks.
+import CaseStudyLayout from '../layouts/CaseStudyLayout.astro';
+
+// Article links: prose.css deliberately has no `a` rule, so anchors carry the proofed
+// action-ink treatment — same classes as the case study and homepage NDA-aside links.
+// Whitespace discipline: compressHTML strips newline-containing whitespace at text↔tag
+// boundaries, so every space adjacent to an inline element (<a>, <code>) must be either
+// same-line plain text or expression output ({' '}) — never a line break. No whitespace
+// inside any anchor's text node: accessible names stay clean.
+const articleLink = 'font-bold text-action-ink underline hover:text-action-ink-hover';
+---
+
+<CaseStudyLayout
+	title="Accessibility statement"
+	description="What michaelstates.com is tested against — WCAG 2.2 AA — how that bar is enforced on every change, and the known limitations still open, updated as they close."
+>
+	<h1>Accessibility statement</h1>
+	<p>
+		Accessibility is the work on display here, so this page is held to the same standard as
+		the code: every factual claim on it traces to an artifact in the site's{' '}
+		<a href="https://github.com/mstates/michaelstates.com" class={articleLink}>public repository</a>{' '}
+		or to a ticket named inline.
+	</p>
+	<p>
+		This statement covers michaelstates.com — every page served on this domain — and the
+		component library the site is built from, which is developed and audited in the same
+		repository.
+	</p>
+	<p>Last reviewed: July 24, 2026.</p>
+
+	<h2>Conformance target</h2>
+	<p>
+		This site is built and tested against WCAG 2.2, Level AA. Every UI change is verified
+		against that bar before it's considered done.
+	</p>
+	<p>
+		During design I also use APCA as a readability aid, but I claim no WCAG 3 or APCA
+		conformance — WCAG 3 is still a draft.
+	</p>
+
+	<h2>How conformance is enforced</h2>
+	<p>
+		A page can't ship on this site without an accessibility audit. Every route must be
+		registered in a test manifest, and a parity check fails the build if a page appears in
+		the build output without an entry — including this one.
+	</p>
+	<p>
+		Every registered route gets a full axe scan against the complete WCAG 2.0, 2.1, and 2.2
+		A and AA rule set — deliberately not narrowed — and the suite requires zero violations.
+		The scans run against the built HTML, the same output that deploys, not a dev server.
+		The suite also asserts each page's document contract — HTTP status, exact title, the
+		expected level-one heading, a main landmark, a skip link — and drives the skip link by
+		keyboard: first Tab stop, visible on focus, at least 24 by 24 pixels, and Enter moves
+		focus into the main content.
+	</p>
+	<p>
+		Lighthouse audits every built page, three runs each, and an accessibility score of 1.0
+		is required — an error-level assertion, not a dashboard number. Linting includes{' '}
+		<code>eslint-plugin-jsx-a11y</code> across the interactive components.
+	</p>
+	<p>
+		All of this runs on every pull request and every push to main, and the production
+		branch is protected: a change can't land on main until those checks pass. The case
+		study —{' '}
+		<a href="/work/building-michaelstates-com/" class={articleLink}>how this site was built accessibly</a>{' '}
+		— tells the longer story of why the machinery is shaped this way.
+	</p>
+
+	<h2>Beyond automation</h2>
+	<p>
+		Automated checks catch only a minority of real accessibility issues; I treat them as
+		the floor, not the ceiling. The component library's primitives — button, heading,
+		link, text field — each have a recorded WCAG 2.2 AA review committed to the
+		repository, with per-criterion verdicts and their open items written down rather than
+		rounded off. During development, every component story is also axe-checked in the
+		workbench, with violations surfaced as errors.
+	</p>
+	<p>
+		Every normative foreground/background color pair on this site ships with a computed
+		contrast ratio recorded against the WCAG floors.
+	</p>
+
+	<h2>Known limitations</h2>
+	<p>An honest statement says what hasn't been done yet. As of the review date above:</p>
+	<ul>
+		<li>
+			<strong>No recorded manual screen-reader pass yet.</strong> I haven't yet run and
+			recorded a full VoiceOver and NVDA pass of the live site. The checklist is committed
+			at{' '}
+			<code>docs/a11y/manual-testing.md</code>; the work is tracked as INC-206.
+		</li>
+		<li>
+			<strong>One open high-priority component finding.</strong> The text-field component
+			keeps its error live region mounted even when empty, and NVDA with Firefox can miss
+			the first error announcement in that pattern. The axe suite passes — this is dynamic
+			screen-reader behavior axe can't detect — so manual verification is tracked as
+			INC-219 (<code>docs/a11y/textfield.md</code>, Issue #1). No page on this site renders
+			a text field today, so this is a component-library limitation rather than a live
+			barrier.
+		</li>
+		<li>
+			<strong>Forced-colors mode is unverified.</strong> Focus-indicator behavior in
+			Windows High Contrast Mode hasn't been verified by a human yet; it's a manual-only
+			item on the same checklist.
+		</li>
+		<li>
+			<strong>Smaller open audit notes.</strong> The component reviews carry a few
+			hardening items — guards for icon-only accessible names, an empty-heading guard —
+			none of which affects anything currently shipped. They're indexed in{' '}
+			<code>docs/follow-ups.md</code>.
+		</li>
+	</ul>
+	<p>
+		This is a living page. When one of these items closes, the statement and its review
+		date update with it — the point of the list above is to shrink.
+	</p>
+
+	<h2>Feedback</h2>
+	<p>
+		If something on this site doesn't work for you, I want to know. Email{' '}
+		<a href="mailto:hello@michaelstates.com" class={articleLink}>hello@michaelstates.com</a>{' '}
+		or use the{' '}
+		<a href="/#contact" class={articleLink}>contact section</a>{' '}
+		on the homepage. A barrier you report is treated as a bug, not feedback.
+	</p>
+</CaseStudyLayout>

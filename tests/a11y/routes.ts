@@ -34,6 +34,13 @@ export const routes: A11yRoute[] = [
     h1: "I design and ship products that work for everyone.",
   },
   {
+    id: "/accessibility/",
+    path: "/accessibility/",
+    status: 200,
+    title: "Accessibility statement · Michael States",
+    h1: "Accessibility statement",
+  },
+  {
     id: "/work/building-michaelstates-com/",
     path: "/work/building-michaelstates-com/",
     status: 200,
