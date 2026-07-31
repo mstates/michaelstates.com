@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../partials/Card.astro';
 import { eyebrow, pillPrimary } from '../partials/recipes';
+import SectionHeader from '../partials/SectionHeader.astro';
 import SiteFooter from '../partials/SiteFooter.astro';
 import SiteHeader from '../partials/SiteHeader.astro';
 
@@ -68,11 +69,12 @@ const services = [
 
 // Shared class recipes. Colors are semantic tokens only; every pair's computed ratio
 // is recorded in the PR body per the surface-contract rule. (eyebrow moved to
-// partials/recipes.ts with INC-251 — second consumer.) The contact-section eyebrow
-// rides inverted-accent (rose — the tier's first real consumer, INC-252 polish);
+// partials/recipes.ts with INC-251 — second consumer; sectionH2 moved into
+// partials/SectionHeader.astro with INC-262 — the partial is its only consumer.)
+// The contact-section eyebrow rides inverted-accent (rose — the tier's first real
+// consumer, INC-252 polish);
 // pair already proven: inverted-accent/inverted 6.79:1 in scripts/contrast-proof.mjs
 // prove, clearing even the 4.5:1 small-text floor.
-const sectionH2 = 'font-serif text-display font-semibold leading-heading tracking-tight text-balance';
 const pillOutline =
 	'inline-flex items-center rounded-full border border-input text-body font-bold text-foreground transition-colors hover:bg-surface-muted';
 ---
@@ -130,8 +132,7 @@ const pillOutline =
 	</section>
 
 	<section id="work" aria-labelledby="work-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
-		<p class={`${eyebrow} mb-3.5 text-muted-foreground`}>Featured work</p>
-		<h2 id="work-h" class={`${sectionH2} max-w-xl`}>Case studies with the receipts</h2>
+		<SectionHeader eyebrow="Featured work" title="Case studies with the receipts" headingId="work-h" />
 		<ul role="list" class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
 			{cases.map((c) => <Card title={c.title} outcome={c.outcome} tags={c.tags} href={c.href} />)}
 		</ul>
@@ -154,8 +155,7 @@ const pillOutline =
 		aria-labelledby="services-h"
 		class="mx-auto max-w-6xl px-6 pt-24 sm:px-10"
 	>
-		<p class={`${eyebrow} mb-3.5 text-muted-foreground`}>How I can help</p>
-		<h2 id="services-h" class={`${sectionH2} max-w-xl`}>Three ways teams bring me in</h2>
+		<SectionHeader eyebrow="How I can help" title="Three ways teams bring me in" headingId="services-h" />
 		<div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 			{
 				services.map((service) => (
@@ -172,15 +172,15 @@ const pillOutline =
 
 	<section id="about" aria-labelledby="about-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
 		<div class="border-t border-border pt-16">
-			<p class={`${eyebrow} mb-3.5 text-muted-foreground`}>About</p>
-			<h2 id="about-h" class={`${sectionH2} max-w-xl`}>
-				Engineer turned designer. Designer turned advocate.
-			</h2>
-			<p class="mt-5 max-w-xl text-lg leading-relaxed text-foreground">
+			<SectionHeader
+				eyebrow="About"
+				title="Engineer turned designer. Designer turned advocate."
+				headingId="about-h"
+			>
 				I started in code, moved into design, and found the work that matters in the space between:
 				making sure the things we ship actually work for the people usually left out. That's been
 				the through-line for fifteen years.
-			</p>
+			</SectionHeader>
 		</div>
 	</section>
 

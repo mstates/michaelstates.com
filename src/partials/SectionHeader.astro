@@ -1,0 +1,65 @@
+---
+// INC-262: section-head partial extracted verbatim from the index.astro heads
+// (work / services / about — INC-243 shell). Shape per the INC-260 inventory:
+// eyebrow + serif heading + optional lede + optional trailing link. The case
+// study's numbered eyebrows (01–07) consume this later via INC-265 — hence
+// `eyebrow` content and heading level are props, never hardcoded. The prop is
+// named `level` (not `as`): a prop literally named `as` trips astro check's
+// TSX transform into a false "'Props' is declared but never used" ts(6196).
+// a11y contract: `headingId` is required — the consumer's <section> keeps
+// aria-labelledby={headingId}; this partial renders bare siblings (no wrapper
+// element) so the section landmark, spacing between head and body, and
+// max-width wrapping all stay consumer-side. `level` defaults to 'h2';
+// pass 'h3'/'h4' only where the document outline demands it.
+// The eyebrow class recipe is imported from ./recipes (INC-251 canon) — aliased
+// because the prop carries the natural name. `sectionHeading` moved verbatim
+// from index.astro's sectionH2 const (this partial is now its only consumer;
+// contact's inverted head never used it and is deliberately not a call-site).
+// CONTRACT: the lede is the default slot, not a string prop — Astro
+// HTML-escapes expression interpolation (a lede prop would render "That's" as
+// "That&#39;s", breaking byte parity with the pre-extraction text node), while
+// slot content keeps its authored bytes; it also admits markup in future
+// ledes. The <p> wrapper renders only when slot content is passed.
+// CONTRACT: the trailing link reuses the NDA aside's "book a call" anchor
+// recipe — no new utility-class tokens may enter this file, comments
+// included: Tailwind v4 scans raw source text, so even an unrendered class
+// name (or a prose word that collides with one) changes the CSS bundle hash
+// and breaks byte parity.
+// Zero-hydration by contract (B4): no client:* directives, no <style>/<script>
+// blocks. Byte-parity discipline: the template is a verbatim copy (text-node
+// line structure matters under compressHTML) — commentary stays in frontmatter,
+// never in the template.
+import { eyebrow as eyebrowRecipe } from './recipes';
+
+interface Props {
+	eyebrow: string;
+	title: string;
+	headingId: string;
+	level?: 'h2' | 'h3' | 'h4';
+	link?: { href: string; label: string };
+}
+
+const { eyebrow, title, headingId, level: Heading = 'h2', link } = Astro.props;
+
+const sectionHeading =
+	'font-serif text-display font-semibold leading-heading tracking-tight text-balance';
+---
+
+<p class={`${eyebrowRecipe} mb-3.5 text-muted-foreground`}>{eyebrow}</p>
+<Heading id={headingId} class={`${sectionHeading} max-w-xl`}>{title}</Heading>
+{
+	Astro.slots.has('default') && (
+		<p class="mt-5 max-w-xl text-lg leading-relaxed text-foreground">
+			<slot />
+		</p>
+	)
+}
+{
+	link && (
+		<p class="mt-5">
+			<a href={link.href} class="font-bold text-action-ink underline hover:text-action-ink-hover">
+				{link.label}
+			</a>
+		</p>
+	)
+}
