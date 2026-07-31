@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../partials/Card.astro';
-import { eyebrow, pillPrimary } from '../partials/recipes';
+import { eyebrow, pillPrimary, pillSecondary } from '../partials/recipes';
 import SectionHeader from '../partials/SectionHeader.astro';
 import SiteFooter from '../partials/SiteFooter.astro';
 import SiteHeader from '../partials/SiteHeader.astro';
@@ -71,13 +71,12 @@ const services = [
 // Shared class recipes. Colors are semantic tokens only; every pair's computed ratio
 // is recorded in the PR body per the surface-contract rule. (eyebrow moved to
 // partials/recipes.ts with INC-251 — second consumer; sectionH2 moved into
-// partials/SectionHeader.astro with INC-262 — the partial is its only consumer.)
+// partials/SectionHeader.astro with INC-262 — the partial is its only consumer;
+// pillOutline moved to partials/recipes.ts as pillSecondary with INC-264.)
 // The contact-section eyebrow rides inverted-accent (rose — the tier's first real
 // consumer, INC-252 polish);
 // pair already proven: inverted-accent/inverted 6.79:1 in scripts/contrast-proof.mjs
 // prove, clearing even the 4.5:1 small-text floor.
-const pillOutline =
-	'inline-flex items-center rounded-full border border-input text-body font-bold text-foreground transition-colors hover:bg-surface-muted';
 ---
 
 <BaseLayout
@@ -101,7 +100,7 @@ const pillOutline =
 		</p>
 		<div class="mt-8 flex flex-wrap gap-3.5">
 			<a href="#contact" class={`${pillPrimary} px-7 py-3.5`}>Work with me</a>
-			<a href="#work" class={`${pillOutline} px-7 py-3.5`}>See case studies</a>
+			<a href="#work" class={`${pillSecondary} px-7 py-3.5`}>See case studies</a>
 		</div>
 	</section>
 
