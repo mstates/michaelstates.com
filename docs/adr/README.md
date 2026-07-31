@@ -10,4 +10,6 @@ native jsx-a11y on the React islands); ADR 0006 records the Lighthouse CI thresh
 (accessibility is the blocking gate, verified 100); ADR 0007 records the font strategy
 (system stack, no webfont; reopen trigger: a named brand font); ADR 0008 records the
 brand-webfont adoption (self-hosted Newsreader, Plus Jakarta Sans, Space Mono;
-supersedes ADR 0007).
+supersedes ADR 0007); ADR 0009 records the color identity (two-tier
+oxblood/cranberry on stone, variant 3a; replaces the terracotta identity and
+the 2a single-tier).
