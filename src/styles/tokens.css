@@ -54,6 +54,7 @@
 
 @theme {
   --color-inverted-foreground-muted: oklch(80.62% 0.0013 78.31); /** Solid composite of 72% white over inverted (stone neutral.900, #1e1c19), computed in encoded sRGB by the INC-242 derive algorithm (`scripts/contrast-proof.mjs` exported math) — deterministic, no alpha in the token (re-derived for the stone ramp, INC-252). */
+  --color-inverted-border: oklch(52.99% 0.0034 78.29); /** Border on the inverted surface — solid composite of 35% white over inverted (stone neutral.900, #1e1c19), computed in encoded sRGB by the INC-242 derive algorithm; 3.22:1 float vs inverted, ≥ 3:1 non-text boundary floor (SC 1.4.11) — proven via the exported contrast-proof math (the frozen prove row list predates this token); no alpha in the token, solid composite only (inverted-foreground-muted precedent, INC-264). */
   --color-code-string: oklch(85% 0.1 95); /** Syntax: strings — warm gold, semantic-tier literal (`inverted-foreground-muted` precedent; INC-251's boundary excludes tokens/primitive/), 10.79:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251; re-proven vs the stone inverted, INC-252). */
   --color-code-function: oklch(82% 0.06 250); /** Syntax: functions/constants — soft periwinkle, the palette's one deliberate cool counterpoint (syntax-only, not brand usage; ratified in INC-251 planning), 9.78:1 float vs inverted, ≥ 4.5:1 floor; proven in `scripts/contrast-proof.mjs prove` (INC-251; re-proven vs the stone inverted, INC-252). */
   --color-background: var(--mc-color-neutral-50);
