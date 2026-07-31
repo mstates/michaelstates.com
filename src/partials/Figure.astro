@@ -1,0 +1,57 @@
+---
+// INC-261: captioned-image partial for case-study media (hero, problem visual,
+// research artifacts, process grid, outcome visual) and home photography (hero
+// portrait, about photo). This ticket ships the partial only — consumers integrate
+// in later tickets, so no route renders it yet.
+// a11y contract: `alt` is required and must describe the image — empty/decorative
+// alt is out of contract (a decorative image doesn't belong in <figure>, which
+// asserts content; use a plain <img alt=""> outside this partial). The optional
+// caption supplements, never repeats, the alt. When both caption props are absent
+// no <figcaption> is rendered. `captionLabel` is the bold lead line for two-part
+// captions (e.g. "01 · Wireframe" over a description) — the process-grid shape.
+// CONTRACT: plain <img> by design. astro:assets/<Image> is blocked on the sharp
+// onlyBuiltDependencies follow-up (docs/follow-ups.md) and is its own
+// separately-reviewed change; `src` is a URL string (public/ path).
+// CONTRACT: `width`/`height` are intrinsic pixels, required so the browser
+// reserves the aspect-ratio box before load (zero-JS CLS guard). `h-auto w-full`
+// owns rendered size — sizing/layout belongs to the consumer's grid/flex cell;
+// there is no size/variant/class API. Chrome is the single standardized
+// rounded-2xl + 1px border-border, no shadow (the hi-fi's per-instance 16–24px
+// radii are authoring artifacts, collapsed deliberately — stock scale per
+// ADR-0004; shadows are reserved for cards and stat tiles).
+// CONTRACT: `loading` defaults to lazy; above-fold consumers (case-study hero,
+// home portrait) pass loading="eager".
+// Figcaption classes are verbatim from prose.css `.prose figure > figcaption`
+// (mt-3 text-caption text-muted-foreground) so Figure renders identically inside
+// the case-study .prose scope and outside it (home); the in-prose duplicate
+// application is same-value (utilities beat @layer components). The label's
+// text-foreground/font-semibold sits on the default surface pair — no new
+// contrast proof needed.
+// Zero-hydration by contract (B4): no client:* directives, no <style>/<script>
+// blocks. Byte-parity discipline: the template is a verbatim copy (text-node line
+// structure matters under compressHTML) — commentary stays in frontmatter, never
+// in the template.
+interface Props {
+	src: string;
+	alt: string;
+	width: number;
+	height: number;
+	captionLabel?: string;
+	caption?: string;
+	loading?: 'eager' | 'lazy';
+}
+
+const { src, alt, width, height, captionLabel, caption, loading = 'lazy' } = Astro.props;
+---
+
+<figure>
+	<img src={src} alt={alt} width={width} height={height} loading={loading} class="h-auto w-full rounded-2xl border border-border" />
+	{
+		(captionLabel || caption) && (
+			<figcaption class="mt-3 text-caption text-muted-foreground">
+				{captionLabel && <span class="block font-semibold text-foreground">{captionLabel}</span>}
+				{caption}
+			</figcaption>
+		)
+	}
+</figure>
