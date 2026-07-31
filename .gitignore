@@ -32,3 +32,6 @@ CLAUDE.local.md
 
 # session handoff docs (private working notes — never published to the public repo)
 docs/handoff/
+
+# design sources (hi-fi artifacts — deliberately uncommitted pending content clearance)
+design-sources/
