@@ -5,6 +5,7 @@ import { eyebrow, pillPrimary } from '../partials/recipes';
 import SectionHeader from '../partials/SectionHeader.astro';
 import SiteFooter from '../partials/SiteFooter.astro';
 import SiteHeader from '../partials/SiteHeader.astro';
+import StatGroup from '../partials/StatGroup.astro';
 
 // INC-243 homepage shell. Zero-hydration by contract (B4): every interactive element
 // is a native link; no client:* directives, no <style>/<script> blocks. All hrefs are
@@ -108,22 +109,7 @@ const pillOutline =
 		<div
 			class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-12 gap-y-8 px-6 py-9 sm:px-10"
 		>
-			<dl class="flex flex-wrap gap-x-14 gap-y-8">
-				{
-					stats.map((stat) => (
-						<div class="flex flex-col-reverse gap-2">
-							<dt class={`${eyebrow} text-muted-foreground`}>{stat.label}</dt>
-							<dd
-								class={`font-serif text-display font-semibold leading-none tracking-tight ${
-									stat.accent ? 'text-accent-ink' : 'text-foreground'
-								}`}
-							>
-								{stat.value}
-							</dd>
-						</div>
-					))
-				}
-			</dl>
+			<StatGroup variant="inline" items={stats} />
 			<p class="max-w-sm font-mono text-caption leading-relaxed text-muted-foreground">
 				Worked with teams at<br />
 				<span class="font-bold text-foreground">{clients.join(' · ')}</span>

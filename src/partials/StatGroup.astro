@@ -1,0 +1,79 @@
+---
+// INC-263: stat-group partial — the <dl> extracted verbatim from the
+// index.astro trust strip (INC-243 shell). Decision C: this single partial
+// owns the <dl>; there is no exported standalone Stat — the per-item template
+// stays internal. Decision A: items are string props (label / value + optional
+// accent), no slots. Unlike SectionHeader's lede, escaping is a non-issue for
+// byte parity: the page already interpolated {stat.label}/{stat.value}, so the
+// partial's interpolation escapes identically.
+// a11y contract: conforming source order dt → dd in every variant. The inline
+// variant's value-first look is CSS only (flex-col-reverse on the group),
+// never markup order.
+// Variants: inline = the home trust strip, class strings copied verbatim;
+// meta = the case-study hero meta row; strip = the case-study overview
+// metadata band. meta/strip map design-sources/Case Study Template.dc.html to
+// semantic tokens only, stock spacing scale per ADR-0004:
+//   meta — dl 40px/56px wrap gaps → gap-x-14 gap-y-10; dt keeps the eyebrow
+//   recipe + text-muted-foreground (source #6b665e); dd 16px/600 → text-body
+//   font-semibold.
+//   strip — auto-fit minmax(190px,1fr) cells in one rounded, bordered
+//   bg-surface (overflow-hidden clips the cell dividers at the radius);
+//   dd 17px/700 is off-scale → text-lg font-bold.
+// CONTRACT: the source's lighter cell divider #f0ece5 has no token — dividers
+// ride border-border (the only neutral border token), as border-r with
+// last:border-r-0 for the source's last-cell exception.
+// CONTRACT: the accent ternary (text-accent-ink vs text-foreground) applies
+// uniformly across variants — accent is per-item data, opt-in from the items
+// array; meta call-sites simply never pass accent: true.
+// The 'inline' variant literal is itself a Tailwind utility name; the anchor
+// bundle already emits .inline (comment-word minting elsewhere), so it adds no
+// CSS delta. The strip/meta class strings DO mint new utilities — that is the
+// expected additions-only bundle delta; they render on no route until INC-265.
+// Zero-hydration by contract (B4): no client:* directives, no <style>/<script>
+// blocks. Byte-parity discipline: the template is a verbatim copy (text-node
+// line structure matters under compressHTML) — commentary stays in frontmatter,
+// never in the template.
+import { eyebrow } from './recipes';
+
+interface Props {
+	items: { label: string; value: string; accent?: boolean }[];
+	variant: 'inline' | 'strip' | 'meta';
+}
+
+const { items, variant } = Astro.props;
+
+// Per-variant class strings, composed into template literals at the use site
+// (Card.astro precedent: named string consts, no cx helper).
+const styles: Record<Props['variant'], { dl: string; group: string; dd: string }> = {
+	inline: {
+		dl: 'flex flex-wrap gap-x-14 gap-y-8',
+		group: 'flex flex-col-reverse gap-2',
+		dd: 'font-serif text-display font-semibold leading-none tracking-tight',
+	},
+	strip: {
+		dl: 'grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] overflow-hidden rounded-2xl border border-border bg-surface',
+		group: 'flex flex-col gap-2 border-r border-border p-6 last:border-r-0',
+		dd: 'text-lg font-bold',
+	},
+	meta: {
+		dl: 'flex flex-wrap gap-x-14 gap-y-10',
+		group: 'flex flex-col gap-2',
+		dd: 'text-body font-semibold',
+	},
+};
+
+const { dl: dlClass, group: groupClass, dd: ddClass } = styles[variant];
+---
+
+<dl class={dlClass}>
+	{
+		items.map((item) => (
+			<div class={groupClass}>
+				<dt class={`${eyebrow} text-muted-foreground`}>{item.label}</dt>
+				<dd class={`${ddClass} ${item.accent ? 'text-accent-ink' : 'text-foreground'}`}>
+					{item.value}
+				</dd>
+			</div>
+		))
+	}
+</dl>
