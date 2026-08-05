@@ -1,0 +1,102 @@
+---
+// INC-266: stat-card partial — big-number callout cards for case-study bodies.
+// Decision B (scope-patch 2026-08-05): this single partial owns the <ul>; the
+// per-card template stays internal, no exported standalone card (StatGroup
+// Decision C mirrored). No description-list semantics anywhere — the ticket's
+// named trap; these cards are heading-scoped findings, not term/value pairs.
+// Number-in-heading (settled in review, diverges from the hi-fi): the hi-fi
+// splits number and label into a big paragraph + label (the outcome variant's
+// label is a bold paragraph, upgraded to h3 here deliberately); this partial
+// composes the number + heading props as two block spans inside ONE h3,
+// because they are a single statement split typographically ("38% Higher cart
+// abandonment"). The full finding is the accessible heading (SC 2.4.6, rotor
+// navigation), DOM order = visual order = natural language order (no CSS
+// reordering — StatGroup's reversal was dt-before-dd conformance-forced;
+// nothing forces one here), and no content precedes the h3 inside the li, so
+// each card is fully scoped to its own heading.
+// CONTRACT: the space between the number and heading spans is load-bearing
+// accessible-name whitespace, authored as an explicit expression because
+// compressHTML strips newline whitespace at tag boundaries — keep it.
+// CONTRACT: prose posture is override-everywhere (the opposite of
+// KeyTakeaways' inheriting list): consumers mount this inside
+// CaseStudyLayout's article prose scope, whose element rules sit in the
+// components layer, so every element those rules reach carries explicit
+// utilities, which win from the utilities layer — the ul counters the prose
+// disc markers and left padding (list-none p-0), the li counters the prose
+// inter-item margin rule (mt-0), the h3 counters all five prose h3 properties
+// (font-sans text-lg font-bold leading-tight tracking-normal; text-lg is a
+// same-value deliberate duplicate, Figure figcaption precedent). Accepted
+// reach: the prose flow margin on the ul root — deliberate; consumers own
+// external rhythm, the partial bakes in no outer margins.
+// Variants map design-sources/Case Study Template.dc.html to semantic tokens
+// only, stock spacing scale per ADR-0004:
+//   callout — section 03 insight cards: number 40px serif 600 → text-display
+//   font-semibold; card pad 26px → p-6.5; auto-fit column floor 260px.
+//   impact — section 06 metric cards: number 76px serif 700 → text-hero
+//   font-bold; card pad 36px/32px → py-9 px-8; auto-fit column floor 240px.
+//   Both: heading 17px/700/1.25 → text-lg font-bold leading-tight; copy 15px
+//   → text-body and 14px → text-caption, both leading-normal
+//   text-muted-foreground (source #5f5a52); grid gap 22px → gap-5.5; number
+//   gap 10px/18px → mb-2.5/mb-4.5; heading gap 8px → mb-2 on the h3.
+// CONTRACT: the impact number's hi-fi 76px is a deliberate constraint-forced
+// down-map — text-hero clamps at 64px (44px floor), and semantic-tokens-only
+// plus no-new-tokens rules out a bespoke step; both values are recorded here
+// so the divergence stays legible.
+// CONTRACT: the hi-fi's bespoke per-section box-shadows have no token — both
+// variants ride stock shadow-sm (Card.astro card-surface precedent; Figure
+// reserves elevation for cards and stat tiles). Radii 18px/22px are folded
+// onto rounded-2xl (Figure authoring-radii precedent); the card hairline #ece7df
+// has no token and rides border-border (StatGroup precedent).
+// CONTRACT: the number rides the non-interactive brand tier — text-accent
+// (ADR-0009 role split; display/fill role, 9.20:1 float vs bg-surface),
+// never the interactive inks and not the small-text accent ink.
+// a11y contract: role="list" restores the list semantics that list-none
+// removes in WebKit (home card grid precedent); headings are h3 in both
+// variants, so consumers mount the partial inside an h2-titled section.
+// Zero-hydration by contract (B4): no hydration directives, no style or
+// script blocks in the template. Byte-parity discipline: commentary stays in
+// frontmatter, never in the template; utility names in these comments are
+// deliberate duplicates of tokens already present in the class strings.
+
+interface Props {
+	items: { number: string; heading: string; copy: string }[];
+	variant: 'callout' | 'impact';
+}
+
+const { items, variant } = Astro.props;
+
+// Fixed across variants: the h3 typography IS the heading-span typography;
+// the heading span only restores block flow beside the block number span.
+const h3Class = 'font-sans text-lg font-bold leading-tight tracking-normal mb-2';
+
+const styles: Record<Props['variant'], { ul: string; li: string; number: string; copy: string }> = {
+	callout: {
+		ul: 'grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-5.5 list-none p-0',
+		li: 'mt-0 rounded-2xl border border-border bg-surface shadow-sm p-6.5',
+		number: 'block font-serif text-display font-semibold leading-none tracking-tight text-accent mb-2.5',
+		copy: 'text-body leading-normal text-muted-foreground',
+	},
+	impact: {
+		ul: 'grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-5.5 list-none p-0',
+		li: 'mt-0 rounded-2xl border border-border bg-surface shadow-sm px-8 py-9',
+		number: 'block font-serif text-hero font-bold leading-none tracking-tight text-accent mb-4.5',
+		copy: 'text-caption leading-normal text-muted-foreground',
+	},
+};
+
+const { ul: ulClass, li: liClass, number: numberClass, copy: copyClass } = styles[variant];
+---
+
+<ul role="list" class={ulClass}>
+	{
+		items.map((item) => (
+			<li class={liClass}>
+				<h3 class={h3Class}>
+					<span class={numberClass}>{item.number}</span>{' '}
+					<span class="block">{item.heading}</span>
+				</h3>
+				<p class={copyClass}>{item.copy}</p>
+			</li>
+		))
+	}
+</ul>
