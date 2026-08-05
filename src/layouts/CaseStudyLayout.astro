@@ -4,18 +4,72 @@
 // scope (src/styles/prose.css) the page body flows into. Zero-hydration by contract
 // (B4): every interactive element is a native link; no client:* directives, no
 // <style>/<script> blocks.
+// INC-265: optional hero (eyebrow + heading props, "lede" named slot), optional meta
+// row, optional "cta" named slot — ALL absent-by-default. With none of them passed,
+// every added expression emits zero bytes and the output is exactly the INC-251
+// shell (unfilled-slot zero-bytes precedent, BaseLayout).
+// CONTRACT: `heading` is the visible hero H1 and is its own prop — never an overload
+// of the `title` meta prop: document title and H1 diverge legitimately.
+// CONTRACT (double-H1 trap): a page that passes `heading` must NOT render an <h1>
+// in the prose slot — the layout owns the hero H1; the a11y manifest's h1 render
+// guard backstops this.
+// CONTRACT: the lede is the "lede" named slot, not a string prop (SectionHeader
+// Decision A precedent: Astro HTML-escapes expression interpolation, slot content
+// keeps its authored bytes); its <p> wrapper renders only when the slot is filled.
+// CONTRACT: `meta` renders StatGroup variant="meta" in the hero header — first
+// wiring of that variant (class strings already in the bundle per the INC-263
+// CONTRACT); the layout owns only the mt-9 placement wrapper (hi-fi 36px), and the
+// item type is sourced from StatGroup itself so the shapes cannot drift.
+// CONTRACT: the closing CTA is the "cta" named slot; wrapper renders only when
+// filled (dark until INC-268 CTAPanel). It sits AFTER the article, so the coming
+// inverted panel never meets the .prose element selectors — a deliberate divergence
+// from the hi-fi's in-article placement.
+// CONTRACT: section numbering is NOT layout machinery — it is a page-content
+// convention via SectionHeader eyebrow props ("01 — …"); no counters, no section
+// orchestration here (speculative-abstraction rejection, INC-265 decision).
+// The hero <header> lives INSIDE the article element so hero-active pages keep the
+// H1 with the content it titles (hi-fi structure); hero elements carry explicit
+// utilities, which beat the .prose element rules (utilities layer wins — prose.css
+// design note).
+// Hi-fi mapping (design-sources/Case Study Template.dc.html hero), semantic tokens
+// + stock spacing per ADR-0004: eyebrow 12px/700/0.16em accent → eyebrow recipe +
+// mb-5 + text-accent-ink (home-hero classes verbatim, its 18px → mb-5 rounding
+// included); H1 60px/500/1.04/-0.02em → text-hero font-medium leading-heading
+// tracking-tight text-balance (home-hero classes; the hi-fi 880px H1 / 720px lede
+// max-widths are dropped — the shell's max-w-prose is already the tighter
+// constraint); lede 25px serif/1.42/#3a352e → mt-6 font-serif text-title
+// leading-snug text-foreground (weight stays inherited: the hi-fi's 400 resolves to
+// the 500 face, prose-blockquote precedent); hero pb 40px → mb-10 on the header
+// (adjacent sibling margins resolve to the larger, so the .prose flow rule's
+// 1.25rem is absorbed); CTA gap → mt-16, the shell's own section unit — the hi-fi's
+// 88px composite rides a 1040px-canvas rhythm this prose-measure shell deliberately
+// does not reproduce.
+import type { ComponentProps } from 'astro/types';
+
 import BaseLayout from './BaseLayout.astro';
+import { eyebrow as eyebrowRecipe } from '../partials/recipes';
 import SiteFooter from '../partials/SiteFooter.astro';
 import SiteHeader from '../partials/SiteHeader.astro';
+import StatGroup from '../partials/StatGroup.astro';
 
 interface Props {
 	/** Page title; BaseLayout appends the "· Michael States" suffix. */
 	title: string;
 	/** One-sentence page summary; feeds meta description and og:description. */
 	description: string;
+	/** Hero kicker line, e.g. "Case study · Retail". Optional; part of the hero header. */
+	eyebrow?: string;
+	/** Visible hero H1 — its own prop, never an overload of `title` (see CONTRACT). */
+	heading?: string;
+	/** Hero meta-row items, rendered as StatGroup variant="meta". */
+	meta?: ComponentProps<typeof StatGroup>['items'];
 }
 
-const { title, description } = Astro.props;
+const { title, description, eyebrow, heading, meta } = Astro.props;
+
+const hasLede = Astro.slots.has('lede');
+// The hero header renders when any hero content is present; absent otherwise.
+const hasHero = Boolean(eyebrow || heading || meta) || hasLede;
 ---
 
 <BaseLayout title={title} description={description} ogType="article">
@@ -28,8 +82,37 @@ const { title, description } = Astro.props;
 			<span aria-hidden="true">←</span>Back to home
 		</a>
 		<article class="prose mt-10">
+			{
+				hasHero && (
+					<header class="mb-10">
+						{eyebrow && <p class={`${eyebrowRecipe} mb-5 text-accent-ink`}>{eyebrow}</p>}
+						{heading && (
+							<h1 class="font-serif text-hero font-medium leading-heading tracking-tight text-balance">
+								{heading}
+							</h1>
+						)}
+						{hasLede && (
+							<p class="mt-6 font-serif text-title leading-snug text-foreground">
+								<slot name="lede" />
+							</p>
+						)}
+						{meta && (
+							<div class="mt-9">
+								<StatGroup items={meta} variant="meta" />
+							</div>
+						)}
+					</header>
+				)
+			}
 			<slot />
 		</article>
+		{
+			Astro.slots.has('cta') && (
+				<div class="mt-16">
+					<slot name="cta" />
+				</div>
+			)
+		}
 	</div>
 	<SiteFooter slot="footer" />
 </BaseLayout>
