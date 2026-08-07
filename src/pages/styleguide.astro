@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Card from '../partials/Card.astro';
+import Figure from '../partials/Figure.astro';
+import KeyTakeaways from '../partials/KeyTakeaways.astro';
+import { eyebrow, pillPrimary, pillSecondary, pillSecondaryInverted } from '../partials/recipes';
+import SectionHeader from '../partials/SectionHeader.astro';
+import SiteFooter from '../partials/SiteFooter.astro';
+import SiteHeader from '../partials/SiteHeader.astro';
+import StatCard from '../partials/StatCard.astro';
+import StatGroup from '../partials/StatGroup.astro';
+import Tag from '../partials/Tag.astro';
+
+// INC-259 styleguide workshop: every partial and shared recipe rendered in every
+// state, gated by the route a11y suite. Zero-hydration by contract (B4): every
+// interactive specimen is a native link to an on-page anchor; no client:* directives,
+// no <style>/<script> blocks. All demo copy is placeholder copy, labeled as such on
+// the page. The header and footer render the live SiteHeader/SiteFooter partials —
+// their own specimens (zero-prop partials, so one render each is full coverage).
+// Deliberately unlisted: no nav link points here and the sitemap filters the route
+// out (astro.config.mjs); promotion to a linked exhibit is a later ruling.
+
+const statItems: { value: string; label: string; accent?: boolean }[] = [
+	{ value: '12+', label: 'Placeholder label one' },
+	{ value: '3,400', label: 'Placeholder label two' },
+	{ value: '92%', label: 'Placeholder label three', accent: true },
+	{ value: 'AA', label: 'Placeholder label four' },
+];
+
+const statCardItems: { number: string; heading: string; copy: string }[] = [
+	{
+		number: '38%',
+		heading: 'Placeholder heading one',
+		copy: 'Placeholder supporting copy for the first stat card.',
+	},
+	{
+		number: '2.4x',
+		heading: 'Placeholder heading two',
+		copy: 'Placeholder supporting copy for the second stat card.',
+	},
+	{
+		number: '120',
+		heading: 'Placeholder heading three',
+		copy: 'Placeholder supporting copy for the third stat card.',
+	},
+];
+
+const takeawayItems = [
+	'Placeholder takeaway one.',
+	'Placeholder takeaway two.',
+	'Placeholder takeaway three.',
+];
+
+// Favicon repaint is parked (advisory carryover, no ticket yet); when it lands,
+// re-verify this alt against the new artwork.
+const figureAlt =
+	"Placeholder image: the site's brand mark — a rounded square in deep red, shown in soft rose when the browser prefers a dark color scheme.";
+
+// Demo-label recipe: the variant name above each specimen, deliberately a paragraph
+// and never a heading, so the document outline stays clean.
+const demoLabel = `${eyebrow} mt-10 text-muted-foreground`;
+---
+
+<BaseLayout
+	title="Styleguide"
+	description="Every partial and shared class recipe on this site, rendered in every state with placeholder demo copy."
+>
+	<SiteHeader slot="header" />
+
+	<section aria-labelledby="styleguide-h" class="mx-auto max-w-6xl px-6 pb-16 pt-20 sm:px-10">
+		<p class={`${eyebrow} mb-5 text-accent-ink`}>Design system</p>
+		<h1
+			id="styleguide-h"
+			class="max-w-2xl font-serif text-hero font-medium leading-heading tracking-tight text-balance"
+		>
+			Styleguide
+		</h1>
+		<p class="mt-6 max-w-xl text-lg leading-relaxed text-foreground">
+			Every partial and shared class recipe on this site, rendered in every state. All demo
+			copy on this page is placeholder copy.
+		</p>
+		<p class="mt-5 max-w-xl text-body leading-relaxed text-muted-foreground">
+			The header above and the footer below are the live SiteHeader and SiteFooter
+			partials, serving as their own specimens.
+		</p>
+	</section>
+
+	<section aria-labelledby="recipes-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
+		<SectionHeader eyebrow="Recipes" title="Shared class recipes" headingId="recipes-h">
+			The eyebrow and the pill treatments. pillSecondary is the former pill-outline
+			treatment, promoted and renamed with INC-264.
+		</SectionHeader>
+		<p class={demoLabel}>eyebrow</p>
+		<div class="mt-6">
+			<p class={`${eyebrow} text-accent-ink`}>Placeholder eyebrow text</p>
+		</div>
+		<p class={demoLabel}>pillPrimary and pillSecondary</p>
+		<div class="mt-6 flex flex-wrap gap-3.5">
+			<a href="#recipes-h" class={`${pillPrimary} px-7 py-3.5`}>Placeholder primary pill</a>
+			<a href="#recipes-h" class={`${pillSecondary} px-7 py-3.5`}>Placeholder secondary pill</a>
+		</div>
+		<p class={demoLabel}>pillSecondaryInverted</p>
+		<div class="mt-6 rounded-3xl bg-inverted p-10 text-inverted-foreground sm:p-16">
+			<p class={`${eyebrow} mb-3.5 text-inverted-accent`}>Placeholder inverted eyebrow</p>
+			<p class="mt-5 max-w-xl text-body leading-relaxed text-inverted-foreground-muted">
+				Placeholder supporting copy on the inverted demo surface.
+			</p>
+			<div class="mt-8">
+				<a href="#recipes-h" class={`${pillSecondaryInverted} px-7 py-3.5`}
+					>Placeholder inverted pill</a
+				>
+			</div>
+		</div>
+	</section>
+
+	<section aria-labelledby="sectionheader-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
+		<SectionHeader eyebrow="Partial" title="SectionHeader states" headingId="sectionheader-h">
+			The section titles across this page are live SectionHeader renders in the default
+			state. Below are the lede, trailing-link, and heading-level states.
+		</SectionHeader>
+		<div class="mt-10">
+			<SectionHeader
+				eyebrow="Placeholder eyebrow"
+				title="Placeholder default-level title with lede and trailing link"
+				headingId="sh-default-h"
+				link={{ href: '#sectionheader-h', label: 'Placeholder trailing link' }}
+			>
+				Placeholder lede copy for the default heading level.
+			</SectionHeader>
+		</div>
+		<div class="mt-10">
+			<SectionHeader
+				eyebrow="Placeholder eyebrow"
+				title="Placeholder level-three title"
+				headingId="sh-level3-h"
+				level="h3"
+			/>
+		</div>
+		<div class="mt-10">
+			<SectionHeader
+				eyebrow="Placeholder eyebrow"
+				title="Placeholder level-four title"
+				headingId="sh-level4-h"
+				level="h4"
+			/>
+		</div>
+	</section>
+
+	<section aria-labelledby="card-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
+		<SectionHeader eyebrow="Partial" title="Card states" headingId="card-h">
+			The first card carries an href, so its whole surface is the link. The second card
+			has no href and no link affordance.
+		</SectionHeader>
+		<ul role="list" class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+			<Card
+				title="Placeholder linked card"
+				outcome="Placeholder outcome copy for the linked card state."
+				tags={['Placeholder tag one', 'Placeholder tag two']}
+				href="#card-h"
+			/>
+			<Card
+				title="Placeholder unlinked card"
+				outcome="Placeholder outcome copy for the card with no link."
+				tags={['Placeholder tag three']}
+			/>
+		</ul>
+	</section>
+
+	<section aria-labelledby="tag-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
+		<SectionHeader eyebrow="Partial" title="Tag" headingId="tag-h" />
+		<div class="mt-10 flex flex-wrap gap-2">
+			<Tag tag="Placeholder tag one" />
+			<Tag tag="Placeholder tag two" />
+			<Tag tag="Placeholder tag three" />
+		</div>
+	</section>
+
+	<section aria-labelledby="figure-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
+		<SectionHeader eyebrow="Partial" title="Figure states" headingId="figure-h">
+			The image is the site favicon, the only image asset shipped today. Caption text is
+			placeholder copy.
+		</SectionHeader>
+		<div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			<div class="max-w-sm">
+				<p class={`${eyebrow} text-muted-foreground`}>No caption</p>
+				<div class="mt-3">
+					<Figure src="/favicon.svg" alt={figureAlt} width={128} height={128} />
+				</div>
+			</div>
+			<div class="max-w-sm">
+				<p class={`${eyebrow} text-muted-foreground`}>Caption</p>
+				<div class="mt-3">
+					<Figure
+						src="/favicon.svg"
+						alt={figureAlt}
+						width={128}
+						height={128}
+						caption="Placeholder caption supplementing the image."
+					/>
+				</div>
+			</div>
+			<div class="max-w-sm">
+				<p class={`${eyebrow} text-muted-foreground`}>Caption with label</p>
+				<div class="mt-3">
+					<Figure
+						src="/favicon.svg"
+						alt={figureAlt}
+						width={128}
+						height={128}
+						captionLabel="Placeholder label"
+						caption="Placeholder caption copy under the label."
+					/>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section aria-labelledby="statgroup-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
+		<SectionHeader eyebrow="Partial" title="StatGroup variants" headingId="statgroup-h">
+			The third item carries the accent flag in every variant.
+		</SectionHeader>
+		<p class={demoLabel}>Variant: inline</p>
+		<div class="mt-6">
+			<StatGroup variant="inline" items={statItems} />
+		</div>
+		<p class={demoLabel}>Variant: strip</p>
+		<div class="mt-6">
+			<StatGroup variant="strip" items={statItems} />
+		</div>
+		<p class={demoLabel}>Variant: meta</p>
+		<div class="mt-6">
+			<StatGroup variant="meta" items={statItems} />
+		</div>
+	</section>
+
+	<section aria-labelledby="statcard-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
+		<SectionHeader eyebrow="Partial" title="StatCard variants" headingId="statcard-h" />
+		<p class={demoLabel}>Variant: callout</p>
+		<div class="mt-6">
+			<StatCard variant="callout" items={statCardItems} />
+		</div>
+		<p class={demoLabel}>Variant: impact</p>
+		<div class="mt-6">
+			<StatCard variant="impact" items={statCardItems} />
+		</div>
+	</section>
+
+	<section aria-labelledby="keytakeaways-h" class="mx-auto max-w-6xl px-6 py-24 sm:px-10">
+		<SectionHeader eyebrow="Partial" title="KeyTakeaways" headingId="keytakeaways-h">
+			One instance per page by contract, mounted inside a prose scope so its bare list
+			inherits the prose list treatment.
+		</SectionHeader>
+		<div class="prose mt-10 max-w-prose">
+			<KeyTakeaways items={takeawayItems} />
+		</div>
+	</section>
+
+	<SiteFooter slot="footer" />
+</BaseLayout>

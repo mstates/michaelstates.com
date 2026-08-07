@@ -41,6 +41,13 @@ export const routes: A11yRoute[] = [
     h1: "Accessibility statement",
   },
   {
+    id: "/styleguide/",
+    path: "/styleguide/",
+    status: 200,
+    title: "Styleguide · Michael States",
+    h1: "Styleguide",
+  },
+  {
     id: "/work/building-michaelstates-com/",
     path: "/work/building-michaelstates-com/",
     status: 200,
