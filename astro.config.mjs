@@ -9,7 +9,14 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://michaelstates.com',
   output: 'static',
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    sitemap({
+      // INC-259: the styleguide workshop route is deliberately unlisted — reachable by
+      // URL, absent from nav and sitemap until promotion to a linked exhibit is ruled.
+      filter: (page) => page !== 'https://michaelstates.com/styleguide/',
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

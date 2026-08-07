@@ -6,6 +6,9 @@
 /* Don't scan the a11y docs for class candidates — their prose quotes class names
    (e.g. ring-offset-background) and Tailwind would mint phantom dead utilities. */
 @source not "../../docs";
+/* Config files are not utility sources — the sitemap filter: option key (INC-259)
+   minted a dead .filter utility from the raw config text. */
+@source not "../../astro.config.mjs";
 
 @layer base {
   :root {
