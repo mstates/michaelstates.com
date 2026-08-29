@@ -70,8 +70,10 @@
 
   /* Code blocks: Shiki-rendered <pre class="astro-code"> on the inverted surface.
      Shiki owns color/background via the --astro-code-* bindings below; this rule owns
-     shape. The route passes tabindex="0" + role="region" + aria-label on the pre for
-     keyboard access to the horizontal scroll. */
+     shape. The CodeBlock partial (src/partials/CodeBlock.astro, INC-267) owns the pre's
+     tabindex="0" + role="region" + aria-label for keyboard access to the horizontal
+     scroll, and carries this rule's shape utilities explicitly (same-value duplicates,
+     so it renders identically outside .prose; its own radius counters this rule's). */
   .prose pre {
     @apply overflow-x-auto rounded-2xl p-6 text-caption;
   }
