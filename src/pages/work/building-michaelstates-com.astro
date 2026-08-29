@@ -2,9 +2,11 @@
 // INC-248: the real case study, replacing the INC-251 placeholder route. Copy is
 // ratified verbatim (INC-248 thread, comment 5055e06e) — do not reword. The two code
 // samples are display excerpts as ratified, NOT live reads of the underlying files.
+// INC-267: both listings render through the CodeBlock partial (chrome only; the code
+// strings, region labels, and captions are the ratified bytes, passed unchanged).
 // Zero-hydration by contract (B4): no client:* directives, no React/RAC.
-import { Code } from 'astro:components';
 import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import CodeBlock from '../../partials/CodeBlock.astro';
 import KeyTakeaways from '../../partials/KeyTakeaways.astro';
 
 const tokensSample = `"primary": { "$value": "{mc.color.terracotta.600}" },
@@ -87,17 +89,9 @@ const articleLink = 'font-bold text-action-ink underline hover:text-action-ink-h
 		The part I care about most is that contrast is <em>computed into</em> the tokens, not
 		eyeballed onto them:
 	</p>
-	<figure>
-		<Code
-			code={tokensSample}
-			lang="json"
-			theme="css-variables"
-			tabindex="0"
-			role="region"
-			aria-label="Code sample: semantic color tokens"
-		/>
-		<figcaption>Listing: semantic color tokens, including one derived by the contrast-proof script.</figcaption>
-	</figure>
+	<CodeBlock code={tokensSample} lang="json" label="Code sample: semantic color tokens">
+		Listing: semantic color tokens, including one derived by the contrast-proof script.
+	</CodeBlock>
 	<p>
 		That third token is a solid color derived by script from an intended 72%-white-over-dark
 		composite, so the contrast math runs on exactly what ships. Every non-default
@@ -116,17 +110,9 @@ const articleLink = 'font-bold text-action-ink underline hover:text-action-ink-h
 		is driven by a single manifest, and a build-parity check fails CI if a page exists in the
 		build output without a manifest entry:
 	</p>
-	<figure>
-		<Code
-			code={manifestSample}
-			lang="ts"
-			theme="css-variables"
-			tabindex="0"
-			role="region"
-			aria-label="Code sample: a11y route manifest entry"
-		/>
-		<figcaption>Listing: this page's own entry in the a11y route manifest.</figcaption>
-	</figure>
+	<CodeBlock code={manifestSample} lang="ts" label="Code sample: a11y route manifest entry">
+		Listing: this page's own entry in the a11y route manifest.
+	</CodeBlock>
 	<p>
 		Every entry gets a full axe pass against the complete WCAG 2.0/2.1/2.2 A and AA tag set —
 		deliberately not narrowed — plus a render guard asserting the page's real h1, so the audit

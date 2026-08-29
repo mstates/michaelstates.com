@@ -1,0 +1,106 @@
+---
+// INC-267: code-listing partial — terminal chrome around Astro's built-in Shiki
+// <Code> render. Verify-first verdict: REFINE, not greenfield. The case study
+// (/work/building-michaelstates-com) already rendered both listings through
+// <Code theme="css-variables"> in figure/figcaption with tabindex="0" +
+// role="region" + aria-label per call-site, and the .astro-code bindings in
+// src/styles/prose.css already bind Shiki to the semantic code-* tokens (all
+// proven >= 4.5:1 vs inverted, scripts/contrast-proof.mjs prove, INC-251/252).
+// This partial owns that markup and adds the missing header bar; both
+// case-study listings adopt it in the introducing PR (two live consumers).
+// a11y contract: `label` is required and IS the accessible name of the pre —
+// the pre is a focusable scroll region (tabindex="0" + role="region" +
+// aria-label) so its horizontal scroll is keyboard reachable (SC 2.1.1); an
+// unnamed region is not exposed as a landmark. The filename is visible text
+// in the header, outside the region, and is never folded into that name. The
+// three dots are decorative and aria-hidden (the hi-fi marks them so); they
+// are real spans because three pseudo-elements are impossible without a
+// style element, which partials forbid.
+// CONTRACT: the caption is the default slot, not a string prop — Astro
+// HTML-escapes expression interpolation (a prop would render "page's" as
+// "page&#39;s", breaking byte preservation of the ratified case-study
+// captions), while slot content keeps its authored bytes (SectionHeader lede
+// precedent). The figcaption renders only when slot content is passed, with
+// classes verbatim from prose.css `.prose figure > figcaption` (mt-3
+// text-caption text-muted-foreground) so it renders identically in and out
+// of the prose scope (Figure precedent).
+// CONTRACT: focus indicator drawn INSIDE the pre. The base :focus-visible
+// ring (global.css) is --color-ring = foreground = neutral.900 — the same
+// color as the inverted surface — at +2px offset; with a header above the
+// pre its top edge would sit on the dark header. focus-visible:outline-inverted-foreground
+// (17.00:1 float vs inverted; pillSecondaryInverted precedent) plus
+// focus-visible:-outline-offset-2 draws it 2px inward, within the p-6
+// padding, never over code. No overflow clipping on the wrapper (an inward
+// ring under a radius clip loses its corner tips); the pre carries
+// rounded-none rounded-b-2xl instead — square under the header, bottom
+// corners on the wrapper radius so its own background never pokes past —
+// and rounded-none also counters `.prose pre`'s all-corner radius so the
+// focus silhouette matches in and out of prose.
+// Chrome maps design-sources/Case Study Template.dc.html (code snippet
+// figure) to semantic tokens only, stock spacing scale per ADR-0004: dot gap
+// 7px → gap-1.75; header pad 13px/18px → py-3.25 px-4.5; dots 10px →
+// size-2.5; filename gap 8px → ml-2; filename 12px → text-caption (the
+// hi-fi's 12px eyebrow precedent — the type scale is a semantic tier, never
+// the stock extra-small step); radius 18px → rounded-2xl.
+// CONTRACT: deliberate divergences from the hi-fi, recorded so they stay
+// legible. (1) Chrome colors: the hi-fi's dots (#403a32), header rule
+// (#2f2b24) and outer edge (#2a2620) sit at ~1.1–1.5:1 vs the block — no
+// token exists there and none could be added under a floor rationale
+// (decorative, SC 1.4.11-exempt). Dots and the header rule ride
+// inverted-border (3.22:1 float vs inverted, INC-264) — visibly lighter than
+// the hi-fi; the filename rides inverted-foreground-muted (9.29:1; the
+// hi-fi's #9a948a was 5.77:1). Ratified 2026-08-29: zero token-pipeline
+// touch. (2) No outer 1px edge: the hi-fi's is imperceptible against the
+// block and the shipped block had none. (3) Pre padding stays the shipped
+// p-6 (hi-fi 20px/22px) and the caption stays the prose sans caption (hi-fi
+// mono 12px): refine, not restyle — the ratified page keeps its rendered
+// look.
+// CONTRACT: prose posture — the pre's p-6 text-caption leading-relaxed are
+// same-value duplicates of what `.prose` gives it (prose.css), so the bare
+// /styleguide render matches the in-prose one; the header's leading-normal
+// pins the bar height to the body line-height in both contexts, and min-h-12
+// pins the bar to that filename-state height (border-box 48px) when no
+// filename is passed, so the chrome silhouette never changes with an optional
+// label (verification catch, 2026-08-29: 37px vs 48px between states).
+// Consumers own external rhythm (the prose flow margin on the figure root is
+// the accepted reach); the partial bakes in no outer margins.
+// `lang` is typed from <Code> itself so the shapes cannot drift
+// (CaseStudyLayout meta precedent); the theme is pinned here, the one place.
+// Zero-hydration by contract (B4): no hydration directives, no style or
+// script elements in the template. Byte-parity discipline: commentary stays
+// in frontmatter, never in the template; utility names in these comments are
+// deliberate duplicates of tokens already present in the class strings.
+import type { ComponentProps } from 'astro/types';
+import { Code } from 'astro:components';
+
+interface Props {
+	code: string;
+	lang: NonNullable<ComponentProps<typeof Code>['lang']>;
+	label: string;
+	filename?: string;
+}
+
+const { code, lang, label, filename } = Astro.props;
+
+const preClass =
+	'rounded-none rounded-b-2xl p-6 text-caption leading-relaxed focus-visible:outline-inverted-foreground focus-visible:-outline-offset-2';
+---
+
+<figure>
+	<div class="rounded-2xl bg-inverted">
+		<div class="flex min-h-12 items-center gap-1.75 border-b border-inverted-border px-4.5 py-3.25">
+			<span aria-hidden="true" class="size-2.5 rounded-full bg-inverted-border"></span>
+			<span aria-hidden="true" class="size-2.5 rounded-full bg-inverted-border"></span>
+			<span aria-hidden="true" class="size-2.5 rounded-full bg-inverted-border"></span>
+			{filename && <span class="ml-2 font-mono text-caption leading-normal text-inverted-foreground-muted">{filename}</span>}
+		</div>
+		<Code code={code} lang={lang} theme="css-variables" tabindex="0" role="region" aria-label={label} class={preClass} />
+	</div>
+	{
+		Astro.slots.has('default') && (
+			<figcaption class="mt-3 text-caption text-muted-foreground">
+				<slot />
+			</figcaption>
+		)
+	}
+</figure>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../partials/Card.astro';
+import CodeBlock from '../partials/CodeBlock.astro';
 import Figure from '../partials/Figure.astro';
 import KeyTakeaways from '../partials/KeyTakeaways.astro';
 import { eyebrow, pillPrimary, pillSecondary, pillSecondaryInverted } from '../partials/recipes';
@@ -50,6 +51,16 @@ const takeawayItems = [
 	'Placeholder takeaway two.',
 	'Placeholder takeaway three.',
 ];
+
+// Placeholder listing for the CodeBlock specimens; the long description line forces
+// the horizontal scroll at every viewport width.
+const codeSample = `{
+  "id": "demo",
+  "title": "Placeholder listing title",
+  "status": 200,
+  "description": "Placeholder description long enough to overflow the code sample horizontally at every viewport width.",
+  "tags": ["placeholder", "demo"]
+}`;
 
 // Favicon repaint is parked (advisory carryover, no ticket yet); when it lands,
 // re-verify this alt against the new artwork.
@@ -242,6 +253,28 @@ const demoLabel = `${eyebrow} mt-10 text-muted-foreground`;
 		<p class={demoLabel}>Variant: impact</p>
 		<div class="mt-6">
 			<StatCard variant="impact" items={statCardItems} />
+		</div>
+	</section>
+
+	<section aria-labelledby="codeblock-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
+		<SectionHeader eyebrow="Partial" title="CodeBlock states" headingId="codeblock-h">
+			The pre is a labeled, focusable region so its horizontal scroll is keyboard reachable.
+			Demo code is placeholder JSON.
+		</SectionHeader>
+		<p class={demoLabel}>Filename and caption</p>
+		<div class="mt-6">
+			<CodeBlock
+				code={codeSample}
+				lang="json"
+				label="Placeholder code sample with filename"
+				filename="demo.json"
+			>
+				Placeholder caption for the code sample.
+			</CodeBlock>
+		</div>
+		<p class={demoLabel}>No filename, no caption</p>
+		<div class="mt-6">
+			<CodeBlock code={codeSample} lang="json" label="Placeholder code sample without filename" />
 		</div>
 	</section>
 
