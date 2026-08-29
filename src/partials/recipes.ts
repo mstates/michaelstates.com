@@ -26,3 +26,15 @@ export const pillSecondary =
 // inverted-border/inverted 3.22:1 proven at the token). Semantic tokens only.
 export const pillSecondaryInverted =
   "inline-flex items-center rounded-full border border-inverted-border text-body font-bold text-inverted-foreground transition-colors hover:border-inverted-foreground focus-visible:outline-inverted-foreground";
+
+// INC-268: promoted from src/pages/index.astro (the contact panel's email CTA,
+// INC-243 shell) on gaining a second consumer — the case-study closing CTA, both
+// now rendered through the CTAPanel partial (pillSecondary precedent). Sizing
+// (px-7 py-3.5) is removed from the string and stays consumer-side like the other
+// three pill recipes; the token set is otherwise unchanged by the move. Filled
+// counterpart of pillSecondaryInverted on the inverted panel (INC-218 surface
+// contract): inverted-foreground fill under inverted text (17.00:1), hover to
+// inverted-foreground-muted (9.29:1 vs inverted) — pairs already proven in
+// scripts/contrast-proof.mjs prove. Semantic tokens only.
+export const pillPrimaryInverted =
+  "inline-flex items-center rounded-full bg-inverted-foreground text-body font-bold text-inverted transition-colors hover:bg-inverted-foreground-muted focus-visible:outline-inverted-foreground";

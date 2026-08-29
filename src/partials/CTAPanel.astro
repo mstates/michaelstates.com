@@ -1,0 +1,68 @@
+---
+// INC-268: contact-panel partial extracted verbatim from the index.astro #contact
+// section (INC-243 shell, INC-252 polish). Verdict: EXTRACT + PROMOTE — the panel
+// template (the rounded-3xl div, eyebrow, h2, optional lede p, CTA row) moves
+// unchanged; the email CTA's class string is promoted to ./recipes as
+// pillPrimaryInverted. Zero token-pipeline touch: every color pair on this
+// surface is already proven under the INC-218 surface contract.
+// The contact-section eyebrow rides inverted-accent (rose — the tier's first real
+// consumer, INC-252 polish);
+// pair already proven: inverted-accent/inverted 6.79:1 in scripts/contrast-proof.mjs
+// prove, clearing even the 4.5:1 small-text floor.
+// a11y contract: the landmark is consumer-owned (SectionHeader precedent) — this
+// partial renders the panel div only; `headingId` is required and the consumer's
+// <section> keeps aria-labelledby={headingId}. The heading is a hardcoded h2 with
+// no `level` prop: the panel is always a page-level section head, never nested
+// under another heading.
+// CONTRACT: the heading and the lede are slots ("heading" / "lede" named slots),
+// not string props — Astro HTML-escapes expression interpolation (a prop would
+// render "Let's" / "I'm" / "I'll" as "Let&#39;s", breaking byte parity with the
+// pre-extraction text nodes), while slot content keeps its authored bytes
+// (SectionHeader lede / CaseStudyLayout lede precedent). The eyebrow is a string
+// prop (no apostrophes; SectionHeader precedent). The lede <p> renders only when
+// its slot is filled.
+// CONTRACT: the CTAs are the default slot; the partial owns the row wrapper with
+// the home-hero row's classes verbatim (mt-8 flex flex-wrap gap-3.5), so a
+// single CTA renders exactly where the pre-extraction mt-8 div put it and a
+// second CTA wraps beside it. Pill sizing (px-7 py-3.5) stays consumer-side like
+// the other pill recipes.
+// CONTRACT: no size variant. The case study mounts this inside CaseStudyLayout's
+// max-w-prose shell, so the panel renders narrower there than home's max-w-6xl
+// render; padding (p-10 sm:p-16) and the type scale are identical in both —
+// width is the consumer's measure, never a prop. The case-study "cta" slot sits
+// after the article, so this panel never meets the .prose element selectors.
+// No new utility-class tokens may enter this file, comments included: Tailwind
+// v4 scans raw source text, so even an unrendered class name (or a prose word
+// that collides with one) changes the CSS bundle hash and breaks byte parity;
+// utility names in these comments are deliberate duplicates of tokens already
+// present in the class strings.
+// Zero-hydration by contract (B4): no client:* directives, no <style>/<script>
+// blocks. Byte-parity discipline: the template is a verbatim copy (text-node
+// line structure matters under compressHTML) — commentary stays in frontmatter,
+// never in the template.
+import { eyebrow as eyebrowRecipe } from './recipes';
+
+interface Props {
+	eyebrow: string;
+	headingId: string;
+}
+
+const { eyebrow, headingId } = Astro.props;
+---
+
+<div class="rounded-3xl bg-inverted p-10 text-inverted-foreground sm:p-16">
+	<p class={`${eyebrowRecipe} mb-3.5 text-inverted-accent`}>{eyebrow}</p>
+	<h2 id={headingId} class="max-w-2xl font-serif text-display font-medium leading-heading tracking-tight text-balance">
+		<slot name="heading" />
+	</h2>
+	{
+		Astro.slots.has('lede') && (
+			<p class="mt-5 max-w-xl text-body leading-relaxed text-inverted-foreground-muted">
+				<slot name="lede" />
+			</p>
+		)
+	}
+	<div class="mt-8 flex flex-wrap gap-3.5">
+		<slot />
+	</div>
+</div>

@@ -4,10 +4,17 @@
 // samples are display excerpts as ratified, NOT live reads of the underlying files.
 // INC-267: both listings render through the CodeBlock partial (chrome only; the code
 // strings, region labels, and captions are the ratified bytes, passed unchanged).
+// INC-268: the closing CTA fills the layout's "cta" named slot with the CTAPanel
+// partial — the landmark is consumer-owned, so the <section> wrapper lives here and
+// CaseStudyLayout is untouched. Copy is the home contact panel's, verbatim. The
+// secondary CTA carries a decorative leading arrow, aria-hidden (the layout's
+// back-nav arrow pattern), so its accessible name is exactly "All work".
 // Zero-hydration by contract (B4): no client:* directives, no React/RAC.
 import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
 import CodeBlock from '../../partials/CodeBlock.astro';
+import CTAPanel from '../../partials/CTAPanel.astro';
 import KeyTakeaways from '../../partials/KeyTakeaways.astro';
+import { pillPrimaryInverted, pillSecondaryInverted } from '../../partials/recipes';
 
 const tokensSample = `"primary": { "$value": "{mc.color.terracotta.600}" },
 "ring":    { "$value": "{color.accent-ink}" },
@@ -176,4 +183,22 @@ const articleLink = 'font-bold text-action-ink underline hover:text-action-ink-h
 			>the accessibility findings</a
 		>.
 	</p>
+
+	<section slot="cta" aria-labelledby="contact-h">
+		<CTAPanel eyebrow="Work with me" headingId="contact-h">
+			<Fragment slot="heading">
+				Hiring for a role, or need an accessibility partner? Let's talk.
+			</Fragment>
+			<Fragment slot="lede">
+				A 20-minute call is enough to tell whether I'm the right fit — and I'll walk you through
+				the NDA work live.
+			</Fragment>
+			<a href="mailto:hello@michaelstates.com" class={`${pillPrimaryInverted} px-7 py-3.5`}>
+				hello@michaelstates.com
+			</a>
+			<a href="/#work" class={`${pillSecondaryInverted} gap-2 px-7 py-3.5`}>
+				<span aria-hidden="true">←</span>All work
+			</a>
+		</CTAPanel>
+	</section>
 </CaseStudyLayout>

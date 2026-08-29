@@ -2,9 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../partials/Card.astro';
 import CodeBlock from '../partials/CodeBlock.astro';
+import CTAPanel from '../partials/CTAPanel.astro';
 import Figure from '../partials/Figure.astro';
 import KeyTakeaways from '../partials/KeyTakeaways.astro';
-import { eyebrow, pillPrimary, pillSecondary, pillSecondaryInverted } from '../partials/recipes';
+import {
+	eyebrow,
+	pillPrimary,
+	pillPrimaryInverted,
+	pillSecondary,
+	pillSecondaryInverted,
+} from '../partials/recipes';
 import SectionHeader from '../partials/SectionHeader.astro';
 import SiteFooter from '../partials/SiteFooter.astro';
 import SiteHeader from '../partials/SiteHeader.astro';
@@ -275,6 +282,34 @@ const demoLabel = `${eyebrow} mt-10 text-muted-foreground`;
 		<p class={demoLabel}>No filename, no caption</p>
 		<div class="mt-6">
 			<CodeBlock code={codeSample} lang="json" label="Placeholder code sample without filename" />
+		</div>
+	</section>
+
+	<section aria-labelledby="ctapanel-h" class="mx-auto max-w-6xl px-6 pt-24 sm:px-10">
+		<SectionHeader eyebrow="Partial" title="CTAPanel states" headingId="ctapanel-h">
+			The panel renders inside a consumer-owned landmark — this section. Both specimens
+			carry the primary and secondary inverted pills; heading and lede copy is placeholder copy.
+		</SectionHeader>
+		<p class={demoLabel}>With lede</p>
+		<div class="mt-6">
+			<CTAPanel eyebrow="Placeholder eyebrow" headingId="ctapanel-lede-h">
+				<Fragment slot="heading">Placeholder panel heading with a lede</Fragment>
+				<Fragment slot="lede">Placeholder lede copy on the inverted panel.</Fragment>
+				<a href="#ctapanel-h" class={`${pillPrimaryInverted} px-7 py-3.5`}>Placeholder primary pill</a>
+				<a href="#ctapanel-h" class={`${pillSecondaryInverted} gap-2 px-7 py-3.5`}>
+					<span aria-hidden="true">←</span>Placeholder secondary pill
+				</a>
+			</CTAPanel>
+		</div>
+		<p class={demoLabel}>Without lede</p>
+		<div class="mt-6">
+			<CTAPanel eyebrow="Placeholder eyebrow" headingId="ctapanel-nolede-h">
+				<Fragment slot="heading">Placeholder panel heading without a lede</Fragment>
+				<a href="#ctapanel-h" class={`${pillPrimaryInverted} px-7 py-3.5`}>Placeholder primary pill</a>
+				<a href="#ctapanel-h" class={`${pillSecondaryInverted} gap-2 px-7 py-3.5`}>
+					<span aria-hidden="true">←</span>Placeholder secondary pill
+				</a>
+			</CTAPanel>
 		</div>
 	</section>
 

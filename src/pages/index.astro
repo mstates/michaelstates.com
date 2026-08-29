@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../partials/Card.astro';
-import { eyebrow, pillPrimary, pillSecondary } from '../partials/recipes';
+import CTAPanel from '../partials/CTAPanel.astro';
+import { eyebrow, pillPrimary, pillPrimaryInverted, pillSecondary } from '../partials/recipes';
 import SectionHeader from '../partials/SectionHeader.astro';
 import SiteFooter from '../partials/SiteFooter.astro';
 import SiteHeader from '../partials/SiteHeader.astro';
@@ -72,11 +73,10 @@ const services = [
 // is recorded in the PR body per the surface-contract rule. (eyebrow moved to
 // partials/recipes.ts with INC-251 — second consumer; sectionH2 moved into
 // partials/SectionHeader.astro with INC-262 — the partial is its only consumer;
-// pillOutline moved to partials/recipes.ts as pillSecondary with INC-264.)
-// The contact-section eyebrow rides inverted-accent (rose — the tier's first real
-// consumer, INC-252 polish);
-// pair already proven: inverted-accent/inverted 6.79:1 in scripts/contrast-proof.mjs
-// prove, clearing even the 4.5:1 small-text floor.
+// pillOutline moved to partials/recipes.ts as pillSecondary with INC-264; the
+// contact panel moved into partials/CTAPanel.astro and its email CTA's class string
+// to partials/recipes.ts as pillPrimaryInverted with INC-268 — the inverted-accent
+// eyebrow pair note moved with the panel, 2026-08-29.)
 ---
 
 <BaseLayout
@@ -174,24 +174,18 @@ const services = [
 		aria-labelledby="contact-h"
 		class="mx-auto max-w-6xl px-6 py-24 sm:px-10"
 	>
-		<div class="rounded-3xl bg-inverted p-10 text-inverted-foreground sm:p-16">
-			<p class={`${eyebrow} mb-3.5 text-inverted-accent`}>Work with me</p>
-			<h2 id="contact-h" class="max-w-2xl font-serif text-display font-medium leading-heading tracking-tight text-balance">
+		<CTAPanel eyebrow="Work with me" headingId="contact-h">
+			<Fragment slot="heading">
 				Hiring for a role, or need an accessibility partner? Let's talk.
-			</h2>
-			<p class="mt-5 max-w-xl text-body leading-relaxed text-inverted-foreground-muted">
+			</Fragment>
+			<Fragment slot="lede">
 				A 20-minute call is enough to tell whether I'm the right fit — and I'll walk you through
 				the NDA work live.
-			</p>
-			<div class="mt-8">
-				<a
-					href="mailto:hello@michaelstates.com"
-					class="inline-flex items-center rounded-full bg-inverted-foreground px-7 py-3.5 text-body font-bold text-inverted transition-colors hover:bg-inverted-foreground-muted focus-visible:outline-inverted-foreground"
-				>
-					hello@michaelstates.com
-				</a>
-			</div>
-		</div>
+			</Fragment>
+			<a href="mailto:hello@michaelstates.com" class={`${pillPrimaryInverted} px-7 py-3.5`}>
+				hello@michaelstates.com
+			</a>
+		</CTAPanel>
 	</section>
 
 	<SiteFooter slot="footer" />
